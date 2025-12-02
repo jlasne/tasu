@@ -1,7 +1,7 @@
 # Sensitive Configuration
-public_html/api/config.php
-public_html/api/db.php
-# public_html/firebase-config.js
+api/config.php
+api/db.php
+config/firebase-config.js
 
 # System Files
 .DS_Store

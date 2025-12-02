@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Integration - Tasu</title>
-    <link rel="icon" type="image/png" href="../../logo.png">
+    <link rel="icon" type="image/png" href="../../assets/logo.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -46,7 +46,7 @@
         <div class="container mx-auto px-6 py-4 flex items-center justify-between">
             <div class="flex items-center gap-2">
                 <a href="../" class="flex items-center gap-2">
-                    <img src="../../logo.png" alt="Tasu Logo" class="w-8 h-8 rounded-lg object-contain" />
+                    <img src="../../assets/logo.png" alt="Tasu Logo" class="w-8 h-8 rounded-lg object-contain" />
                     <span class="text-xl font-bold text-off-white font-sans">Tasu</span>
                 </a>
             </div>
@@ -89,42 +89,88 @@
                     class="p-4 bg-void-dark rounded-lg overflow-x-auto text-sm font-mono text-gray-300 border border-white/10"><code>Loading...</code></pre>
                 <button id="copy-btn"
                     class="absolute top-2 right-2 px-3 py-1 text-xs font-semibold text-off-white bg-white/10 rounded hover:bg-white/20 transition-all">
-                    });
+                    Copy
+                </button>
+            </div>
+            <p class="mt-4 text-sm text-gray-400">Once installed, Tasu will automatically track all button clicks.</p>
+        </div>
+    </main>
 
-                    // Fetch Project ID
-                    async function fetchProjectId(user) {
-                    try {
-                    const token = await user.getIdToken();
-                    const response = await fetch('../../api/register.php', {
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { firebaseConfig } from "../../config/firebase-config.js";
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        // Auth check
+        onAuthStateChanged(auth, async (user) => {
+            if (!user) {
+                window.location.href = '../login/';
+            } else {
+                document.getElementById('user-email').innerText = user.email;
+                await fetchProjectId(user);
+            }
+        });
+
+        // Logout
+        document.getElementById('logout-btn').addEventListener('click', () => {
+            signOut(auth).then(() => {
+                window.location.href = '../login/';
+            });
+        });
+
+        // Fetch Project ID
+        async function fetchProjectId(user) {
+            try {
+                const token = await user.getIdToken();
+                const response = await fetch('../../api/register.php', {
                     method: 'POST',
                     headers: {
-                    'Authorization': `Bearer ${token}`
+                        'Authorization': `Bearer ${token}`
                     }
-                    });
+                });
 
-                    if (!response.ok) throw new Error('Failed to fetch project ID');
+                if (!response.ok) throw new Error('Failed to fetch project ID');
 
-                    const data = await response.json();
-                    const projectId = data.project_id;
+                const data = await response.json();
+                const projectId = data.project_id;
 
-                    document.getElementById('project-id-display').innerText = projectId;
-                    updateSDKCode(projectId);
-                    } catch (error) {
-                    console.error(error);
-                    document.getElementById('project-id-display').innerText = 'Error loading ID';
-                    }
-                    }
-                    document.getElementById('copy-btn').addEventListener('click', () => {
-                    const code = document.getElementById('sdk-code').innerText;
-                    navigator.clipboard.writeText(code).then(() => {
-                    const btn = document.getElementById('copy-btn');
-                    btn.innerText = 'Copied!';
-                    setTimeout(() => {
+                document.getElementById('project-id-display').innerText = projectId;
+                updateSDKCode(projectId);
+            } catch (error) {
+                console.error(error);
+                document.getElementById('project-id-display').innerText = 'Error loading ID';
+            }
+        }
+
+        // Update SDK code
+        function updateSDKCode(projectId) {
+            const sdkUrl = window.location.origin + '/sdk/tasu-sdk.js';
+
+            const code = `<!-- Tasu Analytics -->
+<script src="${sdkUrl}"><\/script>
+<script>
+    Tasu.init({ projectId: '${projectId}' });
+<\/script>`;
+
+            document.getElementById('sdk-code').innerHTML = `<code>${code.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</code>`;
+        }
+
+        // Copy button
+        document.getElementById('copy-btn').addEventListener('click', () => {
+            const code = document.getElementById('sdk-code').innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                const btn = document.getElementById('copy-btn');
+                btn.innerText = 'Copied!';
+                setTimeout(() => {
                     btn.innerText = 'Copy';
-                    }, 2000);
-                    });
-                    });
-                    </script>
+                }, 2000);
+            });
+        });
+    </script>
 </body>
 
 </html>

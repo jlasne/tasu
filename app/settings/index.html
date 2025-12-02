@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Settings - Tasu</title>
-    <link rel="icon" type="image/png" href="../../logo.png">
+    <link rel="icon" type="image/png" href="../../assets/logo.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -46,7 +46,7 @@
         <div class="container mx-auto px-6 py-4 flex items-center justify-between">
             <div class="flex items-center gap-2">
                 <a href="../" class="flex items-center gap-2">
-                    <img src="../../logo.png" alt="Tasu Logo" class="w-8 h-8 rounded-lg object-contain" />
+                    <img src="../../assets/logo.png" alt="Tasu Logo" class="w-8 h-8 rounded-lg object-contain" />
                     <span class="text-xl font-bold text-off-white font-sans">Tasu</span>
                 </a>
             </div>
@@ -180,7 +180,7 @@
     </main>
     onAuthStateChanged(auth, (user) => {
     if (!user) {
-    window.location.href = '../../login/';
+    window.location.href = '../login/';
     } else {
     currentUser = user;
     document.getElementById('user-email').innerText = user.email;
@@ -203,7 +203,7 @@
     // Logout
     document.getElementById('logout-btn').addEventListener('click', () => {
     signOut(auth).then(() => {
-    window.location.href = '../../login/';
+    window.location.href = '../login/';
     });
     });
 
@@ -299,7 +299,7 @@
         </script>
 
         <!-- Tasu SDK -->
-        <script src="../../tasu-sdk.js"></script>
+        <script src="../../sdk/tasu-sdk.js"></script>
 </body>
 
 </html>
