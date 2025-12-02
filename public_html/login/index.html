@@ -62,83 +62,170 @@
             <div class="flex gap-4">
                 <button id="email-login-btn"
                     class="flex-1 py-3 font-semibold text-off-white bg-white/10 rounded-lg hover:bg-white/20 transition-all">Login</button>
-                <button id="email-signup-btn"
-                    class="flex-1 py-3 font-semibold text-off-white bg-white/10 rounded-lg hover:bg-white/20 transition-all">Sign
-                    Up</button>
-            </div>
-        </div>
+                <button id="email-signup-btn" <!DOCTYPE html>
+                    <html lang="en" class="dark">
 
-        <div class="relative">
-            <div class="absolute inset-0 flex items-center">
-                <div class="w-full border-t border-white/10"></div>
-            </div>
-            <div class="relative flex justify-center text-sm"><span class="px-2 bg-void-darker text-gray-500">Or
-                    continue with</span></div>
-        </div>
+                    <head>
+                        <meta charset="UTF-8">
+                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                        <title>Login - Tasu</title>
+                        <link rel="icon" type="image/png" href="../logo.png">
+                        <script src="https://cdn.tailwindcss.com"></script>
+                        <script>
+                            tailwind.config = {
+                                darkMode: 'class',
+                                theme: {
+                                    extend: {
+                                        colors: {
+                                            'void-dark': '#1f1f1f',
+                                            'void-darker': '#121212',
+                                            'off-white': '#dedddc',
+                                            'bitcoin-orange': '#F7931A',
+                                            'dark-red': '#8B0000',
+                                        },
+                                        fontFamily: {
+                                            sans: ['Inter', 'sans-serif'],
+                                            mono: ['JetBrains Mono', 'monospace'],
+                                        }
+                                    }
+                                }
+                            }
+                        </script>
+                        <link
+                            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+                            rel="stylesheet">
+                        <style>
+                            body {
+                                font-family: 'Inter', sans-serif;
+                                background-color: #0a0a0a;
+                                color: white;
+                            }
+                        </style>
+                    </head>
 
-        <button id="google-login-btn"
-            class="w-full py-3 font-semibold text-black bg-white rounded-lg hover:bg-gray-200 transition-all">
-            Sign in with Google
-        </button>
+                    <body class="min-h-screen flex flex-col items-center justify-center">
 
-        <div class="mt-4">
-            <a href="../" class="text-sm text-gray-500 hover:text-off-white transition-colors">← Back to Home</a>
-        </div>
-    </div>
-    const passwordInput = document.getElementById('password-input');
-    const authError = document.getElementById('auth-error');
-    const googleLoginBtn = document.getElementById('google-login-btn');
-    const emailLoginBtn = document.getElementById('email-login-btn');
-    const emailSignupBtn = document.getElementById('email-signup-btn');
+                        <!-- Login Container -->
+                        <div
+                            class="w-full max-w-md p-8 space-y-6 bg-void-darker/60 backdrop-blur-xl border border-white/10 rounded-2xl text-center">
+                            <div class="flex items-center justify-center gap-2 mb-4">
+                                <img src="../logo.png" alt="Tasu Logo" class="w-10 h-10 rounded-lg object-contain" />
+                                <span class="text-2xl font-bold text-off-white font-sans">Tasu</span>
+                            </div>
 
-    // Check if already logged in
-    onAuthStateChanged(auth, (user) => {
-    if (user) {
-    window.location.href = '../app/';
-    }
-    });
+                            <h2 class="text-2xl font-bold text-off-white">Welcome Back</h2>
+                            <p class="text-gray-400">Sign in to access your dashboard</p>
 
-    // Google Login
-    googleLoginBtn.addEventListener('click', () => {
-    signInWithPopup(auth, provider)
-    .then(() => {
-    window.location.href = '../app/';
-    })
-    .catch((error) => {
-    console.error("Login Failed", error);
-    authError.innerText = error.message;
-    });
-    });
+                            <div class="space-y-4">
+                                <input type="email" id="email-input" placeholder="Email"
+                                    class="w-full px-4 py-3 bg-void-dark/95 backdrop-blur-sm border border-white/10 rounded-lg text-off-white focus:border-bitcoin-orange outline-none" />
+                                <input type="password" id="password-input" placeholder="Password"
+                                    class="w-full px-4 py-3 bg-void-dark/95 backdrop-blur-sm border border-white/10 rounded-lg text-off-white focus:border-bitcoin-orange outline-none" />
+                                <p id="auth-error" class="text-red-500 text-sm"></p>
 
-    // Email Login
-    emailLoginBtn.addEventListener('click', () => {
-    const email = emailInput.value;
-    const password = passwordInput.value;
-    signInWithEmailAndPassword(auth, email, password)
-    .then(() => {
-    window.location.href = '../app/';
-    })
-    .catch((error) => {
-    authError.innerText = error.message;
-    });
-    });
+                                <div class="flex gap-4">
+                                    <button id="email-login-btn"
+                                        class="flex-1 py-3 font-semibold text-off-white bg-white/10 rounded-lg hover:bg-white/20 transition-all">Login</button>
+                                    <button id="email-signup-btn"
+                                        class="flex-1 py-3 font-semibold text-off-white bg-white/10 rounded-lg hover:bg-white/20 transition-all">Sign
+                                        Up</button>
+                                </div>
+                            </div>
 
-    // Email Signup
-    emailSignupBtn.addEventListener('click', () => {
-    const email = emailInput.value;
-    const password = passwordInput.value;
-    createUserWithEmailAndPassword(auth, email, password)
-    .then(() => {
-    window.location.href = '../app/';
-    })
-    .catch((error) => {
-    authError.innerText = error.message;
-    });
-    });
-    </script>
+                            <div class="relative">
+                                <div class="absolute inset-0 flex items-center">
+                                    <div class="w-full border-t border-white/10"></div>
+                                </div>
+                                <div class="relative flex justify-center text-sm"><span
+                                        class="px-2 bg-void-darker text-gray-500">Or
+                                        continue with</span></div>
+                            </div>
 
-    <!-- Tasu SDK -->
-    <script src="../tasu-sdk.js"></script>
-</body>
+                            <button id="google-login-btn"
+                                class="w-full py-3 font-semibold text-black bg-white rounded-lg hover:bg-gray-200 transition-all">
+                                Sign in with Google
+                            </button>
 
-</html>
+                            <div class="mt-4">
+                                <a href="../" class="text-sm text-gray-500 hover:text-off-white transition-colors">←
+                                    Back to Home</a>
+                            </div>
+                        </div>
+                        <script type="module">
+                            import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+                            import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+                            import { firebaseConfig } from "../firebase-config.js";
+
+                            const app = initializeApp(firebaseConfig);
+                            const auth = getAuth(app);
+                            const provider = new GoogleAuthProvider();
+
+                            const emailInput = document.getElementById('email-input');
+                            const passwordInput = document.getElementById('password-input');
+                            const authError = document.getElementById('auth-error');
+                            const googleLoginBtn = document.getElementById('google-login-btn');
+                            const emailLoginBtn = document.getElementById('email-login-btn');
+                            const emailSignupBtn = document.getElementById('email-signup-btn');
+
+                            // Check if already logged in
+                            onAuthStateChanged(auth, async (user) => {
+                                if (user) {
+                                    // Register/Login with backend
+                                    try {
+                                        const token = await user.getIdToken();
+                                        const response = await fetch('../api/register.php', {
+                                            method: 'POST',
+                                            headers: {
+                                                'Authorization': `Bearer ${token}`
+                                            }
+                                        });
+
+                                        if (response.ok) {
+                                            window.location.href = '../app/';
+                                        } else {
+                                            console.error('Backend registration failed');
+                                            // Optional: show error, but usually we just redirect or let them try again
+                                            window.location.href = '../app/'; // Try redirecting anyway, dashboard handles auth check
+                                        }
+                                    } catch (e) {
+                                        console.error('Error registering with backend:', e);
+                                        window.location.href = '../app/';
+                                    }
+                                }
+                            });
+
+                            // Google Login
+                            googleLoginBtn.addEventListener('click', () => {
+                                signInWithPopup(auth, provider)
+                                    .catch((error) => {
+                                        console.error("Login Failed", error);
+                                        authError.innerText = error.message;
+                                    });
+                            });
+
+                            // Email Login
+                            emailLoginBtn.addEventListener('click', () => {
+                                const email = emailInput.value;
+                                const password = passwordInput.value;
+                                signInWithEmailAndPassword(auth, email, password)
+                                    .catch((error) => {
+                                        authError.innerText = error.message;
+                                    });
+                            });
+
+                            // Email Signup
+                            emailSignupBtn.addEventListener('click', () => {
+                                const email = emailInput.value;
+                                const password = passwordInput.value;
+                                createUserWithEmailAndPassword(auth, email, password)
+                                    .catch((error) => {
+                                        authError.innerText = error.message;
+                                    });
+                            });
+                        </script>
+
+                        <!-- Tasu SDK -->
+                        <script src="../tasu-sdk.js"></script>
+                    </body>
+
+                    </html>
