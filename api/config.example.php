@@ -1,37 +1,35 @@
 <?php
-// api/config.php
+// api/config.php - EXAMPLE FILE
+// Copy this to config.php and fill in your credentials
 
-// Prevent direct access
-if (basename($_SERVER['PHP_SELF']) == basename(__FILE__)) {
-    header('HTTP/1.0 403 Forbidden');
+// CORS Headers - Allow Vercel frontend
+header('Access-Control-Allow-Origin: https://app.tasu.ai');
+header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
+header('Access-Control-Allow-Headers: Content-Type, Authorization');
+header('Access-Control-Allow-Credentials: true');
+
+// Handle preflight requests
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(200);
     exit;
 }
 
-// Tinybird Configuration
-define('TINYBIRD_HOST', 'https://api.eu-west-1.aws.tinybird.co');
-define('TINYBIRD_ADMIN_TOKEN', 'YOUR_ADMIN_TOKEN_HERE'); // Only for backend use
-define('TINYBIRD_INGEST_TOKEN', 'YOUR_INGEST_TOKEN_HERE'); // Write-only token for SDK
-
-// Database Configuration
+// Database Configuration (MySQL - Hostinger)
 define('DB_HOST', 'localhost');
-define('DB_NAME', 'YOUR_DB_NAME');
-define('DB_USER', 'YOUR_DB_USER');
-define('DB_PASS', 'YOUR_DB_PASSWORD');
-
-// Stripe Configuration
-define('STRIPE_SECRET_KEY', 'sk_test_your_stripe_secret_key');
-define('STRIPE_PUBLISHABLE_KEY', 'pk_test_your_stripe_publishable_key');
+define('DB_NAME', 'your_database_name');
+define('DB_USER', 'your_database_user');
+define('DB_PASS', 'your_database_password');
 
 // Firebase Configuration
-define('FIREBASE_PROJECT_ID', 'YOUR_PROJECT_ID');
-define('FIREBASE_API_KEY', 'YOUR_API_KEY');
-define('FIREBASE_AUTH_DOMAIN', 'YOUR_PROJECT_ID.firebaseapp.com');
-define('FIREBASE_STORAGE_BUCKET', 'YOUR_PROJECT_ID.firebasestorage.app');
-define('FIREBASE_MESSAGING_SENDER_ID', 'YOUR_SENDER_ID');
-define('FIREBASE_APP_ID', 'YOUR_APP_ID');
+define('FIREBASE_PROJECT_ID', 'tasu-44e26');
+define('FIREBASE_WEB_API_KEY', 'YOUR_FIREBASE_WEB_API_KEY');
 
-// CORS Headers
-header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
-header('Access-Control-Allow-Headers: Content-Type, Authorization');
+// Tinybird Configuration
+define('TINYBIRD_HOST', 'https://api.eu-west-1.aws.tinybird.co');
+define('TINYBIRD_ADMIN_TOKEN', 'YOUR_TINYBIRD_ADMIN_TOKEN');
+define('TINYBIRD_INGEST_TOKEN', 'YOUR_TINYBIRD_INGEST_TOKEN');
+
+// Stripe Configuration (Optional - for billing)
+define('STRIPE_SECRET_KEY', 'YOUR_STRIPE_SECRET_KEY');
+define('STRIPE_PUBLISHABLE_KEY', 'YOUR_STRIPE_PUBLISHABLE_KEY');
 ?>
