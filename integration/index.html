@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
@@ -7,96 +7,112 @@
     <title>Integration - Tasu</title>
     <link rel="icon" type="image/png" href="../assets/logo.png">
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        'void-dark': '#1f1f1f',
-                        'void-darker': '#121212',
-                        'off-white': '#dedddc',
-                        'bitcoin-orange': '#F7931A',
-                        'dark-red': '#8B0000',
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        mono: ['JetBrains Mono', 'monospace'],
-                    }
-                }
-            }
-        }
-    </script>
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
         rel="stylesheet">
     <style>
+        * {
+            border-radius: 0 !important;
+        }
+
         body {
             font-family: 'Inter', sans-serif;
             background-color: #1f1f1f;
-            color: #dedddc;
+            color: #f0f0f0;
         }
     </style>
 </head>
 
-<body class="min-h-screen bg-void-dark">
+<body class="min-h-screen" style="background-color: #1f1f1f;">
 
     <!-- Top Navigation -->
-    <nav class="bg-void-darker/60 backdrop-blur-xl border-b border-white/10">
+    <nav class="border-b border-gray-700" style="background-color: #1f1f1f;">
         <div class="container mx-auto px-6 py-4 flex items-center justify-between">
             <div class="flex items-center gap-2">
                 <a href="../" class="flex items-center gap-2">
-                    <img src="../assets/logo.png" alt="Tasu Logo" class="w-8 h-8 rounded-lg object-contain" />
-                    <span class="text-xl font-bold text-off-white font-sans">Tasu</span>
+                    <img src="../assets/logo.png" alt="Tasu Logo" class="w-8 h-8 object-contain" />
+                    <span class="text-xl font-bold font-sans" style="color: #f0f0f0;">Tasu</span>
                 </a>
             </div>
 
             <div class="flex items-center gap-3">
                 <span id="user-email" class="text-sm text-gray-400"></span>
                 <a href="../dashboard/"
-                    class="px-4 py-2 text-sm font-semibold text-off-white border border-white/10 rounded-lg hover:bg-white/5 transition-all">Dashboard</a>
-                <a href="./"
-                    class="px-4 py-2 text-sm font-semibold text-off-white bg-white/10 rounded-lg">Integration</a>
+                    class="px-4 py-2 text-sm font-semibold border border-gray-700 hover:bg-gray-800 transition-all"
+                    style="color: #f0f0f0;">Dashboard</a>
+                <a href="." class="px-4 py-2 text-sm font-semibold border"
+                    style="background-color: #8B0000; color: #f0f0f0; border-color: #8B0000;">Integration</a>
                 <a href="../settings/"
-                    class="px-4 py-2 text-sm font-semibold text-off-white border border-white/10 rounded-lg hover:bg-white/5 transition-all">Settings</a>
-                <button id="logout-btn"
-                    class="px-4 py-2 text-sm font-semibold text-red-400 border border-red-400/30 rounded-lg hover:bg-red-400/10 transition-all">Logout</button>
+                    class="px-4 py-2 text-sm font-semibold border border-gray-700 hover:bg-gray-800 transition-all"
+                    style="color: #f0f0f0;">Settings</a>
+                <button id="logout-btn" class="px-4 py-2 text-sm font-semibold border transition-all"
+                    style="color: #8B0000; border-color: #8B0000; background-color: transparent;">Logout</button>
             </div>
         </div>
     </nav>
 
     <!-- Main Content -->
-    <main class="container mx-auto px-6 py-8 max-w-4xl">
-        <h1 class="text-3xl font-bold text-off-white mb-8">Integration</h1>
+    <main class="container mx-auto px-6 py-8">
+        <h1 class="text-3xl font-bold mb-8" style="color: #f0f0f0;">Integration</h1>
 
-        <!-- Project ID Display -->
-        <div class="border border-white/10 p-6 mb-6">
-            <h2 class="text-xl font-bold text-off-white mb-4">Your Project ID</h2>
-            <div class="flex items-center gap-4">
-                <code id="project-id-display" class="text-bitcoin-orange font-mono text-lg">Loading...</code>
+        <!-- Domain Tracking Setup -->
+        <div class="mb-8 border border-gray-700 p-6" style="background-color: #1f1f1f;">
+            <h2 class="text-xl font-bold mb-4" style="color: #f0f0f0;">Domain Tracking Setup</h2>
+
+            <div id="domain-status" class="mb-4">
+                <!-- Will be populated dynamically -->
             </div>
-            <p class="mt-2 text-sm text-gray-400">This unique ID connects your website to your Tasu dashboard.</p>
-        </div>
 
-        <!-- Installation Instructions -->
-        <div class="border border-white/10 p-6">
-            <h2 class="text-xl font-bold text-off-white mb-4">Installation Instructions</h2>
-            <p class="text-gray-400 mb-4">Add this script to your website's HTML, just before the closing
-                <code class="px-2 py-1 bg-void-dark rounded text-bitcoin-orange">&lt;/body&gt;</code> tag:
-            </p>
-            <div class="relative">
-                <pre id="sdk-code"
-                    class="p-4 bg-void-dark rounded-lg overflow-x-auto text-sm font-mono text-gray-300 border border-white/10"><code>Loading...</code></pre>
-                <button id="copy-btn"
-                    class="absolute top-2 right-2 px-3 py-1 text-xs font-semibold text-off-white bg-white/10 rounded hover:bg-white/20 transition-all">
-                    Copy
+            <div class="flex gap-4">
+                <input type="text" id="domain-input" placeholder="example.com"
+                    class="flex-1 px-4 py-3 border border-gray-700 outline-none"
+                    style="background-color: #2a2a2a; color: #f0f0f0;" />
+                <button id="update-domain-btn" class="px-6 py-3 font-semibold border transition-all"
+                    style="background-color: #8B0000; color: #f0f0f0; border-color: #8B0000;">
+                    Update Domain
                 </button>
             </div>
-            <p class="mt-4 text-sm text-gray-400">Once installed, Tasu will automatically track all button clicks.</p>
+            <p class="text-sm text-gray-400 mt-2">You can only track one domain at a time.</p>
+        </div>
+
+        <!-- SDK Integration -->
+        <div class="border border-gray-700 p-6" style="background-color: #1f1f1f;">
+            <h2 class="text-xl font-bold mb-4" style="color: #f0f0f0;">SDK Integration</h2>
+
+            <div class="mb-6">
+                <label class="block text-sm font-semibold mb-2" style="color: #f0f0f0;">Your Project ID:</label>
+                <div class="px-4 py-3 border border-gray-700 font-mono text-sm"
+                    style="background-color: #2a2a2a; color: #F7931A;">
+                    <span id="project-id-display">Loading...</span>
+                </div>
+            </div>
+
+            <div class="mb-6">
+                <label class="block text-sm font-semibold mb-2" style="color: #f0f0f0;">Embed Code:</label>
+                <div class="relative">
+                    <pre class="px-4 py-3 border border-gray-700 overflow-x-auto"
+                        style="background-color: #2a2a2a;"><code id="sdk-code" style="color: #f0f0f0;">Loading...</code></pre>
+                    <button id="copy-btn"
+                        class="absolute top-2 right-2 px-3 py-1 text-sm font-semibold border transition-all"
+                        style="background-color: #F7931A; color: #000000; border-color: #F7931A;">
+                        Copy
+                    </button>
+                </div>
+            </div>
+
+            <div>
+                <h3 class="text-lg font-bold mb-3" style="color: #f0f0f0;">Installation Instructions</h3>
+                <ol class="space-y-2 text-sm text-gray-300">
+                    <li>1. Copy the embed code above</li>
+                    <li>2. Paste it in the <code class="px-2 py-1 border border-gray-700"
+                            style="background-color: #2a2a2a;">&lt;head&gt;</code> section of your website</li>
+                    <li>3. Deploy your changes</li>
+                    <li>4. Tasu will automatically start tracking button clicks</li>
+                </ol>
+            </div>
         </div>
     </main>
 
-    <!-- Firebase SDK -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
@@ -108,17 +124,18 @@
         // Auth check
         onAuthStateChanged(auth, async (user) => {
             if (!user) {
-                window.location.href = '../login/';
+                window.location.href = '../';
             } else {
                 document.getElementById('user-email').innerText = user.email;
                 await fetchProjectId(user);
+                await loadDomainStatus();
             }
         });
 
-        // Logout
+        // Logout - redirect to https://tasu.ai
         document.getElementById('logout-btn').addEventListener('click', () => {
             signOut(auth).then(() => {
-                window.location.href = '../';
+                window.location.href = 'https://tasu.ai';
             });
         });
 
@@ -133,22 +150,21 @@
                     }
                 });
 
-                if (!response.ok) throw new Error('Failed to fetch project ID');
-
-                const data = await response.json();
-                const projectId = data.project_id;
-
-                document.getElementById('project-id-display').innerText = projectId;
-                updateSDKCode(projectId);
+                if (response.ok) {
+                    const data = await response.json();
+                    const projectId = data.project_id;
+                    document.getElementById('project-id-display').innerText = projectId;
+                    updateSDKCode(projectId);
+                }
             } catch (error) {
-                console.error(error);
+                console.error('Error fetching project ID:', error);
                 document.getElementById('project-id-display').innerText = 'Error loading ID';
             }
         }
 
         // Update SDK code
         function updateSDKCode(projectId) {
-            const sdkUrl = window.location.origin + '/sdk/tasu-sdk.js';
+            const sdkUrl = 'https://app.tasu.ai/sdk/tasu-sdk.js';
 
             const code = `<!-- Tasu Analytics -->
 <script src="${sdkUrl}"><\/script>
@@ -156,17 +172,68 @@
     Tasu.init({ projectId: '${projectId}' });
 <\/script>`;
 
-            document.getElementById('sdk-code').innerHTML = `<code>${code.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</code>`;
+            document.getElementById('sdk-code').innerHTML = code.replace(/</g, '&lt;').replace(/>/g, '&gt;');
         }
+
+        // Load domain status
+        async function loadDomainStatus() {
+            // Mock implementation - you'll need to create a backend endpoint
+            const currentDomain = localStorage.getItem('tracked_domain') || null;
+
+            const statusDiv = document.getElementById('domain-status');
+            if (currentDomain) {
+                statusDiv.innerHTML = `
+                    <div class="px-4 py-3 border border-gray-700" style="background-color: #2a2a2a;">
+                        <span style="color: #f0f0f0;">Currently tracking: </span>
+                        <span class="font-bold" style="color: #F7931A;">${currentDomain}</span>
+                    </div>
+                `;
+            } else {
+                statusDiv.innerHTML = `
+                    <div class="px-4 py-3 border border-gray-700 text-gray-400" style="background-color: #2a2a2a;">
+                        No domain currently tracked. Add one below.
+                    </div>
+                `;
+            }
+        }
+
+        // Update domain
+        document.getElementById('update-domain-btn').addEventListener('click', async () => {
+            const domain = document.getElementById('domain-input').value.trim();
+
+            if (!domain) {
+                alert('Please enter a domain');
+                return;
+            }
+
+            // Validate domain format
+            const domainRegex = /^[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9](?:\.[a-zA-Z]{2,})+$/;
+            if (!domainRegex.test(domain)) {
+                alert('Please enter a valid domain (e.g., example.com)');
+                return;
+            }
+
+            // Save domain (you'll need to create a backend endpoint for this)
+            localStorage.setItem('tracked_domain', domain);
+
+            // Reload status
+            await loadDomainStatus();
+
+            // Clear input
+            document.getElementById('domain-input').value = '';
+
+            alert('Domain updated successfully!');
+        });
 
         // Copy button
         document.getElementById('copy-btn').addEventListener('click', () => {
             const code = document.getElementById('sdk-code').innerText;
             navigator.clipboard.writeText(code).then(() => {
                 const btn = document.getElementById('copy-btn');
+                const originalText = btn.innerText;
                 btn.innerText = 'Copied!';
                 setTimeout(() => {
-                    btn.innerText = 'Copy';
+                    btn.innerText = originalText;
                 }, 2000);
             });
         });
