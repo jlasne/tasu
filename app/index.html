@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - Tasu</title>
-    <link rel="icon" type="image/png" href="../logo.png">
+    <link rel="icon" type="image/png" href="../assets/logo.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -46,7 +46,7 @@
     <nav class="bg-void-darker/60 backdrop-blur-xl border-b border-white/10">
         <div class="container mx-auto px-6 py-4 flex items-center justify-between">
             <div class="flex items-center gap-2">
-                <img src="../logo.png" alt="Tasu Logo" class="w-8 h-8 rounded-lg object-contain" />
+                <img src="../assets/logo.png" alt="Tasu Logo" class="w-8 h-8 rounded-lg object-contain" />
                 <span class="text-xl font-bold text-off-white font-sans">Tasu</span>
             </div>
 
@@ -137,7 +137,7 @@
     </main>
     onAuthStateChanged(auth, (user) => {
     if (!user) {
-    window.location.href = '../login/';
+    window.location.href = 'login/';
     } else {
     currentUser = user;
     document.getElementById('user-email').innerText = user.email;
@@ -148,7 +148,7 @@
     // Logout
     document.getElementById('logout-btn').addEventListener('click', () => {
     signOut(auth).then(() => {
-    window.location.href = '../login/';
+    window.location.href = 'login/';
     });
     });
 
@@ -160,7 +160,7 @@
 
     try {
     const token = await currentUser.getIdToken();
-    const response = await fetch(`../api/analytics.php?period=${period}`, {
+    const response = await fetch(`../../api/analytics.php?period=${period}`, {
     headers: {
     'Authorization': `Bearer ${token}`
     }
@@ -168,7 +168,7 @@
 
     if (response.status === 403) {
     // User not registered yet, try registering
-    await fetch('../api/register.php', {
+    await fetch('../../api/register.php', {
     method: 'POST',
     headers: { 'Authorization': `Bearer ${token}` }
     });
@@ -275,7 +275,7 @@
     if (!currentUser) return;
     try {
     const token = await currentUser.getIdToken();
-    const response = await fetch(`../api/analytics.php?realtime=true`, {
+    const response = await fetch(`../../api/analytics.php?realtime=true`, {
     headers: { 'Authorization': `Bearer ${token}` }
     });
     const data = await response.json();
@@ -309,7 +309,7 @@
     </script>
 
     <!-- Tasu SDK -->
-    <script src="../tasu-sdk.js"></script>
+    <script src="../sdk/tasu-sdk.js"></script>
 </body>
 
 </html>
