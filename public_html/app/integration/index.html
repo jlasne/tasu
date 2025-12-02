@@ -133,32 +133,16 @@
     document.getElementById('project-id-display').innerText = 'Error loading ID';
     }
     }
-
-    // Update SDK code
-    function updateSDKCode(projectId) {
-    // Assuming the SDK is hosted at the root of the domain where this dashboard is running
-    const sdkUrl = window.location.origin + '/tasu-sdk.js';
-
-    const code = `<!-- Tasu Analytics -->
-    <script src="${sdkUrl}"><\/script>
-                < script >
-                Tasu.init({ projectId: '${projectId}' });
-<\/script>`;
-
-        document.getElementById('sdk-code').innerHTML = `<code>${code.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</code>`;
-        }
-
-        // Copy button
-        document.getElementById('copy-btn').addEventListener('click', () => {
-            const code = document.getElementById('sdk-code').innerText;
-            navigator.clipboard.writeText(code).then(() => {
-                const btn = document.getElementById('copy-btn');
-                btn.innerText = 'Copied!';
-                setTimeout(() => {
-                    btn.innerText = 'Copy';
-                }, 2000);
-            });
-        });
+    document.getElementById('copy-btn').addEventListener('click', () => {
+    const code = document.getElementById('sdk-code').innerText;
+    navigator.clipboard.writeText(code).then(() => {
+    const btn = document.getElementById('copy-btn');
+    btn.innerText = 'Copied!';
+    setTimeout(() => {
+    btn.innerText = 'Copy';
+    }, 2000);
+    });
+    });
     </script>
 </body>
 
