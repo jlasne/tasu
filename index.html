@@ -7,34 +7,18 @@
     <title>Login - Tasu</title>
     <link rel="icon" type="image/png" href="assets/logo.png">
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        'void-dark': '#1f1f1f',
-                        'void-darker': '#121212',
-                        'off-white': '#dedddc',
-                        'bitcoin-orange': '#F7931A',
-                        'dark-red': '#8B0000',
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        mono: ['JetBrains Mono', 'monospace'],
-                    }
-                }
-            }
-        }
-    </script>
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
         rel="stylesheet">
     <style>
+        * {
+            border-radius: 0 !important;
+        }
+
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #0a0a0a;
-            color: white;
+            background-color: #1f1f1f;
+            color: #f0f0f0;
         }
     </style>
 </head>
@@ -42,42 +26,43 @@
 <body class="min-h-screen flex flex-col items-center justify-center">
 
     <!-- Login Container -->
-    <div
-        class="w-full max-w-md p-8 space-y-6 bg-void-darker/60 backdrop-blur-xl border border-white/10 rounded-2xl text-center">
+    <div class="w-full max-w-md p-8 space-y-6 border border-gray-700 text-center" style="background-color: #1f1f1f;">
         <div class="flex items-center justify-center gap-2 mb-4">
-            <img src="assets/logo.png" alt="Tasu Logo" class="w-10 h-10 rounded-lg object-contain" />
-            <span class="text-2xl font-bold text-off-white font-sans">Tasu</span>
+            <img src="assets/logo.png" alt="Tasu Logo" class="w-10 h-10 object-contain" />
+            <span class="text-2xl font-bold font-sans" style="color: #f0f0f0;">Tasu</span>
         </div>
 
-        <h2 class="text-2xl font-bold text-off-white">Welcome Back</h2>
+        <h2 class="text-2xl font-bold" style="color: #f0f0f0;">Welcome Back</h2>
         <p class="text-gray-400">Sign in to access your dashboard</p>
 
         <div class="space-y-4">
             <input type="email" id="email-input" placeholder="Email"
-                class="w-full px-4 py-3 bg-void-dark/95 backdrop-blur-sm border border-white/10 rounded-lg text-off-white focus:border-bitcoin-orange outline-none" />
+                class="w-full px-4 py-3 border border-gray-700 outline-none"
+                style="background-color: #2a2a2a; color: #f0f0f0;" />
             <input type="password" id="password-input" placeholder="Password"
-                class="w-full px-4 py-3 bg-void-dark/95 backdrop-blur-sm border border-white/10 rounded-lg text-off-white focus:border-bitcoin-orange outline-none" />
-            <p id="auth-error" class="text-red-500 text-sm"></p>
+                class="w-full px-4 py-3 border border-gray-700 outline-none"
+                style="background-color: #2a2a2a; color: #f0f0f0;" />
+            <p id="auth-error" class="text-sm" style="color: #8B0000;"></p>
 
             <div class="flex gap-4">
-                <button id="email-login-btn"
-                    class="flex-1 py-3 font-semibold text-off-white bg-white/10 rounded-lg hover:bg-white/20 transition-all">Login</button>
-                <button id="email-signup-btn"
-                    class="flex-1 py-3 font-semibold text-off-white bg-white/10 rounded-lg hover:bg-white/20 transition-all">Sign
-                    Up</button>
+                <button id="email-login-btn" class="flex-1 py-3 font-semibold border border-gray-700 transition-all"
+                    style="background-color: #8B0000; color: #f0f0f0;">Login</button>
+                <button id="email-signup-btn" class="flex-1 py-3 font-semibold border border-gray-700 transition-all"
+                    style="background-color: #2a2a2a; color: #f0f0f0;">Sign Up</button>
             </div>
         </div>
 
         <div class="relative">
             <div class="absolute inset-0 flex items-center">
-                <div class="w-full border-t border-white/10"></div>
+                <div class="w-full border-t border-gray-700"></div>
             </div>
-            <div class="relative flex justify-center text-sm"><span class="px-2 bg-void-darker text-gray-500">Or
-                    continue with</span></div>
+            <div class="relative flex justify-center text-sm">
+                <span class="px-2 text-gray-500" style="background-color: #1f1f1f;">Or continue with</span>
+            </div>
         </div>
 
-        <button id="google-login-btn"
-            class="w-full py-3 font-semibold text-black bg-white rounded-lg hover:bg-gray-200 transition-all">
+        <button id="google-login-btn" class="w-full py-3 font-semibold border border-gray-700 transition-all"
+            style="background-color: #ffffff; color: #000000;">
             Sign in with Google
         </button>
     </div>
@@ -101,7 +86,6 @@
         // Check if already logged in
         onAuthStateChanged(auth, async (user) => {
             if (user) {
-                // Register/Login with backend
                 try {
                     const token = await user.getIdToken();
                     const response = await fetch('https://api.tasu.ai/register.php', {
