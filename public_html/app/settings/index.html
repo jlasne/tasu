@@ -1,0 +1,305 @@
+﻿<!DOCTYPE html>
+<html lang="en" class="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - Tasu</title>
+    <link rel="icon" type="image/png" href="../../logo.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        'void-dark': '#1f1f1f',
+                        'void-darker': '#121212',
+                        'off-white': '#dedddc',
+                        'bitcoin-orange': '#F7931A',
+                        'dark-red': '#8B0000',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #1f1f1f;
+            color: #dedddc;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen bg-void-dark">
+
+    <!-- Top Navigation -->
+    <nav class="bg-void-darker/60 backdrop-blur-xl border-b border-white/10">
+        <div class="container mx-auto px-6 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <a href="../" class="flex items-center gap-2">
+                    <img src="../../logo.png" alt="Tasu Logo" class="w-8 h-8 rounded-lg object-contain" />
+                    <span class="text-xl font-bold text-off-white font-sans">Tasu</span>
+                </a>
+            </div>
+
+            <div class="flex items-center gap-3">
+                <span id="user-email" class="text-sm text-gray-400"></span>
+                <a href="../"
+                    class="px-4 py-2 text-sm font-semibold text-off-white border border-white/10 rounded-lg hover:bg-white/5 transition-all">Dashboard</a>
+                <a href="../integration/"
+                    class="px-4 py-2 text-sm font-semibold text-off-white border border-white/10 rounded-lg hover:bg-white/5 transition-all">Integration</a>
+                <a href="./" class="px-4 py-2 text-sm font-semibold text-off-white bg-white/10 rounded-lg">Settings</a>
+                <button id="logout-btn"
+                    class="px-4 py-2 text-sm font-semibold text-red-400 border border-red-400/30 rounded-lg hover:bg-red-400/10 transition-all">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-6 py-8 max-w-4xl">
+        <h1 class="text-3xl font-bold text-off-white mb-8">Settings</h1>
+
+        <!-- Account Info -->
+        <div class="border border-white/10 p-6 mb-6">
+            <h2 class="text-xl font-bold text-off-white mb-4">Account Information</h2>
+            <div class="space-y-3">
+                <div>
+                    <p class="text-sm text-gray-400">Email</p>
+                    <p id="current-email" class="text-off-white font-mono"></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Billing & Plan -->
+        <div class="border border-white/10 p-6 mb-6">
+            <h2 class="text-xl font-bold text-off-white mb-4">Subscription & Usage</h2>
+            <div class="space-y-4">
+                <div>
+                    <p class="text-sm text-gray-400">Current Plan</p>
+                    <p id="current-plan" class="text-off-white font-semibold">Starter Plan</p>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-400">Monthly Events Used</p>
+                    <div class="flex items-center gap-3">
+                        <div class="flex-1 bg-void-darker h-2">
+                            <div id="usage-bar" class="bg-bitcoin-orange h-2" style="width: 0%"></div>
+                        </div>
+                        <p id="usage-text" class="text-sm text-off-white">0 / 10,000</p>
+                    </div>
+                </div>
+                <div class="flex gap-3 pt-2">
+                    <button id="upgrade-btn"
+                        class="px-6 py-2 font-semibold text-black bg-bitcoin-orange rounded-lg hover:bg-orange-400 transition-all">
+                        Upgrade Plan
+                    </button>
+                    <button id="cancel-btn"
+                        class="px-6 py-2 font-semibold text-gray-400 border border-gray-600 rounded-lg hover:bg-white/5 transition-all">
+                        Cancel Subscription
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Change Email -->
+        <div class="border border-white/10 p-6 mb-6">
+            <h2 class="text-xl font-bold text-off-white mb-4">Change Email</h2>
+            <form id="email-form" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-400 mb-2">New Email</label>
+                    <input type="email" id="new-email-input" placeholder="new@example.com"
+                        class="w-full px-4 py-3 bg-void-dark border border-white/10 text-off-white focus:border-bitcoin-orange outline-none" />
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-400 mb-2">Current Password (for
+                        verification)</label>
+                    <input type="password" id="email-password-input" placeholder="••••••••"
+                        class="w-full px-4 py-3 bg-void-dark border border-white/10 text-off-white focus:border-bitcoin-orange outline-none" />
+                </div>
+                <button type="submit"
+                    class="px-6 py-3 font-semibold text-black bg-bitcoin-orange hover:bg-orange-400 transition-all">
+                    Update Email
+                </button>
+            </form>
+            <p id="email-message" class="mt-2 text-sm"></p>
+        </div>
+
+        <!-- Change Password -->
+        <div class="border border-white/10 p-6 mb-6">
+            <h2 class="text-xl font-bold text-off-white mb-4">Change Password</h2>
+            <form id="password-form" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-400 mb-2">Current Password</label>
+                    <input type="password" id="current-password-input" placeholder="••••••••"
+                        class="w-full px-4 py-3 bg-void-dark border border-white/10 text-off-white focus:border-bitcoin-orange outline-none" />
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-400 mb-2">New Password</label>
+                    <input type="password" id="new-password-input" placeholder="••••••••"
+                        class="w-full px-4 py-3 bg-void-dark border border-white/10 text-off-white focus:border-bitcoin-orange outline-none" />
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-400 mb-2">Confirm New Password</label>
+                    <input type="password" id="confirm-password-input" placeholder="••••••••"
+                        class="w-full px-4 py-3 bg-void-dark border border-white/10 text-off-white focus:border-bitcoin-orange outline-none" />
+                </div>
+                <button type="submit"
+                    class="px-6 py-3 font-semibold text-black bg-bitcoin-orange hover:bg-orange-400 transition-all">
+                    Update Password
+                </button>
+            </form>
+            <p id="password-message" class="mt-2 text-sm"></p>
+        </div>
+
+        <!-- Danger Zone -->
+        <div class="border border-red-500/30 p-6">
+            <h2 class="text-xl font-bold text-red-400 mb-4">Danger Zone</h2>
+            <div class="space-y-4">
+                <p class="text-sm text-gray-400">Once you delete your account, there is no going back. All your data
+                    will be permanently deleted.</p>
+                <div class="flex gap-3">
+                    <button id="delete-account-btn"
+                        class="px-6 py-2 font-semibold text-white bg-red-600 hover:bg-red-700 transition-all">
+                        Delete Account
+                    </button>
+                    <a href="https://x.com/jeremylasne" target="_blank"
+                        class="px-6 py-2 font-semibold text-off-white border border-white/10 hover:bg-white/5 transition-all inline-block">
+                        Contact Support (@jeremylasne)
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+    onAuthStateChanged(auth, (user) => {
+    if (!user) {
+    window.location.href = '../../login/';
+    } else {
+    currentUser = user;
+    document.getElementById('user-email').innerText = user.email;
+    document.getElementById('current-email').innerText = user.email;
+    loadPlanInfo();
+    }
+    });
+
+    // Load plan info (mock - replace with real data)
+    function loadPlanInfo() {
+    // This would come from your backend/Firestore
+    const mockUsage = 1250;
+    const mockLimit = 10000;
+    const percentage = (mockUsage / mockLimit) * 100;
+
+    document.getElementById('usage-bar').style.width = percentage + '%';
+    document.getElementById('usage-text').innerText = `${mockUsage.toLocaleString()} / ${mockLimit.toLocaleString()}`;
+    }
+
+    // Logout
+    document.getElementById('logout-btn').addEventListener('click', () => {
+    signOut(auth).then(() => {
+    window.location.href = '../../login/';
+    });
+    });
+
+    // Upgrade plan
+    document.getElementById('upgrade-btn').addEventListener('click', () => {
+    alert('Redirect to Stripe billing portal or upgrade flow');
+    });
+
+    // Cancel subscription
+    document.getElementById('cancel-btn').addEventListener('click', () => {
+    if (confirm('Are you sure you want to cancel your subscription?')) {
+    alert('Redirect to Stripe portal to cancel subscription');
+    }
+    });
+
+    // Delete account
+    document.getElementById('delete-account-btn').addEventListener('click', async () => {
+    if (confirm('Are you ABSOLUTELY sure? This cannot be undone!')) {
+    const password = prompt('Enter your password to confirm deletion:');
+    if (password) {
+    try {
+    const credential = EmailAuthProvider.credential(currentUser.email, password);
+    await reauthenticateWithCredential(currentUser, credential);
+    await deleteUser(currentUser);
+    alert('Account deleted successfully');
+    window.location.href = '../../';
+    } catch (error) {
+    alert('Error deleting account: ' + error.message);
+    }
+    }
+    }
+    });
+
+    // Change Email (same as before)
+    document.getElementById('email-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const newEmail = document.getElementById('new-email-input').value.trim();
+    const password = document.getElementById('email-password-input').value;
+    const messageEl = document.getElementById('email-message');
+
+    if (!newEmail || !password) {
+    messageEl.innerText = '⚠ Please fill in all fields';
+    messageEl.className = 'mt-2 text-sm text-yellow-500';
+    return;
+    }
+
+    try {
+    const credential = EmailAuthProvider.credential(currentUser.email, password);
+    await reauthenticateWithCredential(currentUser, credential);
+    await updateEmail(currentUser, newEmail);
+    messageEl.innerText = '✓ Email updated successfully!';
+    messageEl.className = 'mt-2 text-sm text-green-500';
+    document.getElementById('current-email').innerText = newEmail;
+    document.getElementById('email-form').reset();
+    setTimeout(() => { messageEl.innerText = ''; }, 3000);
+    } catch (error) {
+    messageEl.innerText = `✗ ${error.message}`;
+    messageEl.className = 'mt-2 text-sm text-red-500';
+    }
+    });
+
+    // Change Password (same as before)
+    document.getElementById('password-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const currentPassword = document.getElementById('current-password-input').value;
+    const newPassword = document.getElementById('new-password-input').value;
+    const confirmPassword = document.getElementById('confirm-password-input').value;
+    const messageEl = document.getElementById('password-message');
+
+    if (!currentPassword || !newPassword || !confirmPassword) {
+    messageEl.innerText = '⚠ Please fill in all fields';
+    messageEl.className = 'mt-2 text-sm text-yellow-500';
+    return;
+    }
+
+    if (newPassword !== confirmPassword) {
+    messageEl.innerText = '⚠ New passwords do not match';
+    messageEl.className = 'mt-2 text-sm text-yellow-500';
+    return;
+    }
+
+    if (newPassword.length < 6) { messageEl.innerText='⚠ Password must be at least 6 characters' ;
+        messageEl.className='mt-2 text-sm text-yellow-500' ; return; } try { const
+        credential=EmailAuthProvider.credential(currentUser.email, currentPassword); await
+        reauthenticateWithCredential(currentUser, credential); await updatePassword(currentUser, newPassword);
+        messageEl.innerText='✓ Password updated successfully!' ; messageEl.className='mt-2 text-sm text-green-500' ;
+        document.getElementById('password-form').reset(); setTimeout(()=> { messageEl.innerText = ''; }, 3000);
+        } catch (error) {
+        messageEl.innerText = `✗ ${error.message}`;
+        messageEl.className = 'mt-2 text-sm text-red-500';
+        }
+        });
+        </script>
+
+        <!-- Tasu SDK -->
+        <script src="../../tasu-sdk.js"></script>
+</body>
+
+</html>

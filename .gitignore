@@ -1,0 +1,16 @@
+# Sensitive Configuration
+public_html/api/config.php
+public_html/api/db.php
+public_html/firebase-config.js
+
+# System Files
+.DS_Store
+Thumbs.db
+
+# IDE Files
+.vscode/
+.idea/
+
+# Logs
+*.log
+error_log

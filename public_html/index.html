@@ -1,0 +1,482 @@
+﻿<!DOCTYPE html>
+<html lang="en" class="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tasu - Stop Building Features Nobody Clicks</title>
+    <link rel="icon" type="image/png" href="logo.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        'void-dark': '#1f1f1f',
+                        'void-darker': '#121212',
+                        'off-white': '#dedddc',
+                        'bitcoin-orange': '#F7931A',
+                        'dark-red': '#8B0000',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    animation: {
+                        marquee: 'marquee 25s linear infinite',
+                    },
+                    keyframes: {
+                        marquee: {
+                            '0%': { transform: 'translateX(0%)' },
+                            '100%': { transform: 'translateX(-100%)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0a0a0a;
+            color: white;
+        }
+
+        .slider-thumb::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #F7931A;
+            cursor: pointer;
+            border-radius: 50%;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen flex flex-col">
+
+    <!-- Navbar -->
+    <nav id="navbar"
+        class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b border-transparent py-6">
+        <div class="container px-4 mx-auto flex items-center justify-between">
+            <!-- Logo -->
+            <a href="#" class="flex items-center gap-2 group">
+                <img src="logo.png" alt="Tasu Logo"
+                    class="w-8 h-8 rounded-lg object-contain group-hover:scale-110 transition-transform" />
+                <span class="text-xl font-bold text-white font-sans tracking-tight">Tasu</span>
+            </a>
+
+            <!-- Right side: Links + Login -->
+            <div class="flex items-center gap-6">
+                <div class="hidden md:flex items-center gap-6">
+                    <a href="#features"
+                        class="text-sm font-medium text-gray-400 hover:text-white transition-colors">Features</a>
+                    <a href="#pricing"
+                        class="text-sm font-medium text-gray-400 hover:text-white transition-colors">Pricing</a>
+                    <a href="#video"
+                        class="text-sm font-medium text-gray-400 hover:text-white transition-colors">Demo</a>
+                </div>
+                <a href="login/"
+                    class="px-4 py-2 text-sm font-semibold text-white border border-white/10 rounded-lg hover:bg-white/5 transition-all">
+                    Log in
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="video"
+        class="relative flex flex-col items-center justify-center pt-32 pb-10 px-4 overflow-hidden text-center bg-void-dark">
+        <!-- Ambient Glow -->
+        <div
+            class="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-bitcoin-orange/20 rounded-full blur-[120px] -z-10">
+        </div>
+
+        <div class="max-w-4xl mx-auto space-y-6">
+            <h1 class="text-5xl font-bold tracking-tight text-white md:text-7xl font-sans">
+                User-Led Growth Analytics.
+
+            </h1>
+
+            <p class="max-w-2xl mx-auto text-lg text-gray-400 md:text-xl">
+                Your users create your revenue. Your product earns their attention. <br class="md:hidden" />Turn their
+                behavior and feedback into actionable business decisions.
+            </p>
+
+            <!-- CTA Input -->
+            <form action="login/" class="flex flex-col items-center justify-center gap-4 mt-8 sm:flex-row">
+                <div class="relative group">
+                    <div
+                        class="absolute -inset-0.5 bg-gradient-to-r from-bitcoin-orange to-dark-red rounded-lg blur opacity-30 group-hover:opacity-100 transition duration-1000 group-hover:duration-200">
+                    </div>
+                    <input type="url" placeholder="Enter your website URL"
+                        class="relative px-6 py-3 w-80 bg-void-darker border border-white/10 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-bitcoin-orange" />
+                </div>
+                <button type="submit"
+                    class="px-8 py-3 font-bold text-black bg-bitcoin-orange rounded-lg hover:bg-orange-400 transition-all">
+                    Add to my website
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Video Section -->
+    <section class="py-16 bg-void-dark">
+        <div class="container px-4 mx-auto">
+            <div
+                class="relative w-full max-w-5xl mx-auto overflow-hidden rounded-2xl shadow-2xl shadow-bitcoin-orange/10 border border-white/10 aspect-video group">
+                <div
+                    class="absolute inset-0 bg-gradient-to-t from-void-dark/80 to-transparent z-10 pointer-events-none">
+                </div>
+                <iframe width="100%" height="100%" src="https://www.youtube.com/embed/IqobDaBRuYc?autoplay=1&mute=1"
+                    title="Tasu Demo" frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen class="w-full h-full"></iframe>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-24 bg-void-dark relative overflow-hidden">
+        <div class="container px-4 mx-auto relative z-10">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Why Tasu?</h2>
+                <p class="text-gray-400 text-lg">Stop guessing. Start knowing.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Feature 1 -->
+                <div
+                    class="p-8 rounded-2xl bg-void-darker border border-white/10 hover:border-bitcoin-orange/50 transition-all group">
+                    <div
+                        class="w-12 h-12 bg-bitcoin-orange/10 rounded-lg flex items-center justify-center mb-6 group-hover:bg-bitcoin-orange/20 transition-colors">
+                        <svg class="w-6 h-6 text-bitcoin-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z">
+                            </path>
+                        </svg>
+                    </div>
+                    <div class="flex justify-between items-start mb-2">
+                        <h3 class="text-xl font-bold text-white">Feature Validation</h3>
+                        <span class="px-2 py-1 text-xs font-bold text-black bg-bitcoin-orange rounded">AVAILABLE
+                            NOW</span>
+                    </div>
+                    <p class="text-gray-400">Know exactly which features are being used and which are dead weight. Make
+                        data-driven product decisions.</p>
+                </div>
+
+                <!-- Feature 2 -->
+                <div
+                    class="p-8 rounded-2xl bg-void-darker border border-white/10 hover:border-bitcoin-orange/50 transition-all group">
+                    <div
+                        class="w-12 h-12 bg-bitcoin-orange/10 rounded-lg flex items-center justify-center mb-6 group-hover:bg-bitcoin-orange/20 transition-colors">
+                        <svg class="w-6 h-6 text-bitcoin-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
+                            </path>
+                        </svg>
+                    </div>
+                    <div class="flex justify-between items-start mb-2">
+                        <h3 class="text-xl font-bold text-white">Revenue Defense</h3>
+                        <span class="px-2 py-1 text-xs font-bold text-gray-400 bg-white/10 rounded">COMING SOON</span>
+                    </div>
+                    <p class="text-gray-400">Identify at-risk accounts based on usage patterns. Intervene before they
+                        churn.</p>
+                </div>
+
+                <!-- Feature 3 -->
+                <div
+                    class="p-8 rounded-2xl bg-void-darker border border-white/10 hover:border-bitcoin-orange/50 transition-all group">
+                    <div
+                        class="w-12 h-12 bg-bitcoin-orange/10 rounded-lg flex items-center justify-center mb-6 group-hover:bg-bitcoin-orange/20 transition-colors">
+                        <svg class="w-6 h-6 text-bitcoin-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                        </svg>
+                    </div>
+                    <div class="flex justify-between items-start mb-2">
+                        <h3 class="text-xl font-bold text-white">Smart Retention</h3>
+                        <span class="px-2 py-1 text-xs font-bold text-gray-400 bg-white/10 rounded">COMING SOON</span>
+                    </div>
+                    <p class="text-gray-400">Spot engagement drops in real-time. Automatically trigger re-engagement
+                        campaigns.</p>
+                </div>
+
+                <!-- Feature 4 -->
+                <div
+                    class="p-8 rounded-2xl bg-void-darker border border-white/10 hover:border-bitcoin-orange/50 transition-all group">
+                    <div
+                        class="w-12 h-12 bg-bitcoin-orange/10 rounded-lg flex items-center justify-center mb-6 group-hover:bg-bitcoin-orange/20 transition-colors">
+                        <svg class="w-6 h-6 text-bitcoin-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
+                            </path>
+                        </svg>
+                    </div>
+                    <div class="flex justify-between items-start mb-2">
+                        <h3 class="text-xl font-bold text-white">User Loyalty</h3>
+                        <span class="px-2 py-1 text-xs font-bold text-gray-400 bg-white/10 rounded">COMING SOON</span>
+                    </div>
+                    <p class="text-gray-400">Reward your power users. Identify your best customers and turn them into
+                        advocates.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="py-24 bg-void-darker border-t border-white/5">
+        <div class="container px-4 mx-auto">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-3xl md:text-5xl font-bold text-white mb-16 font-sans">Traffic-based plans to match your
+                    growth</h2>
+
+                <!-- Slider Container -->
+                <div class="max-w-xl mx-auto mb-16 relative">
+                    <!-- Tooltip -->
+                    <div id="slider-tooltip"
+                        class="absolute -top-10 left-0 transform -translate-x-1/2 bg-void-dark border border-white/10 text-white text-xs font-bold px-3 py-1.5 rounded shadow-lg transition-all duration-75 whitespace-nowrap z-10">
+                        Up to 10k monthly events
+                        <div
+                            class="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-2 h-2 bg-void-dark border-r border-b border-white/10 rotate-45">
+                        </div>
+                    </div>
+
+                    <input type="range" min="0" max="7" value="0" step="1" id="event-slider"
+                        class="w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer slider-thumb focus:outline-none">
+
+                    <div class="flex justify-between text-sm text-gray-500 mt-4 font-mono">
+                        <span>10k</span>
+                        <span>10M+</span>
+                    </div>
+                </div>
+
+                <!-- Billing Toggle -->
+                <div
+                    class="relative inline-flex items-center justify-center p-1 bg-void-dark border border-white/10 rounded-lg">
+                    <!-- 3 months free annotation -->
+                    <div
+                        class="absolute -top-8 -right-24 text-bitcoin-orange text-sm transform -rotate-6 hidden md:block">
+                        3 months free
+                        <svg class="w-6 h-6 inline-block transform rotate-90 ml-1" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                        </svg>
+                    </div>
+
+                    <button id="monthly-btn"
+                        class="px-6 py-2 text-sm font-medium rounded-md transition-all bg-white/10 text-white shadow-sm">Monthly</button>
+                    <button id="yearly-btn"
+                        class="px-6 py-2 text-sm font-medium rounded-md transition-all text-gray-400 hover:text-white">Yearly</button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                <!-- Starter Plan -->
+                <div
+                    class="p-8 rounded-2xl bg-void-darker border border-white/10 hover:border-white/20 transition-all flex flex-col">
+                    <h3 class="text-xl font-bold text-white mb-2">Starter</h3>
+                    <p class="text-gray-400 text-sm mb-6">Perfect for side projects.</p>
+                    <div class="text-4xl font-bold text-white mb-1"><span id="starter-price">€7</span><span
+                            id="starter-discount"
+                            class="hidden ml-2 px-2 py-0.5 text-xs font-bold text-black bg-bitcoin-orange rounded">-25%</span><span
+                            class="text-lg text-gray-500 font-normal">/mo</span></div>
+                    <p id="starter-annual-text" class="text-xs text-bitcoin-orange hidden mb-6">€63 billed yearly</p>
+
+                    <ul class="space-y-4 mb-8 flex-1">
+                        <li class="flex items-center gap-3 text-gray-300"><svg class="w-5 h-5 text-bitcoin-orange"
+                                fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7"></path>
+                            </svg> <span id="starter-events">Up to 10k monthly events</span></li>
+                        <li class="flex items-center gap-3 text-gray-300"><svg class="w-5 h-5 text-bitcoin-orange"
+                                fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7"></path>
+                            </svg> Unlimited Features</li>
+                        <li class="flex items-center gap-3 text-gray-300"><svg class="w-5 h-5 text-bitcoin-orange"
+                                fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7"></path>
+                            </svg> 90-day data retention</li>
+                    </ul>
+
+                    <a href="login/"
+                        class="block w-full py-3 text-center font-bold text-black bg-bitcoin-orange rounded-lg hover:bg-orange-400 transition-all">7-Day
+                        Free Trial</a>
+                </div>
+
+                <!-- Growth Plan -->
+                <div
+                    class="p-8 rounded-2xl bg-void-darker border border-bitcoin-orange/50 relative overflow-hidden flex flex-col">
+                    <div
+                        class="absolute top-0 right-0 bg-bitcoin-orange text-black text-xs font-bold px-3 py-1 rounded-bl-lg">
+                        POPULAR</div>
+                    <h3 class="text-xl font-bold text-white mb-2">Growth</h3>
+                    <p class="text-gray-400 text-sm mb-6">For scaling startups.</p>
+                    <div class="text-4xl font-bold text-white mb-1"><span id="growth-price">â‚¬12</span><span
+                            id="growth-discount"
+                            class="hidden ml-2 px-2 py-0.5 text-xs font-bold text-black bg-bitcoin-orange rounded">-25%</span><span
+                            class="text-lg text-gray-500 font-normal">/mo</span></div>
+                    <p id="growth-annual-text" class="text-xs text-bitcoin-orange hidden mb-6">â‚¬108 billed yearly</p>
+
+                    <ul class="space-y-4 mb-8 flex-1">
+                        <li class="flex items-center gap-3 text-gray-300"><svg class="w-5 h-5 text-bitcoin-orange"
+                                fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7"></path>
+                            </svg> <span id="growth-events">Up to 10k monthly events</span></li>
+                        <li class="flex items-center gap-3 text-gray-300"><svg class="w-5 h-5 text-bitcoin-orange"
+                                fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7"></path>
+                            </svg> Unlimited Features</li>
+                        <li class="flex items-center gap-3 text-gray-300"><svg class="w-5 h-5 text-bitcoin-orange"
+                                fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7"></path>
+                            </svg> 1-year data retention</li>
+                    </ul>
+
+                    <a href="login/"
+                        class="block w-full py-3 text-center font-bold text-black bg-bitcoin-orange rounded-lg hover:bg-orange-400 transition-all">7-Day
+                        Free Trial</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 bg-void-darker border-t border-white/5">
+        <div class="container px-4 mx-auto text-center">
+            <div class="flex items-center justify-center gap-2 mb-4">
+                <img src="logo.png" alt="Tasu Logo" class="w-6 h-6 rounded object-contain opacity-50" />
+                <span class="text-lg font-bold text-gray-500 font-sans">Tasu</span>
+            </div>
+            <p class="text-gray-600 text-sm">© 2025 Tasu. Built for Founders.</p>
+            <div class="flex items-center justify-center gap-4 mt-4 text-xs text-gray-600">
+                <a href="privacy-policy/" class="hover:text-gray-400 transition-colors">Privacy Policy</a>
+                <span>•</span>
+                <a href="tos/" class="hover:text-gray-400 transition-colors">Terms of Service</a>
+                <span>•</span>
+                <a href="dpa/" class="hover:text-gray-400 transition-colors">DPA</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Navbar Scroll Effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('bg-void-dark/80', 'backdrop-blur-md', 'border-white/5', 'py-4');
+                navbar.classList.remove('bg-transparent', 'border-transparent', 'py-6');
+            } else {
+                navbar.classList.remove('bg-void-dark/80', 'backdrop-blur-md', 'border-white/5', 'py-4');
+                navbar.classList.add('bg-transparent', 'border-transparent', 'py-6');
+            }
+        });
+
+        // Pricing Logic
+        const pricingTiers = [
+            { events: "10k", starter: 7, growth: 12, starterAnnual: 63, growthAnnual: 108 },
+            { events: "50k", starter: 17, growth: 22, starterAnnual: 153, growthAnnual: 198 },
+            { events: "100k", starter: 27, growth: 32, starterAnnual: 243, growthAnnual: 288 },
+            { events: "200k", starter: 37, growth: 42, starterAnnual: 333, growthAnnual: 378 },
+            { events: "300k", starter: 47, growth: 52, starterAnnual: 423, growthAnnual: 468 },
+            { events: "400k", starter: 57, growth: 62, starterAnnual: 513, growthAnnual: 558 },
+            { events: "500k", starter: 67, growth: 72, starterAnnual: 603, growthAnnual: 648 },
+            { events: "1M", starter: 117, growth: 122, starterAnnual: 1053, growthAnnual: 1098 },
+        ];
+
+        let billingCycle = 'monthly';
+        let eventIndex = 0;
+
+        const slider = document.getElementById('event-slider');
+        const tooltip = document.getElementById('slider-tooltip');
+        const monthlyBtn = document.getElementById('monthly-btn');
+        const yearlyBtn = document.getElementById('yearly-btn');
+
+        const starterPrice = document.getElementById('starter-price');
+        const growthPrice = document.getElementById('growth-price');
+        const starterEvents = document.getElementById('starter-events');
+        const growthEvents = document.getElementById('growth-events');
+        const starterAnnualText = document.getElementById('starter-annual-text');
+        const growthAnnualText = document.getElementById('growth-annual-text');
+
+        function updatePricing() {
+            const tier = pricingTiers[eventIndex];
+
+            tooltip.innerText = `Up to ${tier.events} monthly events`;
+            const percent = (eventIndex / (pricingTiers.length - 1)) * 100;
+            tooltip.style.left = `${percent}%`;
+
+            const arrow = document.createElement('div');
+            arrow.className = 'absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-2 h-2 bg-void-dark border-r border-b border-white/10 rotate-45';
+            tooltip.appendChild(arrow);
+
+            starterEvents.innerText = `Up to ${tier.events} monthly events`;
+            growthEvents.innerText = `Up to ${tier.events} monthly events`;
+
+            const starterDiscount = document.getElementById('starter-discount');
+            const growthDiscount = document.getElementById('growth-discount');
+
+            if (billingCycle === 'monthly') {
+                starterPrice.innerText = `€${tier.starter}`;
+                growthPrice.innerText = `€${tier.growth}`;
+                starterAnnualText.classList.add('hidden');
+                growthAnnualText.classList.add('hidden');
+                if (starterDiscount) starterDiscount.classList.add('hidden');
+                if (growthDiscount) growthDiscount.classList.add('hidden');
+            } else {
+                starterPrice.innerText = `€${(tier.starterAnnual / 12).toFixed(2)}`;
+                growthPrice.innerText = `€${(tier.growthAnnual / 12).toFixed(2)}`;
+                starterAnnualText.innerText = `€${tier.starterAnnual} billed yearly`;
+                growthAnnualText.innerText = `€${tier.growthAnnual} billed yearly`;
+                starterAnnualText.classList.remove('hidden');
+                growthAnnualText.classList.remove('hidden');
+                if (starterDiscount) starterDiscount.classList.remove('hidden');
+                if (growthDiscount) growthDiscount.classList.remove('hidden');
+            }
+        }
+
+        slider.addEventListener('input', (e) => {
+            eventIndex = Number(e.target.value);
+            updatePricing();
+        });
+
+        monthlyBtn.addEventListener('click', () => {
+            billingCycle = 'monthly';
+            monthlyBtn.classList.add('bg-white/10', 'text-white', 'shadow-sm');
+            monthlyBtn.classList.remove('text-gray-400', 'hover:text-white');
+            yearlyBtn.classList.remove('bg-white/10', 'text-white', 'shadow-sm');
+            yearlyBtn.classList.add('text-gray-400', 'hover:text-white');
+            updatePricing();
+        });
+
+        yearlyBtn.addEventListener('click', () => {
+            billingCycle = 'yearly';
+            yearlyBtn.classList.add('bg-white/10', 'text-white', 'shadow-sm');
+            yearlyBtn.classList.remove('text-gray-400', 'hover:text-white');
+            monthlyBtn.classList.remove('bg-white/10', 'text-white', 'shadow-sm');
+            monthlyBtn.classList.add('text-gray-400', 'hover:text-white');
+            updatePricing();
+        });
+
+        updatePricing();
+    </script>
+    <!-- Tasu SDK -->
+    <script src="tasu-sdk.js"></script>
+</body>
+
+</html>

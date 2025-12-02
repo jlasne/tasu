@@ -1,0 +1,15 @@
+SCHEMA >
+    `feature_name` String `json:$.feature_name`,
+    `selector` String `json:$.selector`,
+    `timestamp` DateTime `json:$.timestamp`,
+    `user_id` String `json:$.user_id`,
+    `session_id` String `json:$.session_id`,
+    `url` String `json:$.url`,
+    `website_domain` String `json:$.website_domain`,
+    `element_type` String `json:$.element_type`,
+    `element_text` String `json:$.element_text`,
+    `project_id` String `json:$.project_id`
+
+ENGINE "MergeTree"
+ENGINE_PARTITION_KEY "toYYYYMM(timestamp)"
+ENGINE_SORTING_KEY "project_id, timestamp, feature_name"

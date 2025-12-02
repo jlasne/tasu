@@ -1,0 +1,12 @@
+NODE recent_clicks_node
+SQL >
+    %
+    SELECT 
+        feature_name as button,
+        formatDateTime(timestamp, '%Y-%m-%d %H:%i:%s') as timestamp,
+        element_text,
+        url
+    FROM events
+    WHERE project_id = {{ String(project_id, 'required') }}
+    ORDER BY timestamp DESC
+    LIMIT {{ Int32(limit, 10) }}

@@ -1,0 +1,315 @@
+﻿<!DOCTYPE html>
+<html lang="en" class="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Tasu</title>
+    <link rel="icon" type="image/png" href="../logo.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        'void-dark': '#1f1f1f',
+                        'void-darker': '#121212',
+                        'off-white': '#dedddc',
+                        'bitcoin-orange': '#F7931A',
+                        'dark-red': '#8B0000',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #1f1f1f;
+            color: #dedddc;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen bg-void-dark">
+
+    <!-- Top Navigation -->
+    <nav class="bg-void-darker/60 backdrop-blur-xl border-b border-white/10">
+        <div class="container mx-auto px-6 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <img src="../logo.png" alt="Tasu Logo" class="w-8 h-8 rounded-lg object-contain" />
+                <span class="text-xl font-bold text-off-white font-sans">Tasu</span>
+            </div>
+
+            <div class="flex items-center gap-3">
+                <span id="user-email" class="text-sm text-gray-400"></span>
+                <a href="./" class="px-4 py-2 text-sm font-semibold text-off-white bg-white/10 rounded-lg">Dashboard</a>
+                <a href="integration/"
+                    class="px-4 py-2 text-sm font-semibold text-off-white border border-white/10 rounded-lg hover:bg-white/5 transition-all">Integration</a>
+                <a href="settings/"
+                    class="px-4 py-2 text-sm font-semibold text-off-white border border-white/10 rounded-lg hover:bg-white/5 transition-all">Settings</a>
+                <button id="logout-btn"
+                    class="px-4 py-2 text-sm font-semibold text-red-400 border border-red-400/30 rounded-lg hover:bg-red-400/10 transition-all">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Dashboard -->
+    <main class="container mx-auto px-6 py-8">
+        <div class="flex items-center justify-between mb-8">
+            <h1 class="text-3xl font-bold text-off-white">Dashboard</h1>
+        </div>
+
+        <!-- Top Section: Chart + Stats -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+            <!-- Left: Bottom 10 Chart (2/3 width) -->
+            <div class="lg:col-span-2 border border-white/10 p-6">
+                <h2 class="text-lg font-bold text-off-white mb-4">Bottom 10 Buttons (Least Clicked)</h2>
+                <canvas id="bottom-buttons-chart" height="100"></canvas>
+            </div>
+
+            <!-- Right: Stats Column (1/3 width) -->
+            <div class="space-y-6">
+                <!-- Compact Stats Group -->
+                <div class="border border-white/10 p-4 space-y-4">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <p class="text-xs text-gray-400 mb-1">Total Clicks</p>
+                            <p id="total-clicks" class="text-2xl font-bold text-bitcoin-orange">0</p>
+                        </div>
+                        <div>
+                            <p class="text-xs text-gray-400 mb-1">Total Buttons</p>
+                            <p id="total-buttons" class="text-2xl font-bold text-off-white">0</p>
+                        </div>
+                    </div>
+
+                    <div class="pt-4 border-t border-white/10">
+                        <label class="text-xs text-gray-400 mb-1 block">Period</label>
+                        <select id="period-selector"
+                            class="w-full px-2 py-1.5 bg-void-dark border border-white/10 text-off-white text-sm focus:border-bitcoin-orange outline-none">
+                            <option value="7">Last 7 days</option>
+                            <option value="30">Last 30 days</option>
+                            <option value="90">Last 90 days</option>
+                            <option value="all">All time</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Real-time Clicks (Last 10) -->
+                <div class="border border-white/10 p-6">
+                    <h3 class="text-sm font-bold text-off-white mb-3">Real-time Clicks (Last 10)</h3>
+                    <div id="realtime-clicks" class="space-y-2 max-h-64 overflow-y-auto">
+                        <p class="text-xs text-gray-500">Waiting for clicks...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Section: All Buttons Table -->
+        <div class="border border-white/10 p-6">
+            <h2 class="text-lg font-bold text-off-white mb-4">All Detected Buttons</h2>
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead>
+                        <tr class="border-b border-white/10">
+                            <th class="text-left py-3 px-4 text-sm font-semibold text-gray-400">Button Name</th>
+                            <th class="text-left py-3 px-4 text-sm font-semibold text-gray-400">Page Link</th>
+                            <th class="text-right py-3 px-4 text-sm font-semibold text-gray-400">Clicks</th>
+                        </tr>
+                    </thead>
+                    <tbody id="buttons-table">
+                        <tr>
+                            <td colspan="3" class="text-center py-8 text-gray-500 text-sm">Loading buttons...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+    onAuthStateChanged(auth, (user) => {
+    if (!user) {
+    window.location.href = '../login/';
+    } else {
+    currentUser = user;
+    document.getElementById('user-email').innerText = user.email;
+    loadDashboardData();
+    }
+    });
+
+    // Logout
+    document.getElementById('logout-btn').addEventListener('click', () => {
+    signOut(auth).then(() => {
+    window.location.href = '../login/';
+    });
+    });
+
+    // Load Dashboard Data
+    async function loadDashboardData() {
+    if (!currentUser) return;
+
+    const period = document.getElementById('period-selector').value;
+
+    try {
+    const token = await currentUser.getIdToken();
+    const response = await fetch(`../api/analytics.php?period=${period}`, {
+    headers: {
+    'Authorization': `Bearer ${token}`
+    }
+    });
+
+    if (response.status === 403) {
+    // User not registered yet, try registering
+    await fetch('../api/register.php', {
+    method: 'POST',
+    headers: { 'Authorization': `Bearer ${token}` }
+    });
+    // Retry loading data
+    loadDashboardData();
+    return;
+    }
+
+    if (!response.ok) throw new Error('API Error');
+
+    const data = await response.json();
+    const buttons = data.buttons || [];
+
+    // Update stats
+    const totalClicks = buttons.reduce((sum, btn) => sum + btn.clicks, 0);
+    document.getElementById('total-clicks').innerText = totalClicks.toLocaleString();
+    document.getElementById('total-buttons').innerText = buttons.length;
+
+    // Render chart
+    renderBottomButtonsChart(buttons);
+
+    // Render table
+    renderButtonsTable(buttons);
+
+    // Start real-time polling
+    pollRealtimeClicks();
+    } catch (error) {
+    console.error('Error loading dashboard:', error);
+    }
+    }
+
+    function renderBottomButtonsChart(buttons) {
+    // Sort by clicks ascending and take bottom 10
+    const bottomButtons = buttons
+    .sort((a, b) => a.clicks - b.clicks)
+    .slice(0, 10);
+
+    const ctx = document.getElementById('bottom-buttons-chart');
+    // Destroy existing chart if any
+    const existingChart = Chart.getChart(ctx);
+    if (existingChart) existingChart.destroy();
+
+    new Chart(ctx, {
+    type: 'bar',
+    data: {
+    labels: bottomButtons.map(b => (b.name || b.selector).substring(0, 20)),
+    datasets: [{
+    label: 'Clicks',
+    data: bottomButtons.map(b => b.clicks),
+    backgroundColor: '#F7931A33',
+    borderColor: '#F7931A',
+    borderWidth: 1
+    }]
+    },
+    options: {
+    indexAxis: 'y',
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+    legend: { display: false }
+    },
+    scales: {
+    x: {
+    grid: { color: 'rgba(255, 255, 255, 0.1)' },
+    ticks: { color: '#dedddc' }
+    },
+    y: {
+    grid: { color: 'rgba(255, 255, 255, 0.1)' },
+    ticks: { color: '#dedddc' }
+    }
+    }
+    }
+    });
+    }
+
+    function renderButtonsTable(buttons) {
+    const tbody = document.getElementById('buttons-table');
+    if (!buttons.length) {
+    tbody.innerHTML = '<tr>
+        <td colspan="3" class="text-center py-8 text-gray-500 text-sm">No buttons detected yet.</td>
+    </tr>';
+    return;
+    }
+
+    // Sort by clicks descending
+    buttons.sort((a, b) => b.clicks - a.clicks);
+
+    tbody.innerHTML = buttons.map(btn => `
+    <tr class="border-b border-white/5 hover:bg-white/5 transition-colors">
+        <td class="py-3 px-4 text-sm text-off-white font-mono">${btn.name || btn.selector}</td>
+        <td class="py-3 px-4 text-sm text-gray-400 truncate max-w-xs">${btn.page || 'Unknown'}</td>
+        <td class="py-3 px-4 text-sm text-bitcoin-orange text-right font-bold">${btn.clicks}</td>
+    </tr>
+    `).join('');
+    }
+
+    let realtimeClicks = [];
+    let pollingInterval = null;
+
+    async function pollRealtimeClicks() {
+    if (pollingInterval) clearInterval(pollingInterval);
+
+    pollingInterval = setInterval(async () => {
+    if (!currentUser) return;
+    try {
+    const token = await currentUser.getIdToken();
+    const response = await fetch(`../api/analytics.php?realtime=true`, {
+    headers: { 'Authorization': `Bearer ${token}` }
+    });
+    const data = await response.json();
+    if (data.recent_clicks) {
+    realtimeClicks = data.recent_clicks.slice(0, 10);
+    renderRealtimeClicks();
+    }
+    } catch (error) {
+    console.error('Error polling realtime clicks:', error);
+    }
+    }, 3000); // Poll every 3 seconds
+    }
+
+    function renderRealtimeClicks() {
+    const container = document.getElementById('realtime-clicks');
+    if (!realtimeClicks.length) {
+    container.innerHTML = '<p class="text-xs text-gray-500">No recent clicks.</p>';
+    return;
+    }
+
+    container.innerHTML = realtimeClicks.map((click, i) => `
+    <div class="text-xs text-gray-400 py-1 border-b border-white/5">
+        <span class="text-bitcoin-orange font-mono">${click.button}</span>
+        <span class="text-gray-600 text-[10px] ml-2">${click.timestamp}</span>
+    </div>
+    `).join('');
+    }
+
+    // Period selector change
+    document.getElementById('period-selector').addEventListener('change', loadDashboardData);
+    </script>
+
+    <!-- Tasu SDK -->
+    <script src="../tasu-sdk.js"></script>
+</body>
+
+</html>
