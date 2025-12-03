@@ -174,7 +174,9 @@
 
                 // Update stats
                 const totalClicks = buttons.reduce((sum, btn) => sum + btn.clicks, 0);
-                document.getElementById('total-views').innerText = totalClicks.toLocaleString();
+                const totalViewsEl = document.getElementById('total-views');
+                totalViewsEl.innerText = totalClicks.toLocaleString();
+                totalViewsEl.style.color = totalClicks & gt; 0 ? '#F7931A' : '#f0f0f0';
                 document.getElementById('total-buttons').innerText = buttons.length;
 
                 // Render chart
