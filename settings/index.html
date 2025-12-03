@@ -1,314 +1,305 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Settings - Tasu</title>
     <link rel="icon" type="image/png" href="../assets/logo.png">
-    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Fonts -->
     <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
         rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        background: '#0a0a0a',
+                        surface: '#1a1a1a',
+                        border: '#2a2a2a',
+                        primary: {
+                            DEFAULT: '#f97316',
+                            hover: '#ea580c',
+                        },
+                        success: '#10b981',
+                        warning: '#f59e0b',
+                        danger: '#ef4444',
+                    }
+                }
+            }
+        }
+    </script>
+
     <style>
-        * {
-            border-radius: 0 !important;
+        body {
+            background-color: #0a0a0a;
+            color: #ffffff;
+            font-family: 'Inter', sans-serif;
         }
 
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #1f1f1f;
-            color: #f0f0f0;
+        .glass-nav {
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(42, 42, 42, 0.8);
+        }
+
+        .card {
+            background: #1a1a1a;
+            border: 1px solid #2a2a2a;
+            border-radius: 8px;
+        }
+
+        .input-field {
+            background: #0f0f0f;
+            border: 1px solid #2a2a2a;
+            transition: all 0.2s ease;
+        }
+
+        .input-field:disabled {
+            background: #151515;
+            color: #666;
+            cursor: not-allowed;
+        }
+
+        .btn-danger {
+            background: transparent;
+            border: 1px solid #ef4444;
+            color: #ef4444;
+            transition: all 0.2s ease;
+        }
+
+        .btn-danger:hover {
+            background: rgba(239, 68, 68, 0.1);
         }
     </style>
 </head>
 
-<body class="min-h-screen" style="background-color: #1f1f1f;">
+<body class="min-h-screen pb-12">
 
-    <!-- Top Navigation -->
-    <nav class="border-b border-gray-700" style="background-color: #1f1f1f;">
-        <div class="container mx-auto px-6 py-4 flex items-center justify-between">
-            <div class="flex items-center gap-2">
+    <!-- Navbar -->
+    <nav class="glass-nav fixed top-0 w-full z-50">
+        <div class="container mx-auto px-6 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-8">
                 <a href="../" class="flex items-center gap-2">
-                    <img src="../assets/logo.png" alt="Tasu Logo" class="w-8 h-8 object-contain" />
-                    <span class="text-xl font-bold font-sans" style="color: #f0f0f0;">Tasu</span>
+                    <div
+                        class="w-8 h-8 bg-gradient-to-br from-red-600 to-orange-500 rounded-lg flex items-center justify-center shadow-lg">
+                        <img src="../assets/logo.png" alt="Tasu" class="w-5 h-5 object-contain brightness-0 invert" />
+                    </div>
+                    <span class="text-lg font-bold tracking-tight">Tasu</span>
                 </a>
+
+                <div class="hidden md:flex items-center gap-1">
+                    <a href="../dashboard/"
+                        class="px-4 py-2 text-sm font-medium text-gray-400 hover:text-white hover:bg-white/5 rounded-md transition-all">Dashboard</a>
+                    <a href="../integration/"
+                        class="px-4 py-2 text-sm font-medium text-gray-400 hover:text-white hover:bg-white/5 rounded-md transition-all">Integration</a>
+                    <a href="."
+                        class="px-4 py-2 text-sm font-medium text-white bg-white/5 rounded-md border border-white/10">Settings</a>
+                </div>
             </div>
 
-            <div class="flex items-center gap-3">
-                <span id="user-email" class="text-sm text-gray-400"></span>
-                <a href="../dashboard/"
-                    class="px-4 py-2 text-sm font-semibold border border-gray-700 hover:bg-gray-800 transition-all"
-                    style="color: #f0f0f0;">Dashboard</a>
-                <a href="../integration/"
-                    class="px-4 py-2 text-sm font-semibold border border-gray-700 hover:bg-gray-800 transition-all"
-                    style="color: #f0f0f0;">Integration</a>
-                <a href="." class="px-4 py-2 text-sm font-semibold border"
-                    style="background-color: #8B0000; color: #f0f0f0; border-color: #8B0000;">Settings</a>
-                <button id="logout-btn" class="px-4 py-2 text-sm font-semibold border transition-all"
-                    style="color: #8B0000; border-color: #8B0000; background-color: transparent;">Logout</button>
+            <div class="flex items-center gap-4">
+                <span id="user-email-nav" class="hidden md:block text-xs text-gray-500 font-mono"></span>
+                <button id="logout-btn" class="text-sm font-medium text-gray-400 hover:text-red-400 transition-colors">
+                    Logout
+                </button>
             </div>
         </div>
     </nav>
 
     <!-- Main Content -->
-    <main class="container mx-auto px-6 py-8 max-w-4xl">
-        <h1 class="text-3xl font-bold mb-8" style="color: #f0f0f0;">Settings</h1>
+    <main class="container mx-auto px-6 pt-24 max-w-3xl">
+        <h1 class="text-2xl font-bold mb-8">Account Settings</h1>
 
-        <!-- Account Info -->
-        <div class="border border-gray-700 p-6 mb-6" style="background-color: #1f1f1f;">
-            <h2 class="text-xl font-bold mb-4" style="color: #f0f0f0;">Account Information</h2>
-            <div class="space-y-3">
-                <div>
-                    <p class="text-sm text-gray-400">Email</p>
-                    <p id="current-email" class="font-mono" style="color: #f0f0f0;"></p>
-                </div>
-            </div>
-        </div>
+        <div class="space-y-6">
 
-        <!-- Billing & Plan -->
-        <div class="border border-gray-700 p-6 mb-6" style="background-color: #1f1f1f;">
-            <h2 class="text-xl font-bold mb-4" style="color: #f0f0f0;">Subscription & Usage</h2>
-            <div class="space-y-4">
-                <div>
-                    <p class="text-sm text-gray-400">Current Plan</p>
-                    <p id="current-plan" class="font-semibold" style="color: #f0f0f0;">Starter Plan</p>
-                </div>
-                <div>
-                    <p class="text-sm text-gray-400">Monthly Events Used</p>
-                    <div class="flex items-center gap-3">
-                        <div class="flex-1 border border-gray-700" style="background-color: #2a2a2a; height: 8px;">
-                            <div id="usage-bar" style="background-color: #F7931A; height: 8px; width: 0%;"></div>
+            <!-- Account Info -->
+            <div class="card p-6">
+                <h2 class="text-lg font-semibold mb-4">Account Information</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-xs font-medium text-gray-400 mb-1.5">Email Address</label>
+                        <div id="account-email"
+                            class="text-sm font-mono text-white bg-[#0f0f0f] px-4 py-2.5 rounded-lg border border-[#2a2a2a]">
+                            Loading...
                         </div>
-                        <p id="usage-text" class="text-sm" style="color: #f0f0f0;">0 / 10,000</p>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-gray-400 mb-1.5">User ID</label>
+                        <div id="user-id"
+                            class="text-sm font-mono text-gray-500 bg-[#0f0f0f] px-4 py-2.5 rounded-lg border border-[#2a2a2a] truncate">
+                            Loading...
+                        </div>
                     </div>
                 </div>
-                <div class="flex gap-3 pt-2">
-                    <button id="upgrade-btn" class="px-6 py-2 font-semibold border transition-all"
-                        style="background-color: #F7931A; color: #000000; border-color: #F7931A;">
-                        Upgrade Plan
-                    </button>
-                    <button id="cancel-btn" class="px-6 py-2 font-semibold border border-gray-700 transition-all"
-                        style="color: #f0f0f0; background-color: transparent;">
-                        Cancel Subscription
-                    </button>
+            </div>
+
+            <!-- Subscription -->
+            <div class="card p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-lg font-semibold">Subscription Plan</h2>
+                    <span id="current-plan"
+                        class="px-3 py-1 bg-orange-500/10 text-orange-400 border border-orange-500/20 rounded-full text-xs font-medium">Starter
+                        Plan</span>
+                </div>
+
+                <div class="mb-4">
+                    <div class="flex justify-between text-sm mb-2">
+                        <span class="text-gray-400">Events Usage</span>
+                        <span id="events-used" class="text-white font-mono">0 / 10,000</span>
+                    </div>
+                    <div class="h-2 w-full bg-[#2a2a2a] rounded-full overflow-hidden">
+                        <div id="usage-bar"
+                            class="h-full bg-gradient-to-r from-orange-500 to-red-500 w-0 transition-all duration-1000">
+                        </div>
+                    </div>
+                </div>
+
+                <button
+                    class="text-sm text-gray-400 hover:text-white underline decoration-gray-600 hover:decoration-white transition-all">
+                    Upgrade Plan
+                </button>
+            </div>
+
+            <!-- Change Email (Disabled) -->
+            <div class="card p-6 opacity-60">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-lg font-semibold text-gray-400">Change Email</h2>
+                    <span
+                        class="px-2 py-1 bg-[#2a2a2a] text-gray-500 border border-[#333] rounded text-[10px] uppercase tracking-wider">Coming
+                        Soon</span>
+                </div>
+                <div class="space-y-4">
+                    <input type="email" placeholder="New email address" disabled
+                        class="input-field w-full px-4 py-2.5 rounded-lg text-sm">
+                    <button disabled
+                        class="w-full py-2.5 rounded-lg bg-[#2a2a2a] text-gray-600 font-medium text-sm cursor-not-allowed border border-[#333]">Update
+                        Email</button>
                 </div>
             </div>
-        </div>
 
-        <!-- Change Email -->
-        <div class="border border-gray-700 p-6 mb-6" style="background-color: #1f1f1f;">
-            <h2 class="text-xl font-bold mb-4" style="color: #f0f0f0;">
-                Change Email
-                <span class="text-xs px-2 py-1 border border-gray-600 ml-2"
-                    style="color: #888; font-weight: normal;">Coming Soon</span>
-            </h2>
-            <form id="email-form" class="space-y-4">
-                <div>
-                    <label class="block text-sm font-medium text-gray-400 mb-2">New Email</label>
-                    <input type="email" id="new-email-input" placeholder="new@example.com" disabled disabled
-                        class="w-full px-4 py-3 border border-gray-700 outline-none"
-                        style="background-color: #2a2a2a; color: #666; cursor: not-allowed;" />
+            <!-- Change Password (Disabled) -->
+            <div class="card p-6 opacity-60">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-lg font-semibold text-gray-400">Change Password</h2>
+                    <span
+                        class="px-2 py-1 bg-[#2a2a2a] text-gray-500 border border-[#333] rounded text-[10px] uppercase tracking-wider">Coming
+                        Soon</span>
                 </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-400 mb-2">Current Password (for
-                        verification)</label>
-                    <input type="password" id="email-password-input" placeholder=""
-                        class="w-full px-4 py-3 border border-gray-700 outline-none"
-                        style="background-color: #2a2a2a; color: #666; cursor: not-allowed;" />
+                <div class="space-y-4">
+                    <input type="password" placeholder="Current password" disabled
+                        class="input-field w-full px-4 py-2.5 rounded-lg text-sm">
+                    <input type="password" placeholder="New password" disabled
+                        class="input-field w-full px-4 py-2.5 rounded-lg text-sm">
+                    <button disabled
+                        class="w-full py-2.5 rounded-lg bg-[#2a2a2a] text-gray-600 font-medium text-sm cursor-not-allowed border border-[#333]">Update
+                        Password</button>
                 </div>
-                <button type="submit" class="px-6 py-3 font-semibold border transition-all" disabled
-                    style="background-color: #3a3a3a; color: #666; border-color: #555; cursor: not-allowed;">
-                    Update Email
-                </button>
-            </form>
-            <p id="email-message" class="mt-2 text-sm"></p>
-        </div>
+            </div>
 
-        <!-- Change Password -->
-        <div class="border border-gray-700 p-6 mb-6" style="background-color: #1f1f1f;">
-            <h2 class="text-xl font-bold mb-4" style="color: #f0f0f0;">
-                Change Password 
-                <span class="text-xs px-2 py-1 border border-gray-600 ml-2" style="color: #888; font-weight: normal;">Coming Soon</span>
-            </h2>
-            <form id="password-form" class="space-y-4">
-                <div>
-                    <label class="block text-sm font-medium text-gray-400 mb-2">Current Password</label>
-                    <input type="password" id="current-password-input" placeholder=""
-                        class="w-full px-4 py-3 border border-gray-700 outline-none"
-                        style="background-color: #2a2a2a; color: #666; cursor: not-allowed;" />
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-400 mb-2">New Password</label>
-                    <input type="password" id="new-password-input" placeholder=""
-                        class="w-full px-4 py-3 border border-gray-700 outline-none"
-                        style="background-color: #2a2a2a; color: #666; cursor: not-allowed;" />
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-400 mb-2">Confirm New Password</label>
-                    <input type="password" id="confirm-password-input" placeholder=""
-                        class="w-full px-4 py-3 border border-gray-700 outline-none"
-                        style="background-color: #2a2a2a; color: #666; cursor: not-allowed;" />
-                </div>
-                <button type="submit" class="px-6 py-3 font-semibold border transition-all" disabled
-                    style="background-color: #3a3a3a; color: #666; border-color: #555; cursor: not-allowed;">
-                    Update Password
-                </button>
-            </form>
-            <p id="password-message" class="mt-2 text-sm"></p>
-        </div>
+            <!-- Danger Zone -->
+            <div class="card p-6 border-red-900/30 bg-red-900/5">
+                <h2 class="text-lg font-semibold text-red-500 mb-2">Danger Zone</h2>
+                <p class="text-sm text-gray-400 mb-6">Once you delete your account, there is no going back. Please be
+                    certain.</p>
 
-        <!-- Danger Zone -->
-        <div class="border p-6" style="background-color: #1f1f1f; border-color: #8B0000;">
-            <h2 class="text-xl font-bold mb-4" style="color: #8B0000;">Danger Zone</h2>
-            <div class="flex gap-3">
-                <button id="delete-account-btn" class="px-6 py-2 font-semibold border transition-all"
-                    style="background-color: #8B0000; color: #ffffff; border-color: #8B0000;">
+                <button id="delete-account-btn" class="btn-danger px-6 py-2.5 rounded-lg font-medium text-sm">
                     Delete Account
                 </button>
             </div>
+
         </div>
     </main>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getAuth, onAuthStateChanged, signOut, updateEmail, updatePassword, EmailAuthProvider, reauthenticateWithCredential, deleteUser } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-        import { firebaseConfig } from "../config/firebase-config.js";
+        import { getAuth, onAuthStateChanged, signOut, deleteUser } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        // Firebase Config
+        const firebaseConfig = {
+            apiKey: "AIzaSyCYQ3ykQFErSje5yqIyrjMLglfPcPYMrfA",
+            authDomain: "tasu-44e26.firebaseapp.com",
+            projectId: "tasu-44e26",
+            storageBucket: "tasu-44e26.firebasestorage.app",
+            messagingSenderId: "645411072706",
+            appId: "1:645411072706:web:ee2547ba4080f6ea70295b"
+        };
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
-        let currentUser = null;
+        const db = getFirestore(app);
 
-        // Auth check
-        onAuthStateChanged(auth, (user) => {
+        // Auth Guard & Init
+        onAuthStateChanged(auth, async (user) => {
             if (!user) {
                 window.location.href = '../';
-            } else {
-                currentUser = user;
-                document.getElementById('user-email').innerText = user.email;
-                document.getElementById('current-email').innerText = user.email;
-                loadPlanInfo();
+                return;
+            }
+
+            // Update UI
+            document.getElementById('user-email-nav').textContent = user.email;
+            document.getElementById('account-email').textContent = user.email;
+            document.getElementById('user-id').textContent = user.uid;
+
+            try {
+                // Load Plan Info
+                const userDoc = await getDoc(doc(db, 'users', user.uid));
+                if (userDoc.exists()) {
+                    const data = userDoc.data();
+                    document.getElementById('current-plan').textContent = data.plan || 'Starter Plan';
+
+                    const used = data.eventsUsed || 0;
+                    const limit = data.eventLimit || 10000;
+                    document.getElementById('events-used').textContent = `${used.toLocaleString()} / ${limit.toLocaleString()}`;
+
+                    // Update usage bar
+                    const percentage = Math.min((used / limit) * 100, 100);
+                    document.getElementById('usage-bar').style.width = `${percentage}%`;
+                }
+            } catch (error) {
+                console.error("Error fetching user data:", error);
             }
         });
 
-        // Load plan info (mock - replace with real data)
-        function loadPlanInfo() {
-            const mockUsage = 1250;
-            const mockLimit = 10000;
-            const percentage = (mockUsage / mockLimit) * 100;
-
-            document.getElementById('usage-bar').style.width = percentage + '%';
-            document.getElementById('usage-text').innerText = `${mockUsage.toLocaleString()} / ${mockLimit.toLocaleString()}`;
-        }
-
-        // Logout - redirect to https://tasu.ai
+        // Logout
         document.getElementById('logout-btn').addEventListener('click', () => {
-            signOut(auth).then(() => {
-                window.location.href = 'https://tasu.ai';
-            });
+            signOut(auth).then(() => window.location.href = 'https://tasu.ai');
         });
 
-        // Upgrade plan
-        document.getElementById('upgrade-btn').addEventListener('click', () => {
-            alert('Redirect to Stripe billing portal or upgrade flow');
-        });
-
-        // Cancel subscription
-        document.getElementById('cancel-btn').addEventListener('click', () => {
-            if (confirm('Are you sure you want to cancel your subscription?')) {
-                alert('Redirect to Stripe portal to cancel subscription');
-            }
-        });
-
-        // Delete account
+        // Delete Account
         document.getElementById('delete-account-btn').addEventListener('click', async () => {
             if (confirm('Are you ABSOLUTELY sure? This cannot be undone!')) {
-                const password = prompt('Enter your password to confirm deletion:');
-                if (password) {
+                const password = prompt('Please type "DELETE" to confirm:');
+                if (password === 'DELETE') {
                     try {
-                        const credential = EmailAuthProvider.credential(currentUser.email, password);
-                        await reauthenticateWithCredential(currentUser, credential);
-                        await deleteUser(currentUser);
+                        const user = auth.currentUser;
+                        // Delete Firestore Data
+                        await deleteDoc(doc(db, 'users', user.uid));
+                        // Delete Auth User
+                        await deleteUser(user);
+
                         alert('Account deleted successfully');
                         window.location.href = 'https://tasu.ai';
                     } catch (error) {
+                        console.error("Error deleting account:", error);
                         alert('Error deleting account: ' + error.message);
                     }
                 }
             }
         });
-
-        // Change Email
-        document.getElementById('email-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const newEmail = document.getElementById('new-email-input').value.trim();
-            const password = document.getElementById('email-password-input').value;
-            const messageEl = document.getElementById('email-message');
-
-            if (!newEmail || !password) {
-                messageEl.innerText = '? Please fill in all fields';
-                messageEl.style.color = '#F7931A';
-                return;
-            }
-
-            try {
-                const credential = EmailAuthProvider.credential(currentUser.email, password);
-                await reauthenticateWithCredential(currentUser, credential);
-                await updateEmail(currentUser, newEmail);
-                messageEl.innerText = '? Email updated successfully!';
-                messageEl.style.color = '#4ade80';
-                document.getElementById('current-email').innerText = newEmail;
-                document.getElementById('email-form').reset();
-                setTimeout(() => { messageEl.innerText = ''; }, 3000);
-            } catch (error) {
-                messageEl.innerText = `? ${error.message}`;
-                messageEl.style.color = '#8B0000';
-            }
-        });
-
-        // Change Password
-        document.getElementById('password-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const currentPassword = document.getElementById('current-password-input').value;
-            const newPassword = document.getElementById('new-password-input').value;
-            const confirmPassword = document.getElementById('confirm-password-input').value;
-            const messageEl = document.getElementById('password-message');
-
-            if (!currentPassword || !newPassword || !confirmPassword) {
-                messageEl.innerText = '? Please fill in all fields';
-                messageEl.style.color = '#F7931A';
-                return;
-            }
-
-            if (newPassword !== confirmPassword) {
-                messageEl.innerText = '? New passwords do not match';
-                messageEl.style.color = '#F7931A';
-                return;
-            }
-
-            if (newPassword.length < 6) {
-                messageEl.innerText = '? Password must be at least 6 characters';
-                messageEl.style.color = '#F7931A';
-                return;
-            }
-
-            try {
-                const credential = EmailAuthProvider.credential(currentUser.email, currentPassword);
-                await reauthenticateWithCredential(currentUser, credential);
-                await updatePassword(currentUser, newPassword);
-                messageEl.innerText = '? Password updated successfully!';
-                messageEl.style.color = '#4ade80';
-                document.getElementById('password-form').reset();
-                setTimeout(() => { messageEl.innerText = ''; }, 3000);
-            } catch (error) {
-                messageEl.innerText = `? ${error.message}`;
-                messageEl.style.color = '#8B0000';
-            }
-        });
     </script>
-
-    <!-- Tasu SDK -->
-    <script src="../sdk/tasu-sdk.js"></script>
 </body>
 
 </html>

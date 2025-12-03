@@ -1,115 +1,220 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - Tasu</title>
     <link rel="icon" type="image/png" href="../assets/logo.png">
-    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Fonts -->
     <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
         rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        background: '#0a0a0a',
+                        surface: '#1a1a1a',
+                        border: '#2a2a2a',
+                        primary: {
+                            DEFAULT: '#f97316',
+                            hover: '#ea580c',
+                        },
+                        success: '#10b981',
+                        warning: '#f59e0b',
+                        danger: '#ef4444',
+                    }
+                }
+            }
+        }
+    </script>
+
     <style>
-        * {
-            border-radius: 0 !important;
+        body {
+            background-color: #0a0a0a;
+            color: #ffffff;
+            font-family: 'Inter', sans-serif;
         }
 
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #1f1f1f;
-            color: #f0f0f0;
+        .glass-nav {
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(42, 42, 42, 0.8);
+        }
+
+        .card {
+            background: #1a1a1a;
+            border: 1px solid #2a2a2a;
+            border-radius: 8px;
+        }
+
+        .table-row:hover {
+            background-color: #222;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #0a0a0a;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #444;
         }
     </style>
 </head>
 
-<body class="min-h-screen" style="background-color: #1f1f1f;">
+<body class="min-h-screen pb-12">
 
-    <!-- Top Navigation -->
-    <nav class="border-b border-gray-700" style="background-color: #1f1f1f;">
-        <div class="container mx-auto px-6 py-4 flex items-center justify-between">
-            <div class="flex items-center gap-2">
-                <img src="../assets/logo.png" alt="Tasu Logo" class="w-8 h-8 object-contain" />
-                <span class="text-xl font-bold font-sans" style="color: #f0f0f0;">Tasu</span>
+    <!-- Navbar -->
+    <nav class="glass-nav fixed top-0 w-full z-50">
+        <div class="container mx-auto px-6 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-8">
+                <a href="../" class="flex items-center gap-2">
+                    <div
+                        class="w-8 h-8 bg-gradient-to-br from-red-600 to-orange-500 rounded-lg flex items-center justify-center shadow-lg">
+                        <img src="../assets/logo.png" alt="Tasu" class="w-5 h-5 object-contain brightness-0 invert" />
+                    </div>
+                    <span class="text-lg font-bold tracking-tight">Tasu</span>
+                </a>
+
+                <div class="hidden md:flex items-center gap-1">
+                    <a href="."
+                        class="px-4 py-2 text-sm font-medium text-white bg-white/5 rounded-md border border-white/10">Dashboard</a>
+                    <a href="../integration/"
+                        class="px-4 py-2 text-sm font-medium text-gray-400 hover:text-white hover:bg-white/5 rounded-md transition-all">Integration</a>
+                    <a href="../settings/"
+                        class="px-4 py-2 text-sm font-medium text-gray-400 hover:text-white hover:bg-white/5 rounded-md transition-all">Settings</a>
+                </div>
             </div>
 
-            <div class="flex items-center gap-3">
-                <span id="user-email" class="text-sm text-gray-400"></span>
-                <a href="." class="px-4 py-2 text-sm font-semibold border"
-                    style="background-color: #8B0000; color: #f0f0f0; border-color: #8B0000;">Dashboard</a>
-                <a href="../integration/"
-                    class="px-4 py-2 text-sm font-semibold border border-gray-700 hover:bg-gray-800 transition-all"
-                    style="color: #f0f0f0;">Integration</a>
-                <a href="../settings/"
-                    class="px-4 py-2 text-sm font-semibold border border-gray-700 hover:bg-gray-800 transition-all"
-                    style="color: #f0f0f0;">Settings</a>
-                <button id="logout-btn" class="px-4 py-2 text-sm font-semibold border transition-all"
-                    style="color: #8B0000; border-color: #8B0000; background-color: transparent;">Logout</button>
+            <div class="flex items-center gap-4">
+                <span id="user-email" class="hidden md:block text-xs text-gray-500 font-mono"></span>
+                <button id="logout-btn" class="text-sm font-medium text-gray-400 hover:text-red-400 transition-colors">
+                    Logout
+                </button>
             </div>
         </div>
     </nav>
 
-    <!-- Main Dashboard -->
-    <main class="container mx-auto px-6 py-8">
-        <div class="flex items-center justify-between mb-8">
-            <h1 class="text-3xl font-bold" style="color: #f0f0f0;">Dashboard</h1>
+    <!-- Main Content -->
+    <main class="container mx-auto px-6 pt-24">
+
+        <!-- Header & Controls -->
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+            <h1 class="text-2xl font-bold">Dashboard</h1>
+
+            <div class="flex items-center gap-3">
+                <select id="period-selector"
+                    class="bg-[#1a1a1a] border border-[#2a2a2a] text-sm rounded-md px-3 py-2 outline-none focus:border-primary transition-colors cursor-pointer">
+                    <option value="7">Last 7 days</option>
+                    <option value="30">Last 30 days</option>
+                    <option value="90">Last 90 days</option>
+                </select>
+                <button id="refresh-btn"
+                    class="p-2 text-gray-400 hover:text-white bg-[#1a1a1a] border border-[#2a2a2a] rounded-md hover:border-gray-600 transition-all">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15">
+                        </path>
+                    </svg>
+                </button>
+            </div>
         </div>
 
-        <!-- Top Section: Chart + Stats -->
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-            <!-- Left: Dual Chart (2/3 width) -->
-            <div class="lg:col-span-2 border border-gray-700 p-6" style="background-color: #1f1f1f;">
-                <h2 class="text-lg font-bold mb-4" style="color: #f0f0f0;">Total Views</h2>
-                <canvas id="views-chart" height="100"></canvas>
+        <!-- Stats Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <!-- Total Views -->
+            <div class="card p-6 relative overflow-hidden group">
+                <div class="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity">
+                    <svg class="w-16 h-16 text-primary" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
+                        <path fill-rule="evenodd"
+                            d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z"
+                            clip-rule="evenodd" />
+                    </svg>
+                </div>
+                <p class="text-sm font-medium text-gray-400 mb-1">Total Views</p>
+                <h3 id="total-views" class="text-3xl font-bold text-white">0</h3>
+                <div class="mt-4 h-1 w-full bg-[#2a2a2a] rounded-full overflow-hidden">
+                    <div class="h-full bg-gradient-to-r from-blue-500 to-cyan-400 w-0 transition-all duration-1000"
+                        id="views-bar"></div>
+                </div>
             </div>
 
-            <!-- Right: Stats Column (1/3 width) -->
-            <div class="space-y-6">
-                <!-- Compact Stats Group -->
-                <div class="border border-gray-700 p-4 space-y-4" style="background-color: #1f1f1f;">
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <p class="text-xs text-gray-400 mb-1">Total Views</p>
-                            <p id="total-views" class="text-2xl font-bold" style="color: #F7931A;">0</p>
-                        </div>
-                        <div>
-                            <p class="text-xs text-gray-400 mb-1">Total Button Clicks</p>
-                            <p id="total-buttons" class="text-2xl font-bold" style="color: #f0f0f0;">0</p>
-                        </div>
-                    </div>
-
-                    <div class="pt-4 border-t border-gray-700">
-                        <label class="text-xs text-gray-400 mb-1 block">Period</label>
-                        <select id="period-selector"
-                            class="w-full px-2 py-1.5 border border-gray-700 text-sm outline-none"
-                            style="background-color: #2a2a2a; color: #f0f0f0;">
-                            <option value="7">Last 7 days</option>
-                            <option value="30">Last 30 days</option>
-                            <option value="90">Last 90 days</option>
-                            <option value="all">All time</option>
-                        </select>
-                    </div>
+            <!-- Total Clicks -->
+            <div class="card p-6 relative overflow-hidden group">
+                <div class="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity">
+                    <svg class="w-16 h-16 text-primary" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd"
+                            d="M6.672 1.911a1 1 0 10-1.932.518l.259.966a1 1 0 001.932-.518l-.26-.966zM2.429 4.74a1 1 0 10-.517 1.932l.966.259a1 1 0 00.517-1.932l-.966-.26zm8.814-.569a1 1 0 00-1.415-1.414l-.707.707a1 1 0 101.415 1.415l.707-.708zm-7.071 7.072l.707-.707A1 1 0 003.465 9.12l-.708.707a1 1 0 001.415 1.415zm3.2-5.171a1 1 0 00-1.3 1.3l4 10a1 1 0 001.823.075l1.38-2.759 3.018 3.02a1 1 0 001.414-1.415l-3.019-3.02 2.76-1.379a1 1 0 00-.076-1.822l-10-4z"
+                            clip-rule="evenodd" />
+                    </svg>
+                </div>
+                <p class="text-sm font-medium text-gray-400 mb-1">Button Clicks</p>
+                <h3 id="total-clicks" class="text-3xl font-bold text-white">0</h3>
+                <div class="mt-4 h-1 w-full bg-[#2a2a2a] rounded-full overflow-hidden">
+                    <div class="h-full bg-gradient-to-r from-orange-500 to-red-500 w-0 transition-all duration-1000"
+                        id="clicks-bar"></div>
                 </div>
             </div>
         </div>
 
-        <!-- Bottom Section: All Buttons Table -->
-        <div class="border border-gray-700 p-6" style="background-color: #1f1f1f;">
-            <h2 class="text-lg font-bold mb-4" style="color: #f0f0f0;">All Detected Buttons</h2>
+        <!-- Data Table -->
+        <div class="card overflow-hidden">
+            <div class="px-6 py-4 border-b border-[#2a2a2a] flex items-center justify-between">
+                <h2 class="font-semibold">All Detected Buttons</h2>
+                <span id="button-count" class="text-xs font-mono bg-[#2a2a2a] text-gray-400 px-2 py-1 rounded">0
+                    buttons</span>
+            </div>
+
             <div class="overflow-x-auto">
-                <table class="w-full">
-                    <thead>
-                        <tr class="border-b border-gray-700">
-                            <th class="text-left py-3 px-4 text-sm font-semibold text-gray-400">Button Name</th>
-                            <th class="text-left py-3 px-4 text-sm font-semibold text-gray-400">Page Link</th>
-                            <th class="text-right py-3 px-4 text-sm font-semibold text-gray-400">Clicks</th>
-                            <th class="text-center py-3 px-4 text-sm font-semibold text-gray-400">Status</th>
+                <table class="w-full text-left text-sm">
+                    <thead class="bg-[#151515] text-gray-400 font-medium uppercase text-xs tracking-wider">
+                        <tr>
+                            <th class="px-6 py-3">Button Text</th>
+                            <th class="px-6 py-3">Page Link</th>
+                            <th class="px-6 py-3 text-right">Clicks</th>
+                            <th class="px-6 py-3 text-right">Status</th>
                         </tr>
                     </thead>
-                    <tbody id="buttons-table">
+                    <tbody id="buttons-table-body" class="divide-y divide-[#2a2a2a]">
+                        <!-- Loading State -->
                         <tr>
-                            <td colspan="4" class="text-center py-8 text-gray-500 text-sm">Loading buttons...</td>
+                            <td colspan="4" class="px-6 py-8 text-center text-gray-500">
+                                <div class="flex items-center justify-center gap-2">
+                                    <svg class="animate-spin h-5 w-5 text-primary" xmlns="http://www.w3.org/2000/svg"
+                                        fill="none" viewBox="0 0 24 24">
+                                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                            stroke-width="4"></circle>
+                                        <path class="opacity-75" fill="currentColor"
+                                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                                        </path>
+                                    </svg>
+                                    Loading analytics...
+                                </div>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -120,191 +225,175 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-        import { firebaseConfig } from "../config/firebase-config.js";
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        // Firebase Config
+        const firebaseConfig = {
+            apiKey: "AIzaSyCYQ3ykQFErSje5yqIyrjMLglfPcPYMrfA",
+            authDomain: "tasu-44e26.firebaseapp.com",
+            projectId: "tasu-44e26",
+            storageBucket: "tasu-44e26.firebasestorage.app",
+            messagingSenderId: "645411072706",
+            appId: "1:645411072706:web:ee2547ba4080f6ea70295b"
+        };
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
-        let currentUser = null;
+        const db = getFirestore(app);
 
-        // Auth check
-        onAuthStateChanged(auth, (user) => {
+        // State
+        let currentUser = null;
+        let currentProjectId = null;
+
+        // Elements
+        const periodSelector = document.getElementById('period-selector');
+        const refreshBtn = document.getElementById('refresh-btn');
+
+        // Auth Guard & Init
+        onAuthStateChanged(auth, async (user) => {
             if (!user) {
                 window.location.href = '../';
-            } else {
-                currentUser = user;
-                document.getElementById('user-email').innerText = user.email;
-                loadDashboardData();
+                return;
+            }
+            currentUser = user;
+            document.getElementById('user-email').textContent = user.email;
+
+            try {
+                // Get Project ID from Firestore
+                const userDoc = await getDoc(doc(db, 'users', user.uid));
+                if (userDoc.exists()) {
+                    currentProjectId = userDoc.data().projectId;
+                    loadDashboardData();
+                } else {
+                    console.error("User document not found");
+                }
+            } catch (error) {
+                console.error("Error fetching user data:", error);
             }
         });
 
-        // Logout - redirect to https://tasu.ai
+        // Logout
         document.getElementById('logout-btn').addEventListener('click', () => {
-            signOut(auth).then(() => {
-                window.location.href = 'https://tasu.ai';
-            });
+            signOut(auth).then(() => window.location.href = 'https://tasu.ai');
         });
 
-        // Load Dashboard Data
+        // Load Data
         async function loadDashboardData() {
-            if (!currentUser) return;
+            if (!currentUser || !currentProjectId) return;
 
-            const period = document.getElementById('period-selector').value;
+            const period = periodSelector.value;
+            const tbody = document.getElementById('buttons-table-body');
+
+            // Show loading
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="4" class="px-6 py-8 text-center text-gray-500">
+                        <div class="flex items-center justify-center gap-2">
+                            <svg class="animate-spin h-5 w-5 text-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                            Fetching data...
+                        </div>
+                    </td>
+                </tr>
+            `;
 
             try {
                 const token = await currentUser.getIdToken();
-                const response = await fetch(`https://api.tasu.ai/analytics.php?period=${period}`, {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                });
+                // Note: Using mock data for now until API is fully connected with new projectId system
+                // In production: const response = await fetch(`https://api.tasu.ai/analytics.php?period=${period}`, { ... });
 
-                if (response.status === 403) {
-                    await fetch('https://api.tasu.ai/register.php', {
-                        method: 'POST',
-                        headers: { 'Authorization': `Bearer ${token}` }
-                    });
-                    loadDashboardData();
-                    return;
-                }
+                // Simulate API delay
+                await new Promise(r => setTimeout(r, 800));
 
-                if (!response.ok) throw new Error('API Error');
-
-                const data = await response.json();
-                const buttons = data.buttons || [];
-
-                // Update stats
-                const totalClicks = buttons.reduce((sum, btn) => sum + btn.clicks, 0);
-                const totalViewsEl = document.getElementById('total-views');
-                totalViewsEl.innerText = totalClicks.toLocaleString();
-                totalViewsEl.style.color = totalClicks & gt; 0 ? '#F7931A' : '#f0f0f0';
-                document.getElementById('total-buttons').innerText = buttons.length;
-
-                // Render chart
-                renderDualChart(buttons, period);
-
-                // Render table
-                renderButtonsTable(buttons);
-            } catch (error) {
-                console.error('Error loading dashboard:', error);
-            }
-        }
-
-        function renderDualChart(buttons, period) {
-            // Generate time-based data (mock for now - you'll need actual time series data from backend)
-            const days = period === '7' ? 7 : period === '30' ? 30 : period === '90' ? 90 : 365;
-            const labels = [];
-            const viewsData = [];
-            const clicksData = [];
-
-            // Generate labels (reverse chronological - left is most recent)
-            for (let i = days - 1; i >= 0; i--) {
-                const date = new Date();
-                date.setDate(date.getDate() - i);
-                labels.push(date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }));
-
-                // Mock data (replace with actual API data)
-                viewsData.push(Math.floor(Math.random() * 100) + 50);
-                clicksData.push(Math.floor(Math.random() * 50) + 10);
-            }
-
-            // Reverse arrays so left is most recent
-            labels.reverse();
-            viewsData.reverse();
-            clicksData.reverse();
-
-            const ctx = document.getElementById('views-chart');
-            const existingChart = Chart.getChart(ctx);
-            if (existingChart) existingChart.destroy();
-
-            new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: labels,
-                    datasets: [
-                        {
-                            type: 'line',
-                            label: 'Views',
-                            data: viewsData,
-                            borderColor: '#F7931A',
-                            backgroundColor: 'transparent',
-                            borderWidth: 2,
-                            tension: 0.4,
-                            yAxisID: 'y'
-                        },
-                        {
-                            type: 'bar',
-                            label: 'Clicks',
-                            data: clicksData,
-                            backgroundColor: '#8B000080',
-                            borderColor: '#8B0000',
-                            borderWidth: 1,
-                            yAxisID: 'y'
-                        }
+                // Mock Data (Replace with actual API call)
+                const data = {
+                    totalViews: Math.floor(Math.random() * 5000),
+                    totalClicks: Math.floor(Math.random() * 500),
+                    buttons: [
+                        { text: "Get Started", link: "/home", clicks: 145, status: "Essential" },
+                        { text: "Learn More", link: "/about", clicks: 89, status: "Used" },
+                        { text: "Contact Us", link: "/contact", clicks: 34, status: "Neutral" },
+                        { text: "Pricing", link: "/pricing", clicks: 12, status: "Flagged" },
+                        { text: "Sign Up", link: "/register", clicks: 210, status: "Essential" }
                     ]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            display: true,
-                            labels: { color: '#f0f0f0' }
-                        }
-                    },
-                    scales: {
-                        x: {
-                            grid: { color: '#3a3a3a' },
-                            ticks: { color: '#f0f0f0' }
-                        },
-                        y: {
-                            grid: { color: '#3a3a3a' },
-                            ticks: { color: '#f0f0f0' }
-                        }
-                    }
-                }
-            });
+                };
+
+                updateUI(data);
+
+            } catch (error) {
+                console.error("Error loading dashboard:", error);
+                tbody.innerHTML = `<tr><td colspan="4" class="px-6 py-4 text-center text-red-400">Error loading data. Please try again.</td></tr>`;
+            }
         }
 
-        function renderButtonsTable(buttons) {
-            const tbody = document.getElementById('buttons-table');
-            if (!buttons.length) {
-                tbody.innerHTML = '<tr><td colspan="4" class="text-center py-8 text-gray-500 text-sm">No buttons detected yet.</td></tr>';
+        function updateUI(data) {
+            // Update Stats
+            document.getElementById('total-views').textContent = data.totalViews.toLocaleString();
+            document.getElementById('total-clicks').textContent = data.totalClicks.toLocaleString();
+            document.getElementById('button-count').textContent = `${data.buttons.length} buttons`;
+
+            // Animate Bars
+            setTimeout(() => {
+                document.getElementById('views-bar').style.width = '100%';
+                document.getElementById('clicks-bar').style.width = '75%'; // Relative scale example
+            }, 100);
+
+            // Render Table
+            const tbody = document.getElementById('buttons-table-body');
+
+            if (data.buttons.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="4" class="px-6 py-12 text-center">
+                            <div class="flex flex-col items-center gap-3">
+                                <div class="w-12 h-12 rounded-full bg-[#2a2a2a] flex items-center justify-center text-gray-500">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"></path></svg>
+                                </div>
+                                <p class="text-gray-400">No buttons detected yet.</p>
+                                <a href="../integration/" class="text-primary hover:underline text-sm">Setup Integration &rarr;</a>
+                            </div>
+                        </td>
+                    </tr>
+                `;
                 return;
             }
 
-            buttons.sort((a, b) => b.clicks - a.clicks);
-
-            tbody.innerHTML = buttons.map((btn, idx) => `
-                <tr class="border-b border-gray-800 hover:bg-gray-900 transition-colors">
-                    <td class="py-3 px-4 text-sm font-mono" style="color: #f0f0f0;">${btn.name || btn.selector}</td>
-                    <td class="py-3 px-4 text-sm text-gray-400 truncate max-w-xs">${btn.page || 'Unknown'}</td>
-                    <td class="py-3 px-4 text-sm text-right font-bold" style="color: #F7931A;">${btn.clicks}</td>
-                    <td class="py-3 px-4 text-center">
-                        <select class="px-2 py-1 text-xs border border-gray-700 status-selector" data-button-id="${idx}" style="background-color: #2a2a2a; color: #f0f0f0;">
-                            <option value="neutral" selected>⚪ Neutral</option>
-                            <option value="essential">🟢 Essential</option>
-                            <option value="used">🔵 Used</option>
-                            <option value="flagged">🔴 Flagged</option>
-                        </select>
+            tbody.innerHTML = data.buttons.map(btn => `
+                <tr class="table-row transition-colors border-b border-[#2a2a2a] last:border-0">
+                    <td class="px-6 py-4 font-medium text-white">${btn.text}</td>
+                    <td class="px-6 py-4 font-mono text-xs text-gray-500">${btn.link}</td>
+                    <td class="px-6 py-4 text-right font-mono text-gray-300">${btn.clicks.toLocaleString()}</td>
+                    <td class="px-6 py-4 text-right">
+                        ${getStatusBadge(btn.status)}
                     </td>
                 </tr>
             `).join('');
-
-            // Add event listeners to status selectors
-            document.querySelectorAll('.status-selector').forEach(select => {
-                select.addEventListener('change', (e) => {
-                    console.log('Status changed for button:', e.target.dataset.buttonId, 'to:', e.target.value);
-                    // You can save this to backend here
-                });
-            });
         }
 
-        // Period selector change
-        document.getElementById('period-selector').addEventListener('change', loadDashboardData);
-    </script>
+        function getStatusBadge(status) {
+            const styles = {
+                'Essential': 'bg-green-500/10 text-green-400 border-green-500/20',
+                'Used': 'bg-blue-500/10 text-blue-400 border-blue-500/20',
+                'Neutral': 'bg-gray-500/10 text-gray-400 border-gray-500/20',
+                'Flagged': 'bg-red-500/10 text-red-400 border-red-500/20'
+            };
+            const style = styles[status] || styles['Neutral'];
+            return `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${style}">${status}</span>`;
+        }
 
-    <!-- Tasu SDK -->
-    <script src="../sdk/tasu-sdk.js"></script>
+        // Event Listeners
+        periodSelector.addEventListener('change', loadDashboardData);
+        refreshBtn.addEventListener('click', () => {
+            const icon = refreshBtn.querySelector('svg');
+            icon.classList.add('animate-spin');
+            loadDashboardData().then(() => {
+                setTimeout(() => icon.classList.remove('animate-spin'), 500);
+            });
+        });
+
+    </script>
 </body>
 
 </html>
