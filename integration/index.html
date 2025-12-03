@@ -63,16 +63,27 @@
                 <!-- Will be populated dynamically -->
             </div>
 
-            <div class="flex gap-4">
-                <input type="text" id="domain-input" placeholder="example.com"
-                    class="flex-1 px-4 py-3 border border-gray-700 outline-none"
-                    style="background-color: #2a2a2a; color: #f0f0f0;" />
-                <button id="update-domain-btn" class="px-6 py-3 font-semibold border transition-all"
+            <div class="flex flex-col gap-4">
+                <div class="flex gap-4">
+                    <div class="flex-1">
+                        <label class="block text-sm font-medium text-gray-400 mb-2">Main Domain</label>
+                        <input type="text" id="domain-input" placeholder="example.com"
+                            class="w-full px-4 py-3 border border-gray-700 outline-none"
+                            style="background-color: #2a2a2a; color: #f0f0f0;" />
+                    </div>
+                    <div class="flex-1">
+                        <label class="block text-sm font-medium text-gray-400 mb-2">Subdomains (comma separated)</label>
+                        <input type="text" id="subdomain-input" placeholder="www, app, blog"
+                            class="w-full px-4 py-3 border border-gray-700 outline-none"
+                            style="background-color: #2a2a2a; color: #f0f0f0;" />
+                    </div>
+                </div>
+                <button id="update-domain-btn" class="px-6 py-3 font-semibold border transition-all self-start"
                     style="background-color: #8B0000; color: #f0f0f0; border-color: #8B0000;">
-                    Update Domain
+                    Update Configuration
                 </button>
             </div>
-            <p class="text-sm text-gray-400 mt-2">You can only track one domain at a time.</p>
+            <p class="text-sm text-gray-400 mt-2">You can only track one main domain at a time.</p>
         </div>
 
         <!-- SDK Integration -->
@@ -177,17 +188,23 @@
 
         // Load domain status
         async function loadDomainStatus() {
-            // Mock implementation - you'll need to create a backend endpoint
             const currentDomain = localStorage.getItem('tracked_domain') || null;
+            const currentSubdomains = localStorage.getItem('tracked_subdomains') || '';
 
             const statusDiv = document.getElementById('domain-status');
             if (currentDomain) {
+                const subdomainText = currentSubdomains ? ` (${currentSubdomains})` : '';
                 statusDiv.innerHTML = `
                     <div class="px-4 py-3 border border-gray-700" style="background-color: #2a2a2a;">
                         <span style="color: #f0f0f0;">Currently tracking: </span>
-                        <span class="font-bold" style="color: #F7931A;">${currentDomain}</span>
+                        <span class="font-bold" style="color: #F7931A;">${currentDomain}${subdomainText}</span>
                     </div>
                 `;
+                // Pre-fill inputs
+                const domainInput = document.getElementById('domain-input');
+                const subdomainInput = document.getElementById('subdomain-input');
+                if(domainInput) domainInput.value = currentDomain;
+                if(subdomainInput) subdomainInput.value = currentSubdomains;
             } else {
                 statusDiv.innerHTML = `
                     <div class="px-4 py-3 border border-gray-700 text-gray-400" style="background-color: #2a2a2a;">
@@ -200,9 +217,10 @@
         // Update domain
         document.getElementById('update-domain-btn').addEventListener('click', async () => {
             const domain = document.getElementById('domain-input').value.trim();
+            const subdomains = document.getElementById('subdomain-input').value.trim();
 
             if (!domain) {
-                alert('Please enter a domain');
+                alert('Please enter a main domain');
                 return;
             }
 
@@ -213,16 +231,14 @@
                 return;
             }
 
-            // Save domain (you'll need to create a backend endpoint for this)
+            // Save domain and subdomains
             localStorage.setItem('tracked_domain', domain);
+            localStorage.setItem('tracked_subdomains', subdomains);
 
             // Reload status
             await loadDomainStatus();
 
-            // Clear input
-            document.getElementById('domain-input').value = '';
-
-            alert('Domain updated successfully!');
+            alert('Configuration updated successfully!');
         });
 
         // Copy button
