@@ -47,10 +47,10 @@ export default function AppSidebar() {
   }
 
   return (
-    <aside className="w-16 lg:w-56 bg-white border-r border-cream-dark flex flex-col shrink-0 h-screen sticky top-0">
+    <aside className="w-16 lg:w-56 bg-white/80 backdrop-blur-sm border-r border-cream-dark/50 flex flex-col shrink-0 h-screen sticky top-0">
       {/* Logo */}
       <div className="p-4 lg:px-5">
-        <Link href="/chat" className="flex items-center gap-2">
+        <Link href="/chat" className="flex items-center gap-2.5">
           <div className="w-8 h-8 rounded-lg bg-terracotta flex items-center justify-center shrink-0">
             <span className="text-white text-sm font-bold">T</span>
           </div>
@@ -68,7 +68,7 @@ export default function AppSidebar() {
             <Link
               key={item.href}
               href={item.href}
-              className={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition-colors text-sm font-medium ${
+              className={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all text-sm font-medium ${
                 active
                   ? "bg-cream text-charcoal"
                   : "text-warm-gray hover:bg-cream/50 hover:text-charcoal"
@@ -82,10 +82,10 @@ export default function AppSidebar() {
       </nav>
 
       {/* Bottom */}
-      <div className="p-2 lg:p-3 border-t border-cream-dark">
+      <div className="p-2 lg:p-3 border-t border-cream-dark/50">
         <button
           onClick={handleSignOut}
-          className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-warm-gray hover:bg-cream/50 hover:text-charcoal transition-colors w-full"
+          className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-warm-gray hover:bg-cream/50 hover:text-charcoal transition-all w-full"
         >
           <svg className="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" />
