@@ -11,7 +11,7 @@ export async function updateSession(request: NextRequest) {
 
   if (!supabaseUrl || !supabaseKey || !supabaseUrl.startsWith("http")) {
     // Supabase not configured — allow public paths, block protected ones
-    const publicPaths = ["/", "/login", "/privacy", "/reset-password", "/auth/callback"];
+    const publicPaths = ["/", "/login", "/privacy", "/reset-password", "/auth/callback", "/onboarding"];
     const isPublicPath = publicPaths.includes(request.nextUrl.pathname);
     if (!isPublicPath) {
       const url = request.nextUrl.clone();
@@ -48,7 +48,7 @@ export async function updateSession(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const publicPaths = ["/", "/login", "/privacy", "/reset-password", "/auth/callback"];
+  const publicPaths = ["/", "/login", "/privacy", "/reset-password", "/auth/callback", "/onboarding"];
   const isPublicPath = publicPaths.includes(request.nextUrl.pathname);
 
   if (!user && !isPublicPath) {
