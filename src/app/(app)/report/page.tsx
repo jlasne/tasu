@@ -176,9 +176,8 @@ export default function ReportPage() {
   const [error, setError] = useState("");
   const supabase = createClient();
 
-  useEffect(() => {
-    loadReports();
-  }, []);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => { loadReports(); }, []);
 
   async function loadReports() {
     const {

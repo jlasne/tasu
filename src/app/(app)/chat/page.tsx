@@ -43,9 +43,8 @@ export default function ChatPage() {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const supabase = createClient();
 
-  useEffect(() => {
-    loadMessages();
-  }, []);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => { loadMessages(); }, []);
 
   useEffect(() => {
     if (scrollRef.current) {
