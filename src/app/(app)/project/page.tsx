@@ -57,9 +57,8 @@ export default function ProjectPage() {
   const [githubData, setGithubData] = useState<{totalCommitsLast30: number; lastCommitDate: string | null; owner: string; repo: string} | null>(null);
   const supabase = createClient();
 
-  useEffect(() => {
-    loadIntegration();
-  }, []);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => { loadIntegration(); }, []);
 
   async function loadIntegration() {
     const {

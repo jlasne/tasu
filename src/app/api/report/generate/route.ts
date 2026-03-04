@@ -32,20 +32,12 @@ export async function POST() {
   ]);
 
   // Fetch live DataFast + GitHub data if connected
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
   let datafastData = null;
   let githubData = null;
 
-  // We call our own API routes to reuse the logic
-  const cookieHeader = ""; // Server-to-server — use service key instead
-  const serviceSupabase = createClient(); // already has the user session via server cookies
-
   if (integration?.datafast_api_key) {
     try {
-      const dfRes = await fetch(`${baseUrl}/api/integrations/datafast`, {
-        headers: { Cookie: "" },
-      });
-      // We need auth — call DataFast directly here instead
+      // Call DataFast directly with the stored API key
       const DATAFAST_BASE = "https://datafa.st/api/v1/analytics";
       const endAt = new Date().toISOString().split("T")[0];
       const startAt = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
