@@ -47,7 +47,7 @@ export default function AppSidebar() {
   }
 
   return (
-    <aside className="w-16 lg:w-56 bg-white/80 backdrop-blur-sm border-r border-cream-dark/50 flex flex-col shrink-0 h-screen sticky top-0">
+    <aside className="w-14 lg:w-52 bg-white/90 backdrop-blur-sm border-r border-cream-dark/40 flex flex-col shrink-0 h-screen sticky top-0">
       {/* Logo */}
       <div className="p-4 lg:px-5">
         <Link href="/chat" className="flex items-center gap-2.5">

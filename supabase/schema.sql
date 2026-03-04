@@ -26,6 +26,7 @@ drop table if exists public.profiles cascade;
 -- Profiles table (linked to auth.users)
 create table public.profiles (
   id uuid references auth.users on delete cascade primary key,
+  full_name text,
   website_url text,
   business_context text,
   onboarded boolean default false,
