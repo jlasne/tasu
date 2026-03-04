@@ -1,6 +1,8 @@
 import { createClient } from "@/lib/supabase/server";
 import { NextRequest, NextResponse } from "next/server";
 
+const DATAFAST_BASE = "https://datafa.st/api/v1/analytics";
+
 export async function POST(req: NextRequest) {
   const supabase = createClient();
 
@@ -14,48 +16,131 @@ export async function POST(req: NextRequest) {
 
   const { message } = await req.json();
 
-  // Get user profile for context
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("website_url, business_context")
-    .eq("id", user.id)
-    .single();
-
-  // Get recent chat history
-  const { data: recentMessages } = await supabase
-    .from("messages")
-    .select("role, content")
-    .eq("user_id", user.id)
-    .order("created_at", { ascending: false })
-    .limit(20);
+  // Fetch all context in parallel
+  const [
+    { data: profile },
+    { data: integration },
+    { data: recentMessages },
+    { data: knowledge },
+  ] = await Promise.all([
+    supabase
+      .from("profiles")
+      .select("full_name, website_url, business_context")
+      .eq("id", user.id)
+      .single(),
+    supabase
+      .from("integrations")
+      .select("datafast_api_key, github_repo_url, github_token")
+      .eq("user_id", user.id)
+      .single(),
+    supabase
+      .from("messages")
+      .select("role, content")
+      .eq("user_id", user.id)
+      .order("created_at", { ascending: false })
+      .limit(20),
+    supabase.from("knowledge").select("title, content").limit(8),
+  ]);
 
   const history = (recentMessages || []).reverse();
 
-  const systemPrompt = `You are Tasu, an AI co-founder. You are direct, sharp, and specific. You act like a real co-founder — not a chatbot.
+  // Live data sections (non-blocking — failures are silent)
+  let datafastContext = "";
+  let githubContext = "";
 
-Your personality:
-- You're the co-founder they text at midnight who actually knows their numbers
-- You give ONE concrete action per response, not a list of 10 things
-- You ask for specific numbers when they're vague
-- You call out bullshit gently but firmly
-- You diagnose whether the problem is positioning, conversion, or distribution
-- You don't give generic startup advice — everything is specific to THIS founder's business
-- Keep responses concise. 2-4 paragraphs max. No bullet-point essays.
-- You use casual but sharp language. No corporate speak.
+  if (integration?.datafast_api_key) {
+    try {
+      const endAt = new Date().toISOString().split("T")[0];
+      const startAt = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
+        .toISOString()
+        .split("T")[0];
 
-${profile?.website_url ? `Founder's website: ${profile.website_url}` : ""}
-${profile?.business_context ? `Business context: ${profile.business_context}` : ""}
+      const overviewRes = await fetch(
+        `${DATAFAST_BASE}/overview?startAt=${startAt}&endAt=${endAt}&fields=visitors,sessions,bounce_rate,revenue,revenue_per_visitor,conversion_rate`,
+        { headers: { Authorization: `Bearer ${integration.datafast_api_key}` } }
+      );
 
-If you don't have enough context about their business, ask for it. But don't ask 5 questions at once — pick the one thing you need most.`;
+      if (overviewRes.ok) {
+        const overviewData = await overviewRes.json();
+        const d = overviewData.data?.[0];
+        if (d) {
+          datafastContext = `
+Live DataFast data (last 30 days):
+- Visitors: ${d.visitors ?? "unknown"}
+- Revenue: $${d.revenue ?? "unknown"}
+- Conversion rate: ${d.conversion_rate ?? "unknown"}%
+- Bounce rate: ${d.bounce_rate ?? "unknown"}%
+- Revenue per visitor: $${d.revenue_per_visitor ?? "unknown"}`;
+        }
+      }
+    } catch { /* continue without DataFast */ }
+  }
 
-  const messages = [
-    { role: "system" as const, content: systemPrompt },
-    ...history.map((m: { role: string; content: string }) => ({
-      role: m.role as "user" | "assistant",
-      content: m.content,
-    })),
-    { role: "user" as const, content: message },
-  ];
+  if (integration?.github_repo_url) {
+    try {
+      const repoUrl = integration.github_repo_url.trim().replace(/\.git$/, "");
+      const match =
+        repoUrl.match(/github\.com\/([^/]+)\/([^/]+)/) ||
+        repoUrl.match(/^([^/]+)\/([^/]+)$/);
+
+      if (match) {
+        const [owner, repo] = [match[1], match[2]];
+        const ghHeaders: Record<string, string> = {
+          Accept: "application/vnd.github+json",
+          "X-GitHub-Api-Version": "2022-11-28",
+        };
+        if (integration.github_token) {
+          ghHeaders["Authorization"] = `Bearer ${integration.github_token}`;
+        }
+
+        const [commitsRes, activityRes] = await Promise.all([
+          fetch(`https://api.github.com/repos/${owner}/${repo}/commits?per_page=10`, { headers: ghHeaders }),
+          fetch(`https://api.github.com/repos/${owner}/${repo}/stats/commit_activity`, { headers: ghHeaders }),
+        ]);
+
+        if (commitsRes.ok) {
+          const commits = await commitsRes.json();
+          const weeklyActivity = activityRes.ok ? await activityRes.json() : [];
+          const last4Weeks = Array.isArray(weeklyActivity) ? weeklyActivity.slice(-4) : [];
+          const totalCommits = last4Weeks.reduce((s: number, w: { total: number }) => s + w.total, 0);
+          const lastCommit = Array.isArray(commits) && commits[0]
+            ? new Date(commits[0].commit?.author?.date).toLocaleDateString()
+            : "unknown";
+          const recentMsgs = Array.isArray(commits)
+            ? commits.slice(0, 3).map((c: { commit: { message: string } }) => c.commit?.message?.split("\n")[0]).join(", ")
+            : "";
+
+          githubContext = `
+GitHub activity (${owner}/${repo}):
+- Commits last 30 days: ${totalCommits}
+- Last commit: ${lastCommit}
+- Recent commits: ${recentMsgs}`;
+        }
+      }
+    } catch { /* continue without GitHub */ }
+  }
+
+  const knowledgeSummary = (knowledge || [])
+    .map((k: { title: string; content: string }) => `• ${k.title}: ${k.content?.slice(0, 150)}`)
+    .join("\n");
+
+  const systemPrompt = `You are Tasu, an AI co-founder. Direct, sharp, and specific — like a real co-founder who knows their numbers.
+
+Your rules:
+- Give ONE concrete action per response, not a list
+- Ask for specific numbers when they're vague
+- Call out what's actually wrong, not what they want to hear
+- Diagnose the root blocker: positioning, conversion, distribution, or momentum
+- Keep responses under 200 words. No bullet-point essays.
+- Use casual, sharp language. No corporate speak.
+${profile?.full_name ? `\nFounder: ${profile.full_name}` : ""}
+${profile?.website_url ? `Website: ${profile.website_url}` : ""}
+${profile?.business_context ? `\nBusiness context:\n${profile.business_context}` : ""}
+${datafastContext || "\nDataFast: not connected — ask for traffic and revenue numbers if relevant."}
+${githubContext || "\nGitHub: not connected."}
+${knowledgeSummary ? `\nGrowth strategies to reference:\n${knowledgeSummary}` : ""}
+
+If you need context, ask for the ONE thing you need most. Never ask 5 questions at once.`;
 
   try {
     const response = await fetch("https://api.anthropic.com/v1/messages", {
@@ -69,9 +154,13 @@ If you don't have enough context about their business, ask for it. But don't ask
         model: "claude-sonnet-4-20250514",
         max_tokens: 1024,
         system: systemPrompt,
-        messages: messages
-          .filter((m) => m.role !== "system")
-          .map((m) => ({ role: m.role, content: m.content })),
+        messages: [
+          ...history.map((m: { role: string; content: string }) => ({
+            role: m.role as "user" | "assistant",
+            content: m.content,
+          })),
+          { role: "user" as const, content: message },
+        ],
       }),
     });
 
@@ -81,14 +170,8 @@ If you don't have enough context about their business, ask for it. But don't ask
       return NextResponse.json({ reply: data.content[0].text });
     }
 
-    return NextResponse.json(
-      { error: "No response from AI" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "No response from AI" }, { status: 500 });
   } catch {
-    return NextResponse.json(
-      { error: "Failed to get AI response" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Failed to get AI response" }, { status: 500 });
   }
 }

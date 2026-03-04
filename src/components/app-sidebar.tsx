@@ -15,6 +15,15 @@ const navItems = [
     ),
   },
   {
+    label: "Reports",
+    href: "/report",
+    icon: (
+      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
+      </svg>
+    ),
+  },
+  {
     label: "Project",
     href: "/project",
     icon: (
@@ -63,7 +72,7 @@ export default function AppSidebar() {
       {/* Nav */}
       <nav className="flex-1 px-2 lg:px-3 py-4 space-y-1">
         {navItems.map((item) => {
-          const active = pathname === item.href;
+          const active = pathname === item.href || pathname.startsWith(item.href + "/");
           return (
             <Link
               key={item.href}
@@ -82,7 +91,7 @@ export default function AppSidebar() {
       </nav>
 
       {/* Bottom */}
-      <div className="p-2 lg:p-3 border-t border-cream-dark/50">
+      <div className="p-2 lg:p-3 border-t border-cream-dark/40">
         <button
           onClick={handleSignOut}
           className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-warm-gray hover:bg-cream/50 hover:text-charcoal transition-all w-full"
