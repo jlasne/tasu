@@ -60,9 +60,12 @@ export default function AppSidebar() {
       {/* Logo */}
       <div className="p-4 lg:px-5">
         <Link href="/chat" className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-lg bg-terracotta flex items-center justify-center shrink-0">
-            <span className="text-white text-sm font-bold">T</span>
-          </div>
+          <svg width="32" height="32" viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg" className="shrink-0">
+            <rect x="107" y="107" width="286" height="286" rx="52" fill="#EDE7DF"/>
+            <rect x="124" y="124" width="252" height="252" rx="40" fill="#7D3C1A" transform="rotate(45 250 250)"/>
+            <rect x="150" y="150" width="200" height="200" rx="32" fill="#C75B30" transform="rotate(45 250 250)"/>
+            <rect x="179" y="179" width="142" height="142" rx="26" fill="#EDE7DF" transform="rotate(45 250 250)"/>
+          </svg>
           <span className="text-lg font-bold text-charcoal tracking-tight hidden lg:block">
             tasu
           </span>
