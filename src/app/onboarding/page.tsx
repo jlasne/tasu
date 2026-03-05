@@ -49,8 +49,12 @@ export default function OnboardingPage() {
     <div className="min-h-screen bg-cream flex flex-col items-center justify-center px-6">
       <div className="w-full max-w-md animate-fade-in-up">
         <div className="text-center mb-8">
-          <div className="w-12 h-12 rounded-xl bg-terracotta flex items-center justify-center mx-auto mb-4">
-            <span className="text-white text-lg font-bold">T</span>
+          <div className="flex justify-center mb-4">
+            <svg width="52" height="52" viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="85" y="85" width="330" height="330" rx="56" fill="#7B2C0E" transform="rotate(45 250 250)"/>
+              <rect x="130" y="130" width="240" height="240" rx="40" fill="#C2581C" transform="rotate(45 250 250)"/>
+              <rect x="178" y="178" width="144" height="144" rx="28" fill="#EDE7DF" transform="rotate(45 250 250)"/>
+            </svg>
           </div>
           <h1 className="text-2xl font-bold text-charcoal mb-2">
             Almost there

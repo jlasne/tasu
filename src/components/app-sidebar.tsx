@@ -4,6 +4,16 @@ import { createClient } from "@/lib/supabase/client";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 
+function TasuLogoIcon({ size = 32 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg" className="shrink-0">
+      <rect x="85" y="85" width="330" height="330" rx="56" fill="#7B2C0E" transform="rotate(45 250 250)"/>
+      <rect x="130" y="130" width="240" height="240" rx="40" fill="#C2581C" transform="rotate(45 250 250)"/>
+      <rect x="178" y="178" width="144" height="144" rx="28" fill="#EDE7DF" transform="rotate(45 250 250)"/>
+    </svg>
+  );
+}
+
 const navItems = [
   {
     label: "Chat",
@@ -60,12 +70,7 @@ export default function AppSidebar() {
       {/* Logo */}
       <div className="p-4 lg:px-5">
         <Link href="/chat" className="flex items-center gap-2.5">
-          <svg width="32" height="32" viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg" className="shrink-0">
-            <rect x="107" y="107" width="286" height="286" rx="52" fill="#EDE7DF"/>
-            <rect x="124" y="124" width="252" height="252" rx="40" fill="#7D3C1A" transform="rotate(45 250 250)"/>
-            <rect x="150" y="150" width="200" height="200" rx="32" fill="#C75B30" transform="rotate(45 250 250)"/>
-            <rect x="179" y="179" width="142" height="142" rx="26" fill="#EDE7DF" transform="rotate(45 250 250)"/>
-          </svg>
+          <TasuLogoIcon size={32} />
           <span className="text-lg font-bold text-charcoal tracking-tight hidden lg:block">
             tasu
           </span>
@@ -94,7 +99,23 @@ export default function AppSidebar() {
       </nav>
 
       {/* Bottom */}
-      <div className="p-2 lg:p-3 border-t border-cream-dark/40">
+      <div className="p-2 lg:p-3 border-t border-cream-dark/40 space-y-1">
+        {/* Roadmap */}
+        <Link
+          href="/roadmap"
+          className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all w-full ${
+            pathname === "/roadmap"
+              ? "bg-cream text-charcoal"
+              : "text-warm-gray hover:bg-cream/50 hover:text-charcoal"
+          }`}
+        >
+          <svg className="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M9 6.75V15m6-6v8.25m.503 3.498l4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 00-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0z" />
+          </svg>
+          <span className="hidden lg:block">Roadmap</span>
+        </Link>
+
+        {/* Sign out */}
         <button
           onClick={handleSignOut}
           className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-warm-gray hover:bg-cream/50 hover:text-charcoal transition-all w-full"

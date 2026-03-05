@@ -1,10 +1,5 @@
-<svg viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <!-- Cream axis-aligned background square -->
-  <rect x="107" y="107" width="286" height="286" rx="52" fill="#EDE7DF"/>
-  <!-- Dark brown outer diamond -->
-  <rect x="124" y="124" width="252" height="252" rx="40" fill="#7D3C1A" transform="rotate(45 250 250)"/>
-  <!-- Terracotta middle diamond -->
-  <rect x="150" y="150" width="200" height="200" rx="32" fill="#C75B30" transform="rotate(45 250 250)"/>
-  <!-- Cream inner diamond -->
-  <rect x="179" y="179" width="142" height="142" rx="26" fill="#EDE7DF" transform="rotate(45 250 250)"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" fill="none">
+  <rect x="85" y="85" width="330" height="330" rx="56" fill="#7B2C0E" transform="rotate(45 250 250)"/>
+  <rect x="130" y="130" width="240" height="240" rx="40" fill="#C2581C" transform="rotate(45 250 250)"/>
+  <rect x="178" y="178" width="144" height="144" rx="28" fill="#EDE7DF" transform="rotate(45 250 250)"/>
 </svg>
