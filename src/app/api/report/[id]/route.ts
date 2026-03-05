@@ -20,7 +20,7 @@ export async function PATCH(
 
   // Fetch the report
   const { data: report, error } = await supabase
-    .from("reports")
+    .from("daily_reports")
     .select("suggestions, user_id")
     .eq("id", params.id)
     .single();
@@ -39,7 +39,7 @@ export async function PATCH(
   );
 
   const { error: updateError } = await supabase
-    .from("reports")
+    .from("daily_reports")
     .update({ suggestions: updatedSuggestions })
     .eq("id", params.id);
 

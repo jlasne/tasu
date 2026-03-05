@@ -143,31 +143,39 @@ ${knowledgeSummary ? `\nGrowth strategies to reference:\n${knowledgeSummary}` : 
 If you need context, ask for the ONE thing you need most. Never ask 5 questions at once.`;
 
   try {
-    const response = await fetch("https://api.anthropic.com/v1/messages", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-api-key": process.env.ANTHROPIC_API_KEY!,
-        "anthropic-version": "2023-06-01",
-      },
-      body: JSON.stringify({
-        model: "claude-sonnet-4-20250514",
-        max_tokens: 1024,
-        system: systemPrompt,
-        messages: [
-          ...history.map((m: { role: string; content: string }) => ({
-            role: m.role as "user" | "assistant",
+    const webhookRes = await fetch(
+      "https://n8n.tasu.ai/webhook/04b43191-5e74-4bae-a981-9ef45ac94612",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          user_id: user.id,
+          message,
+          system_prompt: systemPrompt,
+          history: history.map((m: { role: string; content: string }) => ({
+            role: m.role,
             content: m.content,
           })),
-          { role: "user" as const, content: message },
-        ],
-      }),
-    });
+        }),
+      }
+    );
 
-    const data = await response.json();
+    if (!webhookRes.ok) {
+      return NextResponse.json({ error: "Webhook error" }, { status: 500 });
+    }
 
-    if (data.content?.[0]?.text) {
-      return NextResponse.json({ reply: data.content[0].text });
+    const webhookData = await webhookRes.json();
+
+    // n8n can return various shapes — try common fields
+    const reply =
+      webhookData?.reply ||
+      webhookData?.text ||
+      webhookData?.output ||
+      webhookData?.message ||
+      (typeof webhookData === "string" ? webhookData : null);
+
+    if (reply) {
+      return NextResponse.json({ reply });
     }
 
     return NextResponse.json({ error: "No response from AI" }, { status: 500 });
