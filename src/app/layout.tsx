@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import { ThemeProvider } from "@/components/theme-provider";
 import "./globals.css";
 
 const geistSans = localFont({
@@ -14,9 +15,12 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Tasu — AI Co-Founder",
+  title: "Tasu — Your Co-Founder Agent",
   description:
-    "Tasu looks at your real numbers and tells you the next move — not a generic playbook.",
+    "Claude reads code. Tasu reads business. Your data, your stage, one agent aligning everything toward your next MRR jump.",
+  icons: {
+    icon: "/logo.svg",
+  },
 };
 
 export default function RootLayout({
@@ -25,11 +29,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} font-sans antialiased`}
       >
-        {children}
+        <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>
   );

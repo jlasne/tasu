@@ -32,7 +32,7 @@ function LoginForm() {
         email,
         password,
         options: {
-          emailRedirectTo: `${window.location.origin}/auth/callback?next=/chat`,
+          emailRedirectTo: `${window.location.origin}/auth/callback?next=/onboarding`,
           data: {
             full_name: name,
           },
@@ -45,13 +45,12 @@ function LoginForm() {
         return;
       }
 
-      // Save profile with website URL and name
+      // Save initial profile with name
       if (data.user) {
         await supabase.from("profiles").upsert({
           id: data.user.id,
-          website_url: websiteUrl,
           full_name: name,
-          onboarded: true,
+          onboarded: false,
           updated_at: new Date().toISOString(),
         });
       }
@@ -115,9 +114,11 @@ function LoginForm() {
     <div className="min-h-screen bg-cream flex flex-col">
       <nav className="flex items-center justify-between px-6 py-5 max-w-6xl mx-auto w-full">
         <Link href="/" className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg bg-terracotta flex items-center justify-center">
-            <span className="text-white text-sm font-bold">T</span>
-          </div>
+          <svg width={32} height={32} viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="85" y="85" width="330" height="330" rx="56" fill="#7B2C0E" transform="rotate(45 250 250)"/>
+            <rect x="130" y="130" width="240" height="240" rx="40" fill="#C2581C" transform="rotate(45 250 250)"/>
+            <rect x="178" y="178" width="144" height="144" rx="28" fill="#EDE7DF" transform="rotate(45 250 250)"/>
+          </svg>
           <span className="text-xl font-bold text-charcoal tracking-tight">
             tasu
           </span>

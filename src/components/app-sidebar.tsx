@@ -1,6 +1,7 @@
 "use client";
 
 import { createClient } from "@/lib/supabase/client";
+import { useTheme } from "@/components/theme-provider";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 
@@ -34,15 +35,6 @@ const navItems = [
     ),
   },
   {
-    label: "Project",
-    href: "/project",
-    icon: (
-      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 12.75V12A2.25 2.25 0 014.5 9.75h15A2.25 2.25 0 0121.75 12v.75m-8.69-6.44l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z" />
-      </svg>
-    ),
-  },
-  {
     label: "Settings",
     href: "/settings",
     icon: (
@@ -58,6 +50,7 @@ export default function AppSidebar() {
   const pathname = usePathname();
   const router = useRouter();
   const supabase = createClient();
+  const { theme, toggle } = useTheme();
 
   async function handleSignOut() {
     await supabase.auth.signOut();
@@ -66,12 +59,12 @@ export default function AppSidebar() {
   }
 
   return (
-    <aside className="w-14 lg:w-52 bg-white/90 backdrop-blur-sm border-r border-cream-dark/40 flex flex-col shrink-0 h-screen sticky top-0">
+    <aside className="w-14 lg:w-52 bg-white/90 dark:bg-dark-surface/90 backdrop-blur-sm border-r border-cream-dark/40 dark:border-dark-border flex flex-col shrink-0 h-screen sticky top-0">
       {/* Logo */}
       <div className="p-4 lg:px-5">
         <Link href="/chat" className="flex items-center gap-2.5">
           <TasuLogoIcon size={32} />
-          <span className="text-lg font-bold text-charcoal tracking-tight hidden lg:block">
+          <span className="text-lg font-bold text-charcoal dark:text-dark-text tracking-tight hidden lg:block">
             tasu
           </span>
         </Link>
@@ -87,8 +80,8 @@ export default function AppSidebar() {
               href={item.href}
               className={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all text-sm font-medium ${
                 active
-                  ? "bg-cream text-charcoal"
-                  : "text-warm-gray hover:bg-cream/50 hover:text-charcoal"
+                  ? "bg-cream dark:bg-dark-border text-charcoal dark:text-dark-text"
+                  : "text-warm-gray dark:text-dark-muted hover:bg-cream/50 dark:hover:bg-dark-border/50 hover:text-charcoal dark:hover:text-dark-text"
               }`}
             >
               <span className="shrink-0">{item.icon}</span>
@@ -99,14 +92,31 @@ export default function AppSidebar() {
       </nav>
 
       {/* Bottom */}
-      <div className="p-2 lg:p-3 border-t border-cream-dark/40 space-y-1">
+      <div className="p-2 lg:p-3 border-t border-cream-dark/40 dark:border-dark-border space-y-1">
+        {/* Dark mode toggle */}
+        <button
+          onClick={toggle}
+          className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-warm-gray dark:text-dark-muted hover:bg-cream/50 dark:hover:bg-dark-border/50 hover:text-charcoal dark:hover:text-dark-text transition-all w-full"
+        >
+          {theme === "dark" ? (
+            <svg className="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" />
+            </svg>
+          ) : (
+            <svg className="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" />
+            </svg>
+          )}
+          <span className="hidden lg:block">{theme === "dark" ? "Light mode" : "Dark mode"}</span>
+        </button>
+
         {/* Roadmap */}
         <Link
           href="/roadmap"
           className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all w-full ${
             pathname === "/roadmap"
-              ? "bg-cream text-charcoal"
-              : "text-warm-gray hover:bg-cream/50 hover:text-charcoal"
+              ? "bg-cream dark:bg-dark-border text-charcoal dark:text-dark-text"
+              : "text-warm-gray dark:text-dark-muted hover:bg-cream/50 dark:hover:bg-dark-border/50 hover:text-charcoal dark:hover:text-dark-text"
           }`}
         >
           <svg className="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
@@ -118,7 +128,7 @@ export default function AppSidebar() {
         {/* Sign out */}
         <button
           onClick={handleSignOut}
-          className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-warm-gray hover:bg-cream/50 hover:text-charcoal transition-all w-full"
+          className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-warm-gray dark:text-dark-muted hover:bg-cream/50 dark:hover:bg-dark-border/50 hover:text-charcoal dark:hover:text-dark-text transition-all w-full"
         >
           <svg className="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" />

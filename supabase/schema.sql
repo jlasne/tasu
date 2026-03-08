@@ -210,3 +210,81 @@ create index if not exists idx_daily_reports_user_id on public.daily_reports(use
 create index if not exists idx_daily_reports_date on public.daily_reports(date desc);
 create index if not exists idx_roadmap_votes_item_id on public.roadmap_votes(item_id);
 create index if not exists idx_roadmap_votes_user_id on public.roadmap_votes(user_id);
+
+-- ============================================
+-- 9. DATA SNAPSHOTS (raw daily data from providers)
+-- ============================================
+-- Provider-agnostic: "datafast", "stripe", "posthog", etc.
+create table public.data_snapshots (
+  id uuid default gen_random_uuid() primary key,
+  user_id uuid references auth.users on delete cascade not null,
+  provider text not null,          -- "datafast", "github", "stripe", "posthog"
+  date date not null default current_date,
+  raw_data jsonb not null,         -- full API response stored as-is
+  collected_at timestamptz default now(),
+  unique(user_id, provider, date)
+);
+
+alter table public.data_snapshots enable row level security;
+
+create policy "Users can view own snapshots"
+  on public.data_snapshots for select
+  using (auth.uid() = user_id);
+
+create policy "Service can insert snapshots"
+  on public.data_snapshots for insert
+  with check (auth.uid() = user_id);
+
+create index if not exists idx_data_snapshots_user_provider on public.data_snapshots(user_id, provider);
+create index if not exists idx_data_snapshots_date on public.data_snapshots(date desc);
+
+-- ============================================
+-- 10. TASKS (from chat + reports)
+-- ============================================
+create table public.tasks (
+  id uuid default gen_random_uuid() primary key,
+  user_id uuid references auth.users on delete cascade not null,
+  content text not null,
+  done boolean default false,
+  pinned boolean default true,
+  source text default 'chat',      -- "chat", "report"
+  source_id text,                  -- message_id or report_id that created it
+  created_at timestamptz default now(),
+  completed_at timestamptz
+);
+
+alter table public.tasks enable row level security;
+
+create policy "Users own tasks"
+  on public.tasks for all
+  using (auth.uid() = user_id)
+  with check (auth.uid() = user_id);
+
+create index if not exists idx_tasks_user_id on public.tasks(user_id);
+create index if not exists idx_tasks_done on public.tasks(user_id, done);
+
+-- ============================================
+-- 11. INTEGRATION REQUESTS (user wants a new integration)
+-- ============================================
+create table public.integration_requests (
+  id uuid default gen_random_uuid() primary key,
+  user_id uuid references auth.users on delete cascade not null,
+  tool_name text not null,         -- e.g. "stripe", "posthog", "plausible"
+  details text,
+  created_at timestamptz default now()
+);
+
+alter table public.integration_requests enable row level security;
+
+create policy "Users can insert own integration requests"
+  on public.integration_requests for insert
+  with check (auth.uid() = user_id);
+
+create policy "Users can view own integration requests"
+  on public.integration_requests for select
+  using (auth.uid() = user_id);
+
+-- ============================================
+-- 12. ADD self_reported_mrr TO PROFILES
+-- ============================================
+alter table public.profiles add column if not exists self_reported_mrr integer;

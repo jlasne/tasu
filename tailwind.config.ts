@@ -6,6 +6,7 @@ const config: Config = {
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
+  darkMode: "class",
   theme: {
     extend: {
       colors: {
@@ -15,6 +16,12 @@ const config: Config = {
         terracotta: "#C75B30",
         "terracotta-dark": "#A84A25",
         "warm-gray": "#6B6560",
+        // Dark mode palette
+        "dark-bg": "#111110",
+        "dark-surface": "#1A1918",
+        "dark-border": "#2A2826",
+        "dark-text": "#E8E4DF",
+        "dark-muted": "#8A857F",
       },
       fontFamily: {
         sans: ["var(--font-geist-sans)", "system-ui", "sans-serif"],
