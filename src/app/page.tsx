@@ -50,15 +50,9 @@ function FAQItem({ q, a }: { q: string; a: string }) {
   const [open, setOpen] = useState(false);
   return (
     <div className="border-b border-[#E8E0D8] last:border-0">
-      <button
-        onClick={() => setOpen(!open)}
-        className="w-full flex items-center justify-between py-5 text-left gap-4"
-      >
+      <button onClick={() => setOpen(!open)} className="w-full flex items-center justify-between py-5 text-left gap-4">
         <span className="text-[15px] font-medium text-charcoal">{q}</span>
-        <svg
-          className={`w-5 h-5 text-warm-gray shrink-0 transition-transform ${open ? "rotate-180" : ""}`}
-          fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}
-        >
+        <svg className={`w-5 h-5 text-warm-gray shrink-0 transition-transform ${open ? "rotate-180" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
         </svg>
       </button>
@@ -71,36 +65,42 @@ function FAQItem({ q, a }: { q: string; a: string }) {
 
 /* ── Plan card ── */
 function PlanCard({
-  name, price, period = "/mo", description, features, cta, highlighted = false,
+  name, price, launchPrice, period = "/mo", description, features, cta, highlighted = false, badge,
 }: {
-  name: string; price: string; period?: string; description: string;
-  features: string[]; cta: string; highlighted?: boolean;
+  name: string; price: string; launchPrice?: string; period?: string; description: string;
+  features: string[]; cta: string; highlighted?: boolean; badge?: string;
 }) {
   return (
     <div className={`relative rounded-3xl p-8 flex flex-col ${
-      highlighted
-        ? "bg-charcoal text-cream shadow-2xl scale-[1.03]"
-        : "bg-white border border-[#E8E0D8]"
+      highlighted ? "bg-charcoal text-cream shadow-2xl scale-[1.03]" : "bg-white border border-[#E8E0D8]"
     }`}>
-      {highlighted && (
+      {badge && (
         <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
-          <span className="bg-terracotta text-white text-[11px] font-semibold px-4 py-1.5 rounded-full">
-            Most popular
-          </span>
+          <span className="bg-terracotta text-white text-[11px] font-semibold px-4 py-1.5 rounded-full whitespace-nowrap">{badge}</span>
         </div>
       )}
       <div className="mb-6">
         <p className={`text-xs font-semibold uppercase tracking-widest mb-2 ${highlighted ? "text-cream/60" : "text-warm-gray"}`}>{name}</p>
-        <div className="flex items-end gap-1">
-          <span className={`text-4xl font-bold ${highlighted ? "text-cream" : "text-charcoal"}`}>{price}</span>
-          <span className={`text-sm mb-1 ${highlighted ? "text-cream/60" : "text-warm-gray"}`}>{period}</span>
+        <div className="flex items-end gap-2">
+          {launchPrice ? (
+            <>
+              <span className={`text-4xl font-bold ${highlighted ? "text-cream" : "text-charcoal"}`}>{launchPrice}</span>
+              <span className={`text-lg line-through mb-1 ${highlighted ? "text-cream/30" : "text-warm-gray/40"}`}>{price}</span>
+              <span className={`text-sm mb-1 ${highlighted ? "text-cream/60" : "text-warm-gray"}`}>{period}</span>
+            </>
+          ) : (
+            <>
+              <span className={`text-4xl font-bold ${highlighted ? "text-cream" : "text-charcoal"}`}>{price}</span>
+              <span className={`text-sm mb-1 ${highlighted ? "text-cream/60" : "text-warm-gray"}`}>{period}</span>
+            </>
+          )}
         </div>
         <p className={`text-sm mt-2 leading-relaxed ${highlighted ? "text-cream/70" : "text-warm-gray"}`}>{description}</p>
       </div>
       <ul className="space-y-3 flex-1 mb-8">
         {features.map((f) => (
           <li key={f} className="flex items-start gap-2.5 text-sm">
-            <svg className={`w-4 h-4 mt-0.5 shrink-0 ${highlighted ? "text-terracotta" : "text-terracotta"}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+            <svg className="w-4 h-4 mt-0.5 shrink-0 text-terracotta" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
             </svg>
             <span className={highlighted ? "text-cream/80" : "text-charcoal"}>{f}</span>
@@ -124,15 +124,15 @@ function PlanCard({
 export default function LandingPage() {
   const heroReveal = useReveal(0);
   const dashReveal = useReveal(0.1);
+  const whyReveal = useReveal(0.1);
+  const howReveal = useReveal(0.1);
+  const socialReveal = useReveal(0.1);
   const pricingReveal = useReveal(0.1);
   const faqReveal = useReveal(0.1);
-  const foundersReveal = useReveal(0.1);
 
   const visitorsCount = useCounter(12847, 1800, dashReveal.visible);
   const revenueCount = useCounter(4280, 1800, dashReveal.visible);
   const commitsCount = useCounter(47, 1600, dashReveal.visible);
-
-  const founders = ["@marclou", "@tibo_maker", "@robj3d3", "@romanbuildsaas"];
 
   return (
     <div className="min-h-screen bg-[#F5F0EA] text-charcoal font-sans">
@@ -162,29 +162,26 @@ export default function LandingPage() {
       <section className="max-w-5xl mx-auto px-5 pt-20 pb-16 text-center" ref={heroReveal.ref}>
         <div className={`transition-all duration-700 ${heroReveal.visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}>
 
-          {/* Early access badge */}
           <div className="inline-flex items-center gap-2 bg-white border border-[#E8E0D8] rounded-full px-4 py-2 mb-8 shadow-sm">
             <span className="w-2 h-2 rounded-full bg-terracotta animate-pulse" />
-            <span className="text-xs font-semibold text-charcoal tracking-wide uppercase">Early Access — Limited spots</span>
+            <span className="text-xs font-semibold text-charcoal tracking-wide uppercase">Your Co-Founder Agent</span>
           </div>
 
           <h1 className="text-5xl sm:text-6xl md:text-7xl font-bold leading-[1.05] tracking-tight text-charcoal mb-6">
-            Keep 100% of your company.<br />
-            <span className="text-terracotta">Grow with an AI co-founder.</span>
+            Grow like a founder<br />
+            <span className="text-terracotta">who already made it.</span>
           </h1>
 
-          <p className="text-lg sm:text-xl text-warm-gray leading-relaxed max-w-2xl mx-auto mb-4">
-            With Tasu you keep 100% of your company with an AI expert co-founder that leads you to your next revenue milestone.
+          <p className="text-lg sm:text-xl text-warm-gray leading-relaxed max-w-2xl mx-auto mb-3">
+            Trained on successful makers, Tasu reads your business, revenue, traffic, and code — so it actually makes you grow.
           </p>
 
-          <p className="text-sm text-warm-gray/70 max-w-xl mx-auto mb-10">
-            Trained by successful founders like{" "}
-            {founders.map((f, i) => (
-              <span key={f}>
-                <span className="font-semibold text-charcoal">{f}</span>
-                {i < founders.length - 1 ? ", " : " and more."}
-              </span>
-            ))}
+          <p className="text-base text-charcoal/70 max-w-xl mx-auto mb-4 font-medium">
+            Claude reads code. Tasu reads business.
+          </p>
+
+          <p className="text-sm text-warm-gray/70 max-w-lg mx-auto mb-10">
+            Your data, your stage, one agent aligning everything toward your next MRR jump.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
@@ -192,10 +189,49 @@ export default function LandingPage() {
               href="/login"
               className="bg-charcoal hover:bg-charcoal/90 text-cream font-semibold px-8 py-4 rounded-xl text-base transition-all hover:scale-[1.02] active:scale-[0.98] shadow-lg"
             >
-              Request early access →
+              Start growing now
             </Link>
             <p className="text-xs text-warm-gray/60">No credit card required</p>
           </div>
+        </div>
+      </section>
+
+      {/* ── How It Reads You ── */}
+      <section className="max-w-5xl mx-auto px-5 pb-20" ref={howReveal.ref}>
+        <div className={`transition-all duration-700 ${howReveal.visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
+          <p className="text-center text-xs font-semibold uppercase tracking-widest text-warm-gray/60 mb-3">How It Reads You</p>
+          <h2 className="text-3xl sm:text-4xl font-bold text-charcoal text-center mb-12">Connect. Diagnose. Act.</h2>
+
+          <div className="grid sm:grid-cols-3 gap-6">
+            {[
+              {
+                step: "01",
+                title: "Connect your data",
+                desc: "Revenue, traffic, and code. Tasu reads from DataFast, GitHub, and more as integrations grow.",
+              },
+              {
+                step: "02",
+                title: "Tasu diagnoses",
+                desc: "What's holding your growth back — positioning, conversion, distribution, or velocity.",
+              },
+              {
+                step: "03",
+                title: "You act daily",
+                desc: "Stage-based strategies proven to work for founders at your level. One sharp action per day.",
+              },
+            ].map((card) => (
+              <div key={card.step} className="bg-white rounded-2xl border border-[#E8E0D8] p-6 hover:shadow-md transition-shadow">
+                <span className="text-xs font-bold text-terracotta">{card.step}</span>
+                <h3 className="text-base font-semibold text-charcoal mt-2 mb-2">{card.title}</h3>
+                <p className="text-sm text-warm-gray leading-relaxed">{card.desc}</p>
+              </div>
+            ))}
+          </div>
+
+          <p className="text-center text-sm text-warm-gray/60 mt-8">
+            Adding more connections as Tasu evolves. Your opinion matters —{" "}
+            <Link href="/login" className="text-terracotta hover:underline font-medium">tell us what you need</Link>.
+          </p>
         </div>
       </section>
 
@@ -203,12 +239,6 @@ export default function LandingPage() {
       <section className="max-w-5xl mx-auto px-5 pb-20" ref={dashReveal.ref}>
         <div className={`transition-all duration-700 delay-100 ${dashReveal.visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
 
-          {/* Section label */}
-          <p className="text-center text-xs font-semibold uppercase tracking-widest text-warm-gray/60 mb-8">
-            Your co-founder reads everything — every morning
-          </p>
-
-          {/* Animated metrics grid */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
             <div className="bg-white rounded-2xl border border-[#E8E0D8] p-5 shadow-sm">
               <div className="flex items-center gap-2 mb-1">
@@ -216,18 +246,16 @@ export default function LandingPage() {
                 <span className="text-[10px] bg-[#F0EAE2] text-warm-gray px-2 py-0.5 rounded-full">DataFast</span>
               </div>
               <p className="text-3xl font-bold text-charcoal">{visitorsCount.toLocaleString()}</p>
-              <p className="text-xs text-green-600 mt-1 font-medium">↑ 14% vs last month</p>
+              <p className="text-xs text-green-600 mt-1 font-medium">+14% vs last month</p>
             </div>
-
             <div className="bg-white rounded-2xl border border-[#E8E0D8] p-5 shadow-sm">
               <div className="flex items-center gap-2 mb-1">
                 <span className="text-xs font-medium text-warm-gray uppercase tracking-wide">Revenue (30d)</span>
-                <span className="text-[10px] bg-[#F0EAE2] text-warm-gray px-2 py-0.5 rounded-full">Stripe</span>
+                <span className="text-[10px] bg-[#F0EAE2] text-warm-gray px-2 py-0.5 rounded-full">DataFast</span>
               </div>
               <p className="text-3xl font-bold text-charcoal">${revenueCount.toLocaleString()}</p>
-              <p className="text-xs text-green-600 mt-1 font-medium">↑ 23% vs last month</p>
+              <p className="text-xs text-green-600 mt-1 font-medium">+23% vs last month</p>
             </div>
-
             <div className="bg-white rounded-2xl border border-[#E8E0D8] p-5 shadow-sm">
               <div className="flex items-center gap-2 mb-1">
                 <span className="text-xs font-medium text-warm-gray uppercase tracking-wide">Commits (30d)</span>
@@ -242,15 +270,13 @@ export default function LandingPage() {
           <div className="bg-charcoal rounded-2xl p-6 text-cream relative overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-br from-charcoal to-[#1a1210] opacity-80" />
             <div className="relative flex items-start gap-4">
-              <div className="shrink-0 mt-0.5">
-                <TasuLogo size={36} />
-              </div>
+              <div className="shrink-0 mt-0.5"><TasuLogo size={36} /></div>
               <div>
                 <p className="text-[11px] font-semibold uppercase tracking-widest text-cream/40 mb-2">Tasu · Daily report</p>
                 <p className="text-[15px] leading-relaxed text-cream/90">
                   Your traffic is up 14% but conversion is stuck at{" "}
                   <span className="text-terracotta font-semibold">2.8%</span>.
-                  You shipped 47 commits this month yet revenue growth is half your traffic growth.{" "}
+                  You shipped 47 commits yet revenue growth is half your traffic growth.{" "}
                   <span className="text-cream font-semibold">The gap is your landing page copy — it speaks to builders, not buyers.</span>{" "}
                   Rewrite the hero today.
                 </p>
@@ -264,18 +290,65 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* ── "Why don't you grow?" ── */}
+      <section className="max-w-5xl mx-auto px-5 py-24" ref={whyReveal.ref}>
+        <div className={`transition-all duration-700 ${whyReveal.visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}>
+          <div className="text-center mb-14">
+            <p className="text-xs font-semibold uppercase tracking-widest text-warm-gray/50 mb-3">Signal over noise</p>
+            <h2 className="text-3xl sm:text-4xl font-bold text-charcoal mb-4">{`"Why don't you grow?"`}</h2>
+            <p className="text-base text-warm-gray max-w-2xl mx-auto leading-relaxed">
+              {`You've watched other founders blow up while you're stuck tweaking your landing page again. Tasu ends the guessing game — shows why growth isn't happening, and how to fix it.`}
+            </p>
+          </div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[
+              { title: "10x your traffic quality", desc: "Tasu reads sources, spots leaks, and reroutes to high-converting channels." },
+              { title: "Double your conversions", desc: "Analyzes customer paths and pricing to unlock hidden revenue fast." },
+              { title: "Ship features that stick", desc: "Tracks your code deploys and predicts what drives retention and growth." },
+              { title: "Scale to $10k MRR", desc: "Matches your stage to proven strategies from @marclou, @tibo_maker, @robj3d3 and more." },
+              { title: "End $0 launches", desc: "Delivers stage-specific fixes so you act on real blockers, not generic noise." },
+              { title: "Reach milestones faster", desc: "Your AI co-founder evolves with your data for precision and clarity that compounds." },
+            ].map((card) => (
+              <div key={card.title} className="bg-white rounded-2xl border border-[#E8E0D8] p-6 hover:shadow-md transition-shadow">
+                <h3 className="text-base font-semibold text-charcoal mb-2">{card.title}</h3>
+                <p className="text-sm text-warm-gray leading-relaxed">{card.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Social proof / Trained on ── */}
+      <section className="bg-white border-y border-[#E8E0D8] py-14 px-5" ref={socialReveal.ref}>
+        <div className={`max-w-4xl mx-auto text-center transition-all duration-700 ${socialReveal.visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}>
+          <p className="text-xs font-semibold uppercase tracking-widest text-warm-gray/50 mb-6">Trained on strategies from proven makers</p>
+          <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 mb-6">
+            {["@marclou", "@tibo_maker", "@robj3d3", "@romanbuildsaas"].map((f) => (
+              <span key={f} className="text-base font-semibold text-charcoal/70 hover:text-charcoal transition-colors cursor-default">{f}</span>
+            ))}
+            <span className="text-warm-gray/50 text-sm">and many more</span>
+          </div>
+          <p className="text-sm text-warm-gray max-w-lg mx-auto leading-relaxed">
+            Tasu learns what actually worked for them at every growth stage and adapts it to you. Growth systems, decision models, and tested sequences — not generic advice.
+          </p>
+        </div>
+      </section>
+
       {/* ── Data sources ── */}
-      <section className="border-y border-[#E8E0D8] bg-white py-10">
+      <section className="border-b border-[#E8E0D8] bg-[#F5F0EA] py-10">
         <div className="max-w-5xl mx-auto px-5">
           <p className="text-center text-xs font-semibold uppercase tracking-widest text-warm-gray/50 mb-8">Connected to your tools</p>
           <div className="flex flex-wrap items-center justify-center gap-10">
             {[
-              { name: "DataFast", sub: "Traffic & Revenue", emoji: "📊" },
-              { name: "Stripe", sub: "via DataFast", emoji: "💳" },
-              { name: "GitHub", sub: "Shipping Activity", emoji: "⚙️" },
+              { name: "DataFast", sub: "Traffic & Revenue" },
+              { name: "GitHub", sub: "Shipping Activity" },
+              { name: "Stripe", sub: "Coming soon" },
+              { name: "PostHog", sub: "Coming soon" },
             ].map((src) => (
               <div key={src.name} className="flex items-center gap-3 group">
-                <div className="w-10 h-10 rounded-xl bg-[#F5F0EA] flex items-center justify-center text-xl">{src.emoji}</div>
+                <div className="w-10 h-10 rounded-xl bg-white border border-[#E8E0D8] flex items-center justify-center text-sm font-bold text-charcoal/60">
+                  {src.name.slice(0, 2).toUpperCase()}
+                </div>
                 <div>
                   <p className="text-sm font-semibold text-charcoal">{src.name}</p>
                   <p className="text-xs text-warm-gray">{src.sub}</p>
@@ -286,107 +359,59 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ── What you get ── */}
-      <section className="max-w-5xl mx-auto px-5 py-24">
-        <div className="text-center mb-14" ref={foundersReveal.ref}>
-          <div className={`transition-all duration-700 ${foundersReveal.visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}>
-            <p className="text-xs font-semibold uppercase tracking-widest text-warm-gray/50 mb-3">What Tasu reads — every day</p>
-            <h2 className="text-3xl sm:text-4xl font-bold text-charcoal">All correlated together.<br />One sharp decision.</h2>
-          </div>
-        </div>
-        <div className="grid sm:grid-cols-3 gap-6">
-          {[
-            {
-              icon: "📊",
-              title: "Revenue & traffic",
-              desc: "MRR, visitor count, conversion rate, bounce rate, and where your best traffic actually comes from — all via DataFast.",
-            },
-            {
-              icon: "⚙️",
-              title: "Code & shipping",
-              desc: "Commit frequency, what you shipped this week, and whether your velocity matches your revenue goals.",
-            },
-            {
-              icon: "🧠",
-              title: "Founder playbooks",
-              desc: "The sharpest 2025 growth tactics on positioning, distribution, and conversion — matched to your current revenue stage.",
-            },
-          ].map((card) => (
-            <div key={card.title} className="bg-white rounded-2xl border border-[#E8E0D8] p-6 hover:shadow-md transition-shadow">
-              <div className="text-3xl mb-4">{card.icon}</div>
-              <h3 className="text-base font-semibold text-charcoal mb-2">{card.title}</h3>
-              <p className="text-sm text-warm-gray leading-relaxed">{card.desc}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
       {/* ── Pricing ── */}
       <section className="bg-[#F0EAE2] py-24 px-5" ref={pricingReveal.ref}>
-        <div className={`max-w-5xl mx-auto transition-all duration-700 ${pricingReveal.visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}>
-          <div className="text-center mb-14">
+        <div className={`max-w-4xl mx-auto transition-all duration-700 ${pricingReveal.visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}>
+          <div className="text-center mb-4">
+            <div className="inline-flex items-center gap-2 bg-white border border-[#E8E0D8] rounded-full px-3 py-1.5 mb-4 shadow-sm">
+              <svg className="w-3.5 h-3.5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+              </svg>
+              <span className="text-xs font-semibold text-charcoal">Read-only access. Your data stays yours.</span>
+            </div>
             <p className="text-xs font-semibold uppercase tracking-widest text-warm-gray/50 mb-3">Pricing</p>
             <h2 className="text-3xl sm:text-4xl font-bold text-charcoal">Simple, founder-first pricing</h2>
             <p className="text-warm-gray mt-3 text-base">No VC dilution. No equity. Just the co-founder expertise you need.</p>
           </div>
 
-          <div className="grid sm:grid-cols-3 gap-6 items-center">
+          <p className="text-center text-sm text-terracotta font-semibold mb-10">
+            Launch price for the first 100 founders — then it goes up.
+          </p>
+
+          <div className="grid sm:grid-cols-2 gap-6 items-center max-w-3xl mx-auto">
             <PlanCard
               name="Starter"
-              price="€9"
-              description="Daily intelligence reports from your integrations. No fluff, just the numbers and one sharp action."
+              price="€19"
+              description="Daily intelligence reports from your data. Clarity delivered every morning."
               features={[
                 "Daily AI report every morning",
-                "DataFast revenue & traffic",
-                "GitHub shipping activity",
-                "Website + knowledge context",
-                "Actionable suggestions",
+                "DataFast + GitHub integration",
+                "Revenue, traffic & code analysis",
+                "Actionable daily suggestions",
+                "Task tracking",
               ]}
               cta="Start with Starter"
             />
             <PlanCard
-              name="Pro"
-              price="€29"
-              description="Everything in Starter plus 100 chat credits per week to go deeper on any topic."
+              name="Founder"
+              price="€39"
+              launchPrice="€19"
+              description="Everything in Starter plus your AI co-founder on demand. Chat, strategize, execute."
               features={[
                 "Everything in Starter",
-                "100 chat credits / week",
-                "AI co-founder on demand",
+                "Unlimited co-founder chat",
                 "Revenue-aware advice",
-                "Positioning & conversion help",
+                "Stage-matched growth strategies",
+                "Priority new integrations",
               ]}
-              cta="Start Pro — 7 days free"
+              cta="Claim launch price"
               highlighted
-            />
-            <PlanCard
-              name="Plus"
-              price="€59"
-              description="For founders moving fast. 1000 chat credits a week and priority access to new features."
-              features={[
-                "Everything in Pro",
-                "1 000 chat credits / week",
-                "Priority feature access",
-                "Early access to new playbooks",
-                "Founder community access",
-              ]}
-              cta="Start with Plus"
+              badge="First 100 — 50% off"
             />
           </div>
-        </div>
-      </section>
 
-      {/* ── Social proof strip ── */}
-      <section className="bg-white border-y border-[#E8E0D8] py-14 px-5">
-        <div className="max-w-4xl mx-auto text-center">
-          <p className="text-xs font-semibold uppercase tracking-widest text-warm-gray/50 mb-6">Built on knowledge from</p>
-          <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3">
-            {founders.map((f) => (
-              <span key={f} className="text-base font-semibold text-charcoal/70 hover:text-charcoal transition-colors cursor-default">{f}</span>
-            ))}
-            <span className="text-warm-gray/50 text-sm">and many more</span>
-          </div>
-          <p className="mt-6 text-sm text-warm-gray max-w-lg mx-auto leading-relaxed">
-            The playbooks, frameworks, and mental models that helped these indie founders go from $0 to their first $10k MRR — built into every report and conversation.
+          <p className="text-center text-xs text-warm-gray/50 mt-6">
+            Or go lifetime: <span className="font-semibold text-charcoal">€200</span> for the Founder plan — forever. Limited spots.
           </p>
         </div>
       </section>
@@ -402,27 +427,27 @@ export default function LandingPage() {
             {[
               {
                 q: "What exactly is Tasu?",
-                a: "Tasu is an AI co-founder — not a chatbot. It reads your revenue, traffic, and GitHub activity every morning and gives you one sharp action to take. It thinks like a founder who's been there before.",
+                a: "Tasu is an AI co-founder agent — not a chatbot. It reads your revenue, traffic, and GitHub activity every morning and gives you one sharp action to take. It thinks like a founder who's been there before.",
               },
               {
-                q: "How does Tasu read my revenue?",
-                a: "Tasu connects to DataFast, which aggregates your Stripe revenue, visitor data, conversion rate, bounce rate, and traffic sources. Setup takes under 5 minutes.",
+                q: "How does Tasu read my data?",
+                a: "Read-only API keys. We connect to DataFast for revenue and traffic, and GitHub for commit activity. We never write, modify, or take admin actions on your accounts.",
               },
               {
                 q: "Do I need DataFast or GitHub?",
-                a: "They're optional but highly recommended. Without integrations, Tasu still works — but the daily reports are based on your context and founder playbooks only, not live data.",
+                a: "They're optional but recommended. Without integrations, Tasu still works with your self-reported data and founder playbooks — but live data makes reports much sharper.",
               },
               {
-                q: "What are chat credits?",
-                a: "Chat credits are used when you have a conversation with Tasu. Each message exchange costs one credit. Starter plan has no chat — you get the daily report only. Pro gets 100/week, Plus gets 1000/week.",
+                q: "What makes this different from ChatGPT?",
+                a: "ChatGPT gives generic advice. Tasu reads YOUR numbers every morning — your actual revenue, traffic sources, conversion rate, commit velocity — and tells you the ONE thing to fix today based on strategies that worked for founders at your exact stage.",
               },
               {
                 q: "Is my data safe?",
-                a: "Yes. We use read-only API keys for DataFast and GitHub. We never write to your accounts, and your data is never shared or used to train models.",
+                a: "Yes. Read-only API keys only. We never write to your accounts, never share your data, and never use it to train models. Your numbers stay private.",
               },
               {
                 q: "Can I cancel anytime?",
-                a: "Yes. No lock-in, no annual commitment required. Cancel from your account settings at any time and you won't be charged again.",
+                a: "Yes. No lock-in, no annual commitment. Cancel from your account settings at any time.",
               },
             ].map((item) => (
               <FAQItem key={item.q} q={item.q} a={item.a} />
@@ -434,20 +459,18 @@ export default function LandingPage() {
       {/* ── Final CTA ── */}
       <section className="bg-charcoal py-24 px-5 text-center">
         <div className="max-w-2xl mx-auto">
-          <div className="flex justify-center mb-6">
-            <TasuLogo size={52} />
-          </div>
+          <div className="flex justify-center mb-6"><TasuLogo size={52} /></div>
           <h2 className="text-3xl sm:text-4xl font-bold text-cream mb-4">
-            Stop guessing. Start growing.
+            Start growing like a founder<br />who already made it.
           </h2>
           <p className="text-cream/60 text-base mb-8 leading-relaxed">
-            Early access is limited. Join now and get your first daily report within 24 hours of setup.
+            Early access is limited to 100 founders. Claim your spot and get your first daily report within 24 hours.
           </p>
           <Link
             href="/login"
             className="inline-flex items-center gap-2 bg-terracotta hover:bg-terracotta-dark text-white font-semibold px-8 py-4 rounded-xl text-base transition-all hover:scale-[1.02] active:scale-[0.98] shadow-lg"
           >
-            Request early access
+            Start growing now
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
             </svg>
@@ -462,7 +485,7 @@ export default function LandingPage() {
             <TasuLogo size={20} />
             <span className="font-semibold text-cream/50">tasu</span>
           </div>
-          <p>© {new Date().getFullYear()} Tasu. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} Tasu. All rights reserved.</p>
           <div className="flex items-center gap-5">
             <Link href="/privacy" className="hover:text-cream/60 transition-colors">Privacy</Link>
             <a href="https://x.com/tasu_ai" target="_blank" rel="noopener noreferrer" className="hover:text-cream/60 transition-colors">X / Twitter</a>
