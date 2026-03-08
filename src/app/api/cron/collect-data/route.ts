@@ -24,7 +24,11 @@ export async function GET(req: NextRequest) {
   // Verify cron secret to prevent unauthorized calls
   const authHeader = req.headers.get("authorization");
   if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    return NextResponse.json({ error: "Unauthorized", hint: !process.env.CRON_SECRET ? "CRON_SECRET not set" : "Token mismatch" }, { status: 401 });
+  }
+
+  if (!process.env.SUPABASE_SERVICE_ROLE_KEY) {
+    return NextResponse.json({ error: "SUPABASE_SERVICE_ROLE_KEY not set" }, { status: 500 });
   }
 
   const supabase = getServiceClient();
@@ -36,7 +40,7 @@ export async function GET(req: NextRequest) {
     .select("user_id, datafast_api_key, github_repo_url, github_token");
 
   if (intError || !integrations) {
-    return NextResponse.json({ error: "Failed to fetch integrations" }, { status: 500 });
+    return NextResponse.json({ error: "Failed to fetch integrations", detail: intError?.message ?? "null result" }, { status: 500 });
   }
 
   const results: { user_id: string; datafast: boolean; github: boolean }[] = [];
