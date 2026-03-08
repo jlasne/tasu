@@ -11,6 +11,8 @@ export default function SettingsPage() {
   const [githubToken, setGithubToken] = useState("");
   const [datafastConnected, setDatafastConnected] = useState(false);
   const [githubConnected, setGithubConnected] = useState(false);
+  const [integrationRequest, setIntegrationRequest] = useState("");
+  const [requestSent, setRequestSent] = useState(false);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -181,6 +183,40 @@ export default function SettingsPage() {
       >
         {saving ? "Saving..." : saved ? "Saved" : "Save all"}
       </button>
+
+      {/* Request a new integration */}
+      <div className="bg-white dark:bg-dark-surface rounded-xl border border-cream-dark dark:border-dark-border p-4 space-y-3">
+        <p className="text-xs font-semibold text-warm-gray dark:text-dark-muted uppercase tracking-wide">Request a new integration</p>
+        <p className="text-xs text-warm-gray dark:text-dark-muted leading-relaxed">
+          Want Stripe, PostHog, or something else? Tell us what you need and we&apos;ll prioritize it.
+        </p>
+        <textarea
+          value={integrationRequest}
+          onChange={(e) => setIntegrationRequest(e.target.value)}
+          rows={2}
+          className={`${inputCls} resize-none`}
+          placeholder="e.g. Stripe for payment data, PostHog for product analytics..."
+        />
+        <button
+          onClick={async () => {
+            if (!integrationRequest.trim()) return;
+            const { data: { user } } = await supabase.auth.getUser();
+            if (!user) return;
+            await supabase.from("integration_requests").insert({
+              user_id: user.id,
+              tool_name: integrationRequest.trim().split(/[\s,]/)[0],
+              details: integrationRequest.trim(),
+            });
+            setRequestSent(true);
+            setIntegrationRequest("");
+            setTimeout(() => setRequestSent(false), 3000);
+          }}
+          disabled={!integrationRequest.trim() || requestSent}
+          className="text-sm font-medium px-4 py-2 rounded-lg bg-cream dark:bg-dark-border hover:bg-cream-dark dark:hover:bg-dark-muted/20 text-charcoal dark:text-dark-text border border-cream-dark dark:border-dark-border transition-all disabled:opacity-50"
+        >
+          {requestSent ? "Sent! We\u2019ll look into it." : "Send request"}
+        </button>
+      </div>
     </div>
   );
 }

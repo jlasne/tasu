@@ -12,17 +12,31 @@ export async function GET(request: NextRequest) {
     const supabase = createClient();
     const { error, data } = await supabase.auth.exchangeCodeForSession(code);
     if (!error && data.user) {
+      // Check if user already has a profile
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("onboarded")
+        .eq("id", data.user.id)
+        .single();
+
       // Save profile data if provided (from sign-up flow)
       if (websiteUrl || name) {
         await supabase.from("profiles").upsert({
           id: data.user.id,
           ...(websiteUrl ? { website_url: websiteUrl } : {}),
           ...(name ? { full_name: name } : {}),
-          onboarded: true,
+          onboarded: false,
           updated_at: new Date().toISOString(),
         });
       }
-      return NextResponse.redirect(`${origin}${next}`);
+
+      // New users or non-onboarded users go to onboarding
+      if (!profile || !profile.onboarded) {
+        return NextResponse.redirect(`${origin}/onboarding`);
+      }
+
+      // Existing onboarded users go to their intended destination
+      return NextResponse.redirect(`${origin}${next === "/onboarding" ? "/chat" : next}`);
     }
   }
 

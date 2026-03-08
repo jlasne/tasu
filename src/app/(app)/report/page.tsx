@@ -198,10 +198,7 @@ export default function ReportPage() {
     await supabase.from("tasks").update({ done: true, completed_at: new Date().toISOString() }).eq("id", taskId);
   }
 
-  const missingDatafast = !integration?.datafast_api_key;
-  const missingGithub = !integration?.github_repo_url;
-  const hasMissing = missingDatafast || missingGithub;
-  const missing = [missingDatafast && "DataFast", missingGithub && "GitHub"].filter(Boolean).join(" and ");
+  const hasMissing = !integration?.datafast_api_key || !integration?.github_repo_url;
 
   return (
     <div className="flex-1 overflow-y-auto bg-cream dark:bg-dark-bg">
@@ -241,8 +238,8 @@ export default function ReportPage() {
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
             </svg>
             <span className="text-amber-800 dark:text-amber-200">
-              Connect <span className="font-semibold">{missing}</span> for richer reports.{" "}
-              <Link href="/settings" className="underline font-medium hover:text-amber-900 dark:hover:text-amber-100">Settings</Link>
+              Connect DataFast &amp; GitHub for live data.{" "}
+              <Link href="/settings" className="underline font-semibold hover:text-amber-900 dark:hover:text-amber-100">Settings</Link>
             </span>
           </div>
         )}

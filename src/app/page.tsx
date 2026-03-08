@@ -135,10 +135,17 @@ export default function LandingPage() {
   const commitsCount = useCounter(47, 1600, dashReveal.visible);
 
   return (
-    <div className="min-h-screen bg-[#F5F0EA] text-charcoal font-sans">
+    <div className="min-h-screen text-charcoal font-sans">
+
+      {/* ── Dot grid background (aicofounder style) ── */}
+      <div className="fixed inset-0 -z-10" style={{
+        backgroundColor: "#F5F0EA",
+        backgroundImage: "radial-gradient(circle, #c8c5be 1px, transparent 1px)",
+        backgroundSize: "24px 24px",
+      }} />
 
       {/* ── Nav ── */}
-      <header className="sticky top-0 z-50 bg-[#F5F0EA]/90 backdrop-blur-md border-b border-[#E8E0D8]/60">
+      <header className="sticky top-0 z-50 backdrop-blur-xl border-b border-[#E8E0D8]/60" style={{ backgroundColor: "rgba(245,240,234,0.85)" }}>
         <div className="max-w-6xl mx-auto px-5 h-16 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2.5">
             <TasuLogo size={32} />
@@ -149,7 +156,7 @@ export default function LandingPage() {
               Sign in
             </Link>
             <Link
-              href="/login"
+              href="/login?mode=signup"
               className="bg-charcoal hover:bg-charcoal/90 text-cream text-sm font-semibold px-5 py-2.5 rounded-xl transition-all hover:scale-[1.02] active:scale-[0.98]"
             >
               Request access
@@ -159,17 +166,17 @@ export default function LandingPage() {
       </header>
 
       {/* ── Hero ── */}
-      <section className="max-w-5xl mx-auto px-5 pt-20 pb-16 text-center" ref={heroReveal.ref}>
+      <section className="max-w-5xl mx-auto px-5 pt-24 pb-20 text-center" ref={heroReveal.ref}>
         <div className={`transition-all duration-700 ${heroReveal.visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}>
 
-          <div className="inline-flex items-center gap-2 bg-white border border-[#E8E0D8] rounded-full px-4 py-2 mb-8 shadow-sm">
+          <div className="inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm border border-[#E8E0D8] rounded-full px-4 py-2 mb-8 shadow-sm">
             <span className="w-2 h-2 rounded-full bg-terracotta animate-pulse" />
             <span className="text-xs font-semibold text-charcoal tracking-wide uppercase">Your Co-Founder Agent</span>
           </div>
 
           <h1 className="text-5xl sm:text-6xl md:text-7xl font-bold leading-[1.05] tracking-tight text-charcoal mb-6">
             Grow like a founder<br />
-            <span className="text-terracotta">who already made it.</span>
+            <span className="bg-gradient-to-r from-terracotta to-[#E8943A] bg-clip-text text-transparent">who already made it.</span>
           </h1>
 
           <p className="text-lg sm:text-xl text-warm-gray leading-relaxed max-w-2xl mx-auto mb-3">
@@ -184,10 +191,10 @@ export default function LandingPage() {
             Your data, your stage, one agent aligning everything toward your next MRR jump.
           </p>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
-              href="/login"
-              className="bg-charcoal hover:bg-charcoal/90 text-cream font-semibold px-8 py-4 rounded-xl text-base transition-all hover:scale-[1.02] active:scale-[0.98] shadow-lg"
+              href="/login?mode=signup"
+              className="bg-gradient-to-r from-terracotta to-[#D4722A] hover:from-terracotta-dark hover:to-terracotta text-white font-semibold px-8 py-4 rounded-xl text-base transition-all hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-terracotta/20"
             >
               Start growing now
             </Link>
@@ -197,78 +204,92 @@ export default function LandingPage() {
       </section>
 
       {/* ── How It Reads You ── */}
-      <section className="max-w-5xl mx-auto px-5 pb-20" ref={howReveal.ref}>
+      <section className="max-w-5xl mx-auto px-5 pb-24" ref={howReveal.ref}>
         <div className={`transition-all duration-700 ${howReveal.visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
           <p className="text-center text-xs font-semibold uppercase tracking-widest text-warm-gray/60 mb-3">How It Reads You</p>
-          <h2 className="text-3xl sm:text-4xl font-bold text-charcoal text-center mb-12">Connect. Diagnose. Act.</h2>
+          <h2 className="text-3xl sm:text-4xl font-bold text-charcoal text-center mb-14">Connect. Diagnose. Act.</h2>
 
-          <div className="grid sm:grid-cols-3 gap-6">
+          <div className="grid sm:grid-cols-3 gap-8">
             {[
               {
                 step: "01",
                 title: "Connect your data",
                 desc: "Revenue, traffic, and code. Tasu reads from DataFast, GitHub, and more as integrations grow.",
+                icon: (
+                  <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m9.86-2.754a4.5 4.5 0 00-1.242-7.244l-4.5-4.5a4.5 4.5 0 00-6.364 6.364L5.25 9.879" />
+                  </svg>
+                ),
               },
               {
                 step: "02",
                 title: "Tasu diagnoses",
-                desc: "What's holding your growth back — positioning, conversion, distribution, or velocity.",
+                desc: "What\u2019s holding your growth back \u2014 positioning, conversion, distribution, or velocity.",
+                icon: (
+                  <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 3v11.25A2.25 2.25 0 006 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0118 16.5h-2.25m-7.5 0h7.5m-7.5 0l-1 3m8.5-3l1 3m0 0l.5 1.5m-.5-1.5h-9.5m0 0l-.5 1.5M9 11.25v1.5M12 9v3.75m3-6v6" />
+                  </svg>
+                ),
               },
               {
                 step: "03",
                 title: "You act daily",
                 desc: "Stage-based strategies proven to work for founders at your level. One sharp action per day.",
+                icon: (
+                  <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
+                  </svg>
+                ),
               },
-            ].map((card) => (
-              <div key={card.step} className="bg-white rounded-2xl border border-[#E8E0D8] p-6 hover:shadow-md transition-shadow">
-                <span className="text-xs font-bold text-terracotta">{card.step}</span>
-                <h3 className="text-base font-semibold text-charcoal mt-2 mb-2">{card.title}</h3>
+            ].map((card, i) => (
+              <div key={card.step} className={`relative bg-white/80 backdrop-blur-sm rounded-2xl border border-[#E8E0D8] p-7 hover:shadow-lg transition-all duration-300 ${howReveal.visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`} style={{ transitionDelay: `${i * 120}ms` }}>
+                <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-terracotta/10 to-terracotta/5 flex items-center justify-center text-terracotta mb-5">
+                  {card.icon}
+                </div>
+                <span className="text-[10px] font-bold text-terracotta/60 tracking-widest">{card.step}</span>
+                <h3 className="text-base font-semibold text-charcoal mt-1 mb-2">{card.title}</h3>
                 <p className="text-sm text-warm-gray leading-relaxed">{card.desc}</p>
               </div>
             ))}
           </div>
 
-          <p className="text-center text-sm text-warm-gray/60 mt-8">
+          <p className="text-center text-sm text-warm-gray/60 mt-10">
             Adding more connections as Tasu evolves. Your opinion matters —{" "}
             <Link href="/login" className="text-terracotta hover:underline font-medium">tell us what you need</Link>.
           </p>
         </div>
       </section>
 
-      {/* ── Live data strip ── */}
-      <section className="max-w-5xl mx-auto px-5 pb-20" ref={dashReveal.ref}>
-        <div className={`transition-all duration-700 delay-100 ${dashReveal.visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
+      {/* ── Live dashboard preview ── */}
+      <section className="py-24 relative" ref={dashReveal.ref}>
+        {/* Gradient band background */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#F5F0EA] via-[#EDE5DA] to-[#F5F0EA]" />
+        <div className={`max-w-5xl mx-auto px-5 relative transition-all duration-700 delay-100 ${dashReveal.visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
+
+          <p className="text-center text-xs font-semibold uppercase tracking-widest text-warm-gray/60 mb-3">What your dashboard looks like</p>
+          <h2 className="text-3xl sm:text-4xl font-bold text-charcoal text-center mb-12">Real data. Real insight. Every morning.</h2>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
-            <div className="bg-white rounded-2xl border border-[#E8E0D8] p-5 shadow-sm">
-              <div className="flex items-center gap-2 mb-1">
-                <span className="text-xs font-medium text-warm-gray uppercase tracking-wide">Visitors (30d)</span>
-                <span className="text-[10px] bg-[#F0EAE2] text-warm-gray px-2 py-0.5 rounded-full">DataFast</span>
+            {[
+              { label: "VISITORS (30D)", source: "DataFast", value: visitorsCount.toLocaleString(), change: "+14% vs last month", positive: true },
+              { label: "REVENUE (30D)", source: "DataFast", value: `$${revenueCount.toLocaleString()}`, change: "+23% vs last month", positive: true },
+              { label: "COMMITS (30D)", source: "GitHub", value: `${commitsCount}`, change: "Last push: 2h ago", positive: false },
+            ].map((metric) => (
+              <div key={metric.label} className="bg-white/90 backdrop-blur-sm rounded-2xl border border-[#E8E0D8] p-5 shadow-sm hover:shadow-md transition-shadow">
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="text-xs font-medium text-warm-gray uppercase tracking-wide">{metric.label}</span>
+                  <span className="text-[10px] bg-[#F0EAE2] text-warm-gray px-2 py-0.5 rounded-full">{metric.source}</span>
+                </div>
+                <p className="text-3xl font-bold text-charcoal">{metric.value}</p>
+                <p className={`text-xs mt-1 font-medium ${metric.positive ? "text-green-600" : "text-warm-gray/60"}`}>{metric.change}</p>
               </div>
-              <p className="text-3xl font-bold text-charcoal">{visitorsCount.toLocaleString()}</p>
-              <p className="text-xs text-green-600 mt-1 font-medium">+14% vs last month</p>
-            </div>
-            <div className="bg-white rounded-2xl border border-[#E8E0D8] p-5 shadow-sm">
-              <div className="flex items-center gap-2 mb-1">
-                <span className="text-xs font-medium text-warm-gray uppercase tracking-wide">Revenue (30d)</span>
-                <span className="text-[10px] bg-[#F0EAE2] text-warm-gray px-2 py-0.5 rounded-full">DataFast</span>
-              </div>
-              <p className="text-3xl font-bold text-charcoal">${revenueCount.toLocaleString()}</p>
-              <p className="text-xs text-green-600 mt-1 font-medium">+23% vs last month</p>
-            </div>
-            <div className="bg-white rounded-2xl border border-[#E8E0D8] p-5 shadow-sm">
-              <div className="flex items-center gap-2 mb-1">
-                <span className="text-xs font-medium text-warm-gray uppercase tracking-wide">Commits (30d)</span>
-                <span className="text-[10px] bg-[#F0EAE2] text-warm-gray px-2 py-0.5 rounded-full">GitHub</span>
-              </div>
-              <p className="text-3xl font-bold text-charcoal">{commitsCount}</p>
-              <p className="text-xs text-warm-gray/60 mt-1">Last push: 2h ago</p>
-            </div>
+            ))}
           </div>
 
           {/* AI insight card */}
-          <div className="bg-charcoal rounded-2xl p-6 text-cream relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-charcoal to-[#1a1210] opacity-80" />
+          <div className="bg-charcoal rounded-2xl p-6 text-cream relative overflow-hidden shadow-xl">
+            <div className="absolute inset-0 bg-gradient-to-br from-charcoal via-[#1a1210] to-charcoal opacity-90" />
+            <div className="absolute top-0 right-0 w-64 h-64 bg-terracotta/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
             <div className="relative flex items-start gap-4">
               <div className="shrink-0 mt-0.5"><TasuLogo size={36} /></div>
               <div>
@@ -291,66 +312,94 @@ export default function LandingPage() {
       </section>
 
       {/* ── "Why don't you grow?" ── */}
-      <section className="max-w-5xl mx-auto px-5 py-24" ref={whyReveal.ref}>
+      <section className="max-w-5xl mx-auto px-5 py-28" ref={whyReveal.ref}>
         <div className={`transition-all duration-700 ${whyReveal.visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}>
-          <div className="text-center mb-14">
+          <div className="text-center mb-16">
             <p className="text-xs font-semibold uppercase tracking-widest text-warm-gray/50 mb-3">Signal over noise</p>
             <h2 className="text-3xl sm:text-4xl font-bold text-charcoal mb-4">{`"Why don't you grow?"`}</h2>
             <p className="text-base text-warm-gray max-w-2xl mx-auto leading-relaxed">
               {`You've watched other founders blow up while you're stuck tweaking your landing page again. Tasu ends the guessing game — shows why growth isn't happening, and how to fix it.`}
             </p>
           </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {[
-              { title: "10x your traffic quality", desc: "Tasu reads sources, spots leaks, and reroutes to high-converting channels." },
-              { title: "Double your conversions", desc: "Analyzes customer paths and pricing to unlock hidden revenue fast." },
-              { title: "Ship features that stick", desc: "Tracks your code deploys and predicts what drives retention and growth." },
-              { title: "Scale to $10k MRR", desc: "Matches your stage to proven strategies from @marclou, @tibo_maker, @robj3d3 and more." },
-              { title: "End $0 launches", desc: "Delivers stage-specific fixes so you act on real blockers, not generic noise." },
-              { title: "Reach milestones faster", desc: "Your AI co-founder evolves with your data for precision and clarity that compounds." },
-            ].map((card) => (
-              <div key={card.title} className="bg-white rounded-2xl border border-[#E8E0D8] p-6 hover:shadow-md transition-shadow">
-                <h3 className="text-base font-semibold text-charcoal mb-2">{card.title}</h3>
-                <p className="text-sm text-warm-gray leading-relaxed">{card.desc}</p>
+              { title: "10x your traffic quality", desc: "Tasu reads sources, spots leaks, and reroutes to high-converting channels.", color: "from-blue-500/10 to-blue-500/0" },
+              { title: "Double your conversions", desc: "Analyzes customer paths and pricing to unlock hidden revenue fast.", color: "from-amber-500/10 to-amber-500/0" },
+              { title: "Ship features that stick", desc: "Tracks your code deploys and predicts what drives retention and growth.", color: "from-purple-500/10 to-purple-500/0" },
+              { title: "Scale to $10k MRR", desc: "Matches your stage to proven strategies from @marclou, @tibo_maker, @robj3d3 and more.", color: "from-green-500/10 to-green-500/0" },
+              { title: "End $0 launches", desc: "Delivers stage-specific fixes so you act on real blockers, not generic noise.", color: "from-red-500/10 to-red-500/0" },
+              { title: "Reach milestones faster", desc: "Your AI co-founder evolves with your data for precision and clarity that compounds.", color: "from-terracotta/10 to-terracotta/0" },
+            ].map((card, i) => (
+              <div key={card.title} className={`bg-white/80 backdrop-blur-sm rounded-2xl border border-[#E8E0D8] p-7 hover:shadow-lg transition-all duration-300 group ${whyReveal.visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`} style={{ transitionDelay: `${i * 80}ms` }}>
+                <div className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${card.color} opacity-0 group-hover:opacity-100 transition-opacity`} />
+                <div className="relative">
+                  <h3 className="text-base font-semibold text-charcoal mb-2">{card.title}</h3>
+                  <p className="text-sm text-warm-gray leading-relaxed">{card.desc}</p>
+                </div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── Social proof / Trained on ── */}
-      <section className="bg-white border-y border-[#E8E0D8] py-14 px-5" ref={socialReveal.ref}>
-        <div className={`max-w-4xl mx-auto text-center transition-all duration-700 ${socialReveal.visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}>
-          <p className="text-xs font-semibold uppercase tracking-widest text-warm-gray/50 mb-6">Trained on strategies from proven makers</p>
-          <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 mb-6">
-            {["@marclou", "@tibo_maker", "@robj3d3", "@romanbuildsaas"].map((f) => (
-              <span key={f} className="text-base font-semibold text-charcoal/70 hover:text-charcoal transition-colors cursor-default">{f}</span>
-            ))}
-            <span className="text-warm-gray/50 text-sm">and many more</span>
+      {/* ── Scrolling founders strip (aicofounder-style carousel) ── */}
+      <section className="border-y border-[#E8E0D8] overflow-hidden py-16 bg-white/60 backdrop-blur-sm" ref={socialReveal.ref}>
+        <div className={`transition-all duration-700 ${socialReveal.visible ? "opacity-100" : "opacity-0"}`}>
+          <p className="text-center text-xs font-semibold uppercase tracking-widest text-warm-gray/50 mb-8">Trained on strategies from proven makers</p>
+
+          {/* Scrolling carousel */}
+          <div className="relative">
+            <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-white/60 to-transparent z-10 pointer-events-none" />
+            <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-white/60 to-transparent z-10 pointer-events-none" />
+            <div className="flex gap-6 animate-[scrollLeft_20s_linear_infinite]">
+              {[...Array(2)].map((_, rep) => (
+                <div key={rep} className="flex gap-6 shrink-0">
+                  {[
+                    { name: "@marclou", desc: "ShipFast, $300k+ MRR" },
+                    { name: "@tibo_maker", desc: "Tweethunter, acquired" },
+                    { name: "@robj3d3", desc: "Indie hacker, multi-exit" },
+                    { name: "@romanbuildsaas", desc: "SaaS growth strategies" },
+                    { name: "@levelsio", desc: "NomadList, PhotoAI" },
+                    { name: "@dankulkov", desc: "Makerbox, growth playbooks" },
+                  ].map((founder) => (
+                    <div key={`${rep}-${founder.name}`} className="flex items-center gap-3 bg-white rounded-xl border border-[#E8E0D8] px-5 py-3 shrink-0 shadow-sm hover:shadow-md transition-shadow">
+                      <div className="w-8 h-8 rounded-full bg-gradient-to-br from-terracotta/20 to-terracotta/5 flex items-center justify-center text-xs font-bold text-terracotta">
+                        {founder.name.slice(1, 3).toUpperCase()}
+                      </div>
+                      <div>
+                        <p className="text-sm font-semibold text-charcoal">{founder.name}</p>
+                        <p className="text-[11px] text-warm-gray">{founder.desc}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ))}
+            </div>
           </div>
-          <p className="text-sm text-warm-gray max-w-lg mx-auto leading-relaxed">
+
+          <p className="text-center text-sm text-warm-gray max-w-lg mx-auto leading-relaxed mt-8">
             Tasu learns what actually worked for them at every growth stage and adapts it to you. Growth systems, decision models, and tested sequences — not generic advice.
           </p>
         </div>
       </section>
 
       {/* ── Data sources ── */}
-      <section className="border-b border-[#E8E0D8] bg-[#F5F0EA] py-10">
+      <section className="py-12 bg-[#F5F0EA]">
         <div className="max-w-5xl mx-auto px-5">
           <p className="text-center text-xs font-semibold uppercase tracking-widest text-warm-gray/50 mb-8">Connected to your tools</p>
           <div className="flex flex-wrap items-center justify-center gap-10">
             {[
-              { name: "DataFast", sub: "Traffic & Revenue" },
-              { name: "GitHub", sub: "Shipping Activity" },
-              { name: "Stripe", sub: "Coming soon" },
-              { name: "PostHog", sub: "Coming soon" },
+              { name: "DataFast", sub: "Traffic & Revenue", live: true },
+              { name: "GitHub", sub: "Shipping Activity", live: true },
+              { name: "Stripe", sub: "Coming soon", live: false },
+              { name: "PostHog", sub: "Coming soon", live: false },
             ].map((src) => (
               <div key={src.name} className="flex items-center gap-3 group">
-                <div className="w-10 h-10 rounded-xl bg-white border border-[#E8E0D8] flex items-center justify-center text-sm font-bold text-charcoal/60">
+                <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-sm font-bold border ${src.live ? "bg-white border-[#E8E0D8] text-charcoal/60" : "bg-cream border-[#E8E0D8] text-warm-gray/30"}`}>
                   {src.name.slice(0, 2).toUpperCase()}
                 </div>
                 <div>
-                  <p className="text-sm font-semibold text-charcoal">{src.name}</p>
+                  <p className={`text-sm font-semibold ${src.live ? "text-charcoal" : "text-warm-gray/50"}`}>{src.name}</p>
                   <p className="text-xs text-warm-gray">{src.sub}</p>
                 </div>
               </div>
@@ -360,10 +409,11 @@ export default function LandingPage() {
       </section>
 
       {/* ── Pricing ── */}
-      <section className="bg-[#F0EAE2] py-24 px-5" ref={pricingReveal.ref}>
-        <div className={`max-w-4xl mx-auto transition-all duration-700 ${pricingReveal.visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}>
+      <section className="py-28 px-5 relative" ref={pricingReveal.ref}>
+        <div className="absolute inset-0 bg-gradient-to-b from-[#EDE5DA] via-[#E8DFD4] to-[#F5F0EA]" />
+        <div className={`max-w-4xl mx-auto relative transition-all duration-700 ${pricingReveal.visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}>
           <div className="text-center mb-4">
-            <div className="inline-flex items-center gap-2 bg-white border border-[#E8E0D8] rounded-full px-3 py-1.5 mb-4 shadow-sm">
+            <div className="inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm border border-[#E8E0D8] rounded-full px-3 py-1.5 mb-4 shadow-sm">
               <svg className="w-3.5 h-3.5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
               </svg>
@@ -381,7 +431,7 @@ export default function LandingPage() {
           <div className="grid sm:grid-cols-2 gap-6 items-center max-w-3xl mx-auto">
             <PlanCard
               name="Starter"
-              price="€19"
+              price="\u20ac19"
               description="Daily intelligence reports from your data. Clarity delivered every morning."
               features={[
                 "Daily AI report every morning",
@@ -394,8 +444,8 @@ export default function LandingPage() {
             />
             <PlanCard
               name="Founder"
-              price="€39"
-              launchPrice="€19"
+              price="\u20ac39"
+              launchPrice="\u20ac19"
               description="Everything in Starter plus your AI co-founder on demand. Chat, strategize, execute."
               features={[
                 "Everything in Starter",
@@ -406,28 +456,28 @@ export default function LandingPage() {
               ]}
               cta="Claim launch price"
               highlighted
-              badge="First 100 — 50% off"
+              badge="First 100 \u2014 50% off"
             />
           </div>
 
           <p className="text-center text-xs text-warm-gray/50 mt-6">
-            Or go lifetime: <span className="font-semibold text-charcoal">€200</span> for the Founder plan — forever. Limited spots.
+            Or go lifetime: <span className="font-semibold text-charcoal">\u20ac200</span> for the Founder plan — forever. Limited spots.
           </p>
         </div>
       </section>
 
       {/* ── FAQ ── */}
-      <section className="max-w-2xl mx-auto px-5 py-24" ref={faqReveal.ref}>
+      <section className="max-w-2xl mx-auto px-5 py-24 bg-[#F5F0EA]" ref={faqReveal.ref}>
         <div className={`transition-all duration-700 ${faqReveal.visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}>
           <div className="text-center mb-12">
             <p className="text-xs font-semibold uppercase tracking-widest text-warm-gray/50 mb-3">FAQ</p>
             <h2 className="text-3xl font-bold text-charcoal">Got questions?</h2>
           </div>
-          <div className="bg-white rounded-2xl border border-[#E8E0D8] px-6">
+          <div className="bg-white/90 backdrop-blur-sm rounded-2xl border border-[#E8E0D8] px-6 shadow-sm">
             {[
               {
                 q: "What exactly is Tasu?",
-                a: "Tasu is an AI co-founder agent — not a chatbot. It reads your revenue, traffic, and GitHub activity every morning and gives you one sharp action to take. It thinks like a founder who's been there before.",
+                a: "Tasu is an AI co-founder agent \u2014 not a chatbot. It reads your revenue, traffic, and GitHub activity every morning and gives you one sharp action to take. It thinks like a founder who\u2019s been there before.",
               },
               {
                 q: "How does Tasu read my data?",
@@ -435,11 +485,11 @@ export default function LandingPage() {
               },
               {
                 q: "Do I need DataFast or GitHub?",
-                a: "They're optional but recommended. Without integrations, Tasu still works with your self-reported data and founder playbooks — but live data makes reports much sharper.",
+                a: "They\u2019re optional but recommended. Without integrations, Tasu still works with your self-reported data and founder playbooks \u2014 but live data makes reports much sharper.",
               },
               {
                 q: "What makes this different from ChatGPT?",
-                a: "ChatGPT gives generic advice. Tasu reads YOUR numbers every morning — your actual revenue, traffic sources, conversion rate, commit velocity — and tells you the ONE thing to fix today based on strategies that worked for founders at your exact stage.",
+                a: "ChatGPT gives generic advice. Tasu reads YOUR numbers every morning \u2014 your actual revenue, traffic sources, conversion rate, commit velocity \u2014 and tells you the ONE thing to fix today based on strategies that worked for founders at your exact stage.",
               },
               {
                 q: "Is my data safe?",
@@ -457,8 +507,10 @@ export default function LandingPage() {
       </section>
 
       {/* ── Final CTA ── */}
-      <section className="bg-charcoal py-24 px-5 text-center">
-        <div className="max-w-2xl mx-auto">
+      <section className="relative py-28 px-5 text-center overflow-hidden">
+        <div className="absolute inset-0 bg-charcoal" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-terracotta/10 rounded-full blur-[120px] -translate-y-1/2" />
+        <div className="max-w-2xl mx-auto relative">
           <div className="flex justify-center mb-6"><TasuLogo size={52} /></div>
           <h2 className="text-3xl sm:text-4xl font-bold text-cream mb-4">
             Start growing like a founder<br />who already made it.
@@ -467,8 +519,8 @@ export default function LandingPage() {
             Early access is limited to 100 founders. Claim your spot and get your first daily report within 24 hours.
           </p>
           <Link
-            href="/login"
-            className="inline-flex items-center gap-2 bg-terracotta hover:bg-terracotta-dark text-white font-semibold px-8 py-4 rounded-xl text-base transition-all hover:scale-[1.02] active:scale-[0.98] shadow-lg"
+            href="/login?mode=signup"
+            className="inline-flex items-center gap-2 bg-gradient-to-r from-terracotta to-[#D4722A] hover:from-terracotta-dark hover:to-terracotta text-white font-semibold px-8 py-4 rounded-xl text-base transition-all hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-terracotta/30"
           >
             Start growing now
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>

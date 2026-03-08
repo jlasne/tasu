@@ -65,18 +65,16 @@ function IntegrationNotice({ integration }: { integration: Integration | null })
   const missingGithub = !integration?.github_repo_url;
   if (!missingDatafast && !missingGithub) return null;
 
-  const missing = [missingDatafast && "DataFast", missingGithub && "GitHub"].filter(Boolean).join(" & ");
-
   return (
-    <div className="absolute top-4 right-4 z-10 flex items-center gap-2 bg-white dark:bg-dark-surface border border-amber-200 dark:border-amber-800 shadow-sm rounded-xl px-3 py-2 text-xs max-w-xs animate-fade-in">
+    <div className="flex items-center gap-2 bg-white dark:bg-dark-surface border border-amber-200 dark:border-amber-800 shadow-sm rounded-xl px-3 py-2 text-xs animate-fade-in mx-4 mt-3">
       <svg className="w-3.5 h-3.5 text-amber-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
         <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
       </svg>
       <span className="text-warm-gray dark:text-dark-muted">
-        Connect <span className="font-semibold text-charcoal dark:text-dark-text">{missing}</span> for live data.{" "}
-        <Link href="/settings" className="text-terracotta hover:underline font-medium">Settings</Link>
+        Connect DataFast &amp; GitHub for live data.{" "}
+        <Link href="/settings" className="text-terracotta hover:underline font-semibold">Settings</Link>
       </span>
-      <button onClick={() => setDismissed(true)} className="ml-1 text-warm-gray/40 hover:text-warm-gray shrink-0">
+      <button onClick={() => setDismissed(true)} className="ml-auto text-warm-gray/40 hover:text-warm-gray shrink-0">
         <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
         </svg>
@@ -85,56 +83,11 @@ function IntegrationNotice({ integration }: { integration: Integration | null })
   );
 }
 
-function TasksSidebar({ tasks, onToggleDone, onTogglePin }: {
-  tasks: Task[];
-  onToggleDone: (id: string, done: boolean) => void;
-  onTogglePin: (id: string) => void;
-}) {
-  const pinnedTasks = tasks.filter((t) => t.pinned);
-  if (pinnedTasks.length === 0) return null;
-
-  return (
-    <div className="w-64 shrink-0 border-l border-cream-dark dark:border-dark-border bg-white/50 dark:bg-dark-surface/50 h-screen overflow-y-auto p-4">
-      <p className="text-xs font-semibold text-warm-gray dark:text-dark-muted uppercase tracking-wide mb-3">Tasks</p>
-      <div className="space-y-2">
-        {pinnedTasks.map((task) => (
-          <div key={task.id} className={`rounded-lg border p-2.5 text-sm transition-all ${
-            task.done
-              ? "bg-cream/60 dark:bg-dark-border/30 border-cream-dark dark:border-dark-border opacity-60"
-              : "bg-white dark:bg-dark-surface border-cream-dark dark:border-dark-border"
-          }`}>
-            <div className="flex items-start gap-2">
-              <button onClick={() => onToggleDone(task.id, !task.done)} className="mt-0.5 shrink-0">
-                <div className={`w-3.5 h-3.5 rounded border-2 flex items-center justify-center transition-all ${
-                  task.done ? "border-terracotta bg-terracotta" : "border-cream-dark dark:border-dark-muted"
-                }`}>
-                  {task.done && (
-                    <svg className="w-2 h-2 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-                    </svg>
-                  )}
-                </div>
-              </button>
-              <p className={`flex-1 text-xs leading-snug ${task.done ? "line-through text-warm-gray dark:text-dark-muted" : "text-charcoal dark:text-dark-text"}`}>
-                {task.content}
-              </p>
-              <button onClick={() => onTogglePin(task.id)} className="text-warm-gray/40 hover:text-warm-gray dark:hover:text-dark-muted shrink-0" title="Unpin">
-                <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
 export default function ChatPage() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [tasks, setTasks] = useState<Task[]>([]);
   const [input, setInput] = useState("");
+  const [newTaskInput, setNewTaskInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [initialLoading, setInitialLoading] = useState(true);
   const [userName, setUserName] = useState<string | null>(null);
@@ -219,13 +172,24 @@ export default function ChatPage() {
     setLoading(false);
   }
 
-  async function createTask(messageId: string, content: string) {
+  async function createTask(content: string, sourceId?: string) {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return;
 
+    // POST to n8n webhook
+    try {
+      await fetch("https://n8n.tasu.ai/webhook/055b3a6d-e5cc-45fa-ab6e-0f3a00fa3b4f", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ user_id: user.id, content, source: "chat", source_id: sourceId ?? null }),
+      });
+    } catch {
+      // Webhook failure shouldn't block task creation
+    }
+
     const { data } = await supabase
       .from("tasks")
-      .insert({ user_id: user.id, content, source: "chat", source_id: messageId })
+      .insert({ user_id: user.id, content, source: "chat", source_id: sourceId ?? null, pinned: true })
       .select()
       .single();
 
@@ -237,11 +201,9 @@ export default function ChatPage() {
     await supabase.from("tasks").update({ done, completed_at: done ? new Date().toISOString() : null }).eq("id", taskId);
   }
 
-  async function toggleTaskPin(taskId: string) {
-    const task = tasks.find((t) => t.id === taskId);
-    if (!task) return;
-    setTasks((prev) => prev.map((t) => t.id === taskId ? { ...t, pinned: !t.pinned } : t));
-    await supabase.from("tasks").update({ pinned: !task.pinned }).eq("id", taskId);
+  async function deleteTask(taskId: string) {
+    setTasks((prev) => prev.filter((t) => t.id !== taskId));
+    await supabase.from("tasks").delete().eq("id", taskId);
   }
 
   function handleKeyDown(e: React.KeyboardEvent) {
@@ -259,10 +221,13 @@ export default function ChatPage() {
   }
 
   const greeting = userName ? `Hey, ${userName}.` : "Hey, founder.";
+  const openTasks = tasks.filter((t) => !t.done);
+  const doneTasks = tasks.filter((t) => t.done);
 
   return (
-    <div className="flex h-screen bg-cream dark:bg-dark-bg relative">
-      <div className="flex-1 flex flex-col relative">
+    <div className="flex h-screen bg-cream dark:bg-dark-bg">
+      {/* ── Left: Chat (50%) ── */}
+      <div className="flex-1 flex flex-col min-w-0">
         <IntegrationNotice integration={integration} />
 
         <div ref={scrollRef} className="flex-1 overflow-y-auto chat-scroll">
@@ -322,7 +287,7 @@ export default function ChatPage() {
                     </div>
                     {msg.role === "assistant" && (
                       <button
-                        onClick={() => createTask(msg.id, msg.content.split("\n")[0].slice(0, 120))}
+                        onClick={() => createTask(msg.content.split("\n")[0].slice(0, 120), msg.id)}
                         className="self-start flex items-center gap-1 text-[11px] text-warm-gray/50 dark:text-dark-muted/50 hover:text-terracotta transition-colors ml-1"
                       >
                         <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -382,9 +347,98 @@ export default function ChatPage() {
         </div>
       </div>
 
-      {/* Tasks sidebar - desktop only */}
-      <div className="hidden lg:block">
-        <TasksSidebar tasks={tasks} onToggleDone={toggleTaskDone} onTogglePin={toggleTaskPin} />
+      {/* ── Right: Tasks (50%) ── */}
+      <div className="hidden md:flex w-1/2 flex-col border-l border-cream-dark dark:border-dark-border bg-white/50 dark:bg-dark-surface/30 h-screen">
+        <div className="px-5 py-4 border-b border-cream-dark dark:border-dark-border shrink-0">
+          <h2 className="text-sm font-semibold text-charcoal dark:text-dark-text">Tasks</h2>
+          <p className="text-[11px] text-warm-gray dark:text-dark-muted mt-0.5">Click &quot;Make task&quot; on any message, or create one below</p>
+        </div>
+
+        {/* New task input */}
+        <div className="px-5 py-3 border-b border-cream-dark/50 dark:border-dark-border/50 shrink-0">
+          <form onSubmit={(e) => {
+            e.preventDefault();
+            if (!newTaskInput.trim()) return;
+            createTask(newTaskInput.trim());
+            setNewTaskInput("");
+          }} className="flex gap-2">
+            <input
+              type="text"
+              value={newTaskInput}
+              onChange={(e) => setNewTaskInput(e.target.value)}
+              placeholder="Add a task..."
+              className="flex-1 px-3 py-2 rounded-lg border border-cream-dark dark:border-dark-border bg-white dark:bg-dark-bg text-charcoal dark:text-dark-text placeholder:text-warm-gray/40 dark:placeholder:text-dark-muted/40 focus:outline-none focus:ring-2 focus:ring-terracotta/20 text-sm"
+            />
+            <button
+              type="submit"
+              disabled={!newTaskInput.trim()}
+              className="px-3 py-2 rounded-lg bg-terracotta hover:bg-terracotta-dark text-white text-sm font-medium transition-all disabled:opacity-30"
+            >
+              Add
+            </button>
+          </form>
+        </div>
+
+        {/* Task list */}
+        <div className="flex-1 overflow-y-auto px-5 py-4 space-y-1.5">
+          {tasks.length === 0 && !initialLoading && (
+            <div className="flex flex-col items-center justify-center h-full text-center px-4">
+              <div className="w-10 h-10 rounded-xl bg-cream dark:bg-dark-border flex items-center justify-center mb-3">
+                <svg className="w-5 h-5 text-warm-gray/40" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <p className="text-sm text-warm-gray dark:text-dark-muted">No tasks yet</p>
+              <p className="text-xs text-warm-gray/50 dark:text-dark-muted/50 mt-1">
+                Click &quot;Make task&quot; on a message or add one above
+              </p>
+            </div>
+          )}
+
+          {/* Open tasks */}
+          {openTasks.length > 0 && (
+            <>
+              <p className="text-[10px] font-semibold text-warm-gray/50 dark:text-dark-muted/50 uppercase tracking-widest pb-1">To do ({openTasks.length})</p>
+              {openTasks.map((task) => (
+                <div key={task.id} className="flex items-start gap-2.5 p-2.5 rounded-xl border border-cream-dark dark:border-dark-border bg-white dark:bg-dark-surface group hover:border-terracotta/20 transition-all">
+                  <button onClick={() => toggleTaskDone(task.id, true)} className="mt-0.5 shrink-0">
+                    <div className="w-4 h-4 rounded border-2 border-cream-dark dark:border-dark-muted group-hover:border-terracotta/50 transition-all" />
+                  </button>
+                  <p className="flex-1 text-sm text-charcoal dark:text-dark-text leading-snug">{task.content}</p>
+                  <button onClick={() => deleteTask(task.id)} className="opacity-0 group-hover:opacity-100 text-warm-gray/30 hover:text-red-400 shrink-0 transition-all" title="Delete">
+                    <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </div>
+              ))}
+            </>
+          )}
+
+          {/* Done tasks */}
+          {doneTasks.length > 0 && (
+            <>
+              <p className="text-[10px] font-semibold text-warm-gray/50 dark:text-dark-muted/50 uppercase tracking-widest pt-4 pb-1">Done ({doneTasks.length})</p>
+              {doneTasks.map((task) => (
+                <div key={task.id} className="flex items-start gap-2.5 p-2.5 rounded-xl border border-cream-dark/50 dark:border-dark-border/50 bg-cream/30 dark:bg-dark-border/20 group opacity-50">
+                  <button onClick={() => toggleTaskDone(task.id, false)} className="mt-0.5 shrink-0">
+                    <div className="w-4 h-4 rounded border-2 border-terracotta bg-terracotta flex items-center justify-center">
+                      <svg className="w-2.5 h-2.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                      </svg>
+                    </div>
+                  </button>
+                  <p className="flex-1 text-sm text-warm-gray dark:text-dark-muted leading-snug line-through">{task.content}</p>
+                  <button onClick={() => deleteTask(task.id)} className="opacity-0 group-hover:opacity-100 text-warm-gray/30 hover:text-red-400 shrink-0 transition-all" title="Delete">
+                    <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </div>
+              ))}
+            </>
+          )}
+        </div>
       </div>
     </div>
   );

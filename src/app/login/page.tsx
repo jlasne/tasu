@@ -57,14 +57,19 @@ function LoginForm() {
 
       setMessage("Check your email to confirm your account.");
     } else {
-      const { error } = await supabase.auth.signInWithPassword({
+      const { data: signInData, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
       if (error) {
         setError(error.message);
-      } else {
-        router.push("/chat");
+      } else if (signInData.user) {
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("onboarded")
+          .eq("id", signInData.user.id)
+          .single();
+        router.push(!profile || !profile.onboarded ? "/onboarding" : "/chat");
         router.refresh();
         return;
       }
@@ -76,8 +81,8 @@ function LoginForm() {
     setLoading(true);
     setError("");
     const redirectUrl = websiteUrl
-      ? `/auth/callback?next=/chat&url=${encodeURIComponent(websiteUrl)}&name=${encodeURIComponent(name)}`
-      : `/auth/callback?next=/chat`;
+      ? `/auth/callback?next=/onboarding&url=${encodeURIComponent(websiteUrl)}&name=${encodeURIComponent(name)}`
+      : `/auth/callback?next=/onboarding`;
 
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
