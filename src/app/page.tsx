@@ -224,7 +224,7 @@ export default function LandingPage() {
               {
                 step: "02",
                 title: "Tasu diagnoses",
-                desc: "What\u2019s holding your growth back \u2014 positioning, conversion, distribution, or velocity.",
+                desc: "What's holding your growth back — positioning, conversion, distribution, or velocity.",
                 icon: (
                   <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 3v11.25A2.25 2.25 0 006 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0118 16.5h-2.25m-7.5 0h7.5m-7.5 0l-1 3m8.5-3l1 3m0 0l.5 1.5m-.5-1.5h-9.5m0 0l-.5 1.5M9 11.25v1.5M12 9v3.75m3-6v6" />
@@ -431,7 +431,7 @@ export default function LandingPage() {
           <div className="grid sm:grid-cols-2 gap-6 items-center max-w-3xl mx-auto">
             <PlanCard
               name="Starter"
-              price="\u20ac19"
+              price="€19"
               description="Daily intelligence reports from your data. Clarity delivered every morning."
               features={[
                 "Daily AI report every morning",
@@ -444,8 +444,8 @@ export default function LandingPage() {
             />
             <PlanCard
               name="Founder"
-              price="\u20ac39"
-              launchPrice="\u20ac19"
+              price="€39"
+              launchPrice="€19"
               description="Everything in Starter plus your AI co-founder on demand. Chat, strategize, execute."
               features={[
                 "Everything in Starter",
@@ -456,12 +456,12 @@ export default function LandingPage() {
               ]}
               cta="Claim launch price"
               highlighted
-              badge="First 100 \u2014 50% off"
+              badge="First 100 — 50% off"
             />
           </div>
 
           <p className="text-center text-xs text-warm-gray/50 mt-6">
-            Or go lifetime: <span className="font-semibold text-charcoal">\u20ac200</span> for the Founder plan — forever. Limited spots.
+            Or go lifetime: <span className="font-semibold text-charcoal">€200</span> for the Founder plan — forever. Limited spots.
           </p>
         </div>
       </section>
@@ -477,7 +477,7 @@ export default function LandingPage() {
             {[
               {
                 q: "What exactly is Tasu?",
-                a: "Tasu is an AI co-founder agent \u2014 not a chatbot. It reads your revenue, traffic, and GitHub activity every morning and gives you one sharp action to take. It thinks like a founder who\u2019s been there before.",
+                a: "Tasu is an AI co-founder agent — not a chatbot. It reads your revenue, traffic, and GitHub activity every morning and gives you one sharp action to take. It thinks like a founder who's been there before.",
               },
               {
                 q: "How does Tasu read my data?",
@@ -485,11 +485,11 @@ export default function LandingPage() {
               },
               {
                 q: "Do I need DataFast or GitHub?",
-                a: "They\u2019re optional but recommended. Without integrations, Tasu still works with your self-reported data and founder playbooks \u2014 but live data makes reports much sharper.",
+                a: "They're optional but recommended. Without integrations, Tasu still works with your self-reported data and founder playbooks — but live data makes reports much sharper.",
               },
               {
                 q: "What makes this different from ChatGPT?",
-                a: "ChatGPT gives generic advice. Tasu reads YOUR numbers every morning \u2014 your actual revenue, traffic sources, conversion rate, commit velocity \u2014 and tells you the ONE thing to fix today based on strategies that worked for founders at your exact stage.",
+                a: "ChatGPT gives generic advice. Tasu reads YOUR numbers every morning — your actual revenue, traffic sources, conversion rate, commit velocity — and tells you the ONE thing to fix today based on strategies that worked for founders at your exact stage.",
               },
               {
                 q: "Is my data safe?",

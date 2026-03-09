@@ -246,12 +246,12 @@ export default function ChatPage() {
               </div>
               <h2 className="text-xl font-semibold text-charcoal dark:text-dark-text mb-2">{greeting}</h2>
               <p className="text-sm text-warm-gray dark:text-dark-muted leading-relaxed max-w-xs">
-                {"I'm Tasu \u2014 your AI co-founder. Tell me what you're building, what's stuck, or what your numbers look like."}
+                {"I'm Tasu — your AI co-founder. Tell me what you're building, what's stuck, or what your numbers look like."}
               </p>
               <div className="mt-6 flex flex-col gap-2 w-full max-w-xs">
                 {[
                   "What should I fix first on my landing page?",
-                  "I'm not getting traction \u2014 where do I start?",
+                  "I'm not getting traction — where do I start?",
                   "Help me find my first 10 customers.",
                 ].map((prompt) => (
                   <button
