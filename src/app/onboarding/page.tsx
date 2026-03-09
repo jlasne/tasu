@@ -56,17 +56,25 @@ export default function OnboardingPage() {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) { setError("Not authenticated."); setLoading(false); return; }
 
-    // Save profile
-    const { error: profileErr } = await supabase.from("profiles").upsert({
+    // Save profile — try with full_name first, fallback without if column missing
+    const baseProfile = {
       id: user.id,
-      full_name: name,
       website_url: websiteUrl,
       self_reported_mrr: selfReportedMrr ? parseInt(selfReportedMrr) : null,
       onboarded: true,
       updated_at: new Date().toISOString(),
+    };
+
+    const { error: profileErr } = await supabase.from("profiles").upsert({
+      ...baseProfile,
+      full_name: name,
     });
 
-    if (profileErr) { setError(profileErr.message); setLoading(false); return; }
+    if (profileErr) {
+      // Column might not exist yet in DB — retry without full_name so onboarding never blocks
+      const { error: profileErr2 } = await supabase.from("profiles").upsert(baseProfile);
+      if (profileErr2) { setError(profileErr2.message); setLoading(false); return; }
+    }
 
     // Save integrations
     const intData: Record<string, string> = { user_id: user.id };
