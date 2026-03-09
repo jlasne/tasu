@@ -28,23 +28,6 @@ function useReveal(threshold = 0.12) {
   return { ref, visible };
 }
 
-/* ── Animated counter ── */
-function useCounter(target: number, duration = 1600, active = false) {
-  const [count, setCount] = useState(0);
-  useEffect(() => {
-    if (!active) return;
-    let start: number | null = null;
-    const step = (ts: number) => {
-      if (!start) start = ts;
-      const p = Math.min((ts - start) / duration, 1);
-      setCount(Math.floor(p * target));
-      if (p < 1) requestAnimationFrame(step);
-    };
-    requestAnimationFrame(step);
-  }, [active, target, duration]);
-  return count;
-}
-
 /* ── FAQ ── */
 function FAQItem({ q, a }: { q: string; a: string }) {
   const [open, setOpen] = useState(false);
@@ -123,16 +106,11 @@ function PlanCard({
 
 export default function LandingPage() {
   const heroReveal = useReveal(0);
-  const dashReveal = useReveal(0.1);
   const whyReveal = useReveal(0.1);
   const howReveal = useReveal(0.1);
   const socialReveal = useReveal(0.1);
   const pricingReveal = useReveal(0.1);
   const faqReveal = useReveal(0.1);
-
-  const visitorsCount = useCounter(12847, 1800, dashReveal.visible);
-  const revenueCount = useCounter(4280, 1800, dashReveal.visible);
-  const commitsCount = useCounter(47, 1600, dashReveal.visible);
 
   return (
     <div className="min-h-screen text-charcoal font-sans">
@@ -204,52 +182,52 @@ export default function LandingPage() {
       </section>
 
       {/* ── How It Reads You ── */}
-      <section className="py-24 bg-[#1C1917]" ref={howReveal.ref}>
-        <div className={`max-w-7xl mx-auto px-4 transition-all duration-700 ${howReveal.visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
+      <section className="max-w-7xl mx-auto px-4 py-24" ref={howReveal.ref}>
+        <div className={`transition-all duration-700 ${howReveal.visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
 
           <div className="mb-12 flex w-full flex-col text-center md:mb-20">
             <p className="mb-3 text-sm font-medium uppercase tracking-wider text-terracotta">How It Reads You</p>
-            <h2 className="mx-auto text-3xl font-extrabold tracking-tight text-white md:text-5xl">Grow your revenue in 3 steps</h2>
+            <h2 className="mx-auto text-3xl font-extrabold tracking-tight text-charcoal md:text-5xl">Grow your revenue in 3 steps</h2>
           </div>
 
           {/* Cards row */}
           <div className="flex flex-col justify-center gap-6 max-lg:items-center lg:flex-row">
 
             {/* Card 1 */}
-            <div className={`rounded-[1.3rem] border border-white/5 bg-white/5 p-1.5 transition-all duration-500 ${howReveal.visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`} style={{ transitionDelay: "0ms" }}>
-              <div className="mx-auto w-full max-w-lg rounded-2xl bg-[#252220] overflow-hidden">
-                <div className="relative h-48 bg-[#1C1917] flex items-center justify-center p-6">
-                  <div className="w-full bg-[#252220] rounded-xl border border-white/10 overflow-hidden">
-                    <div className="flex items-center gap-1.5 px-3 pt-3 pb-2 border-b border-white/5">
-                      <span className="w-2.5 h-2.5 rounded-full bg-red-400/50" />
-                      <span className="w-2.5 h-2.5 rounded-full bg-yellow-400/50" />
-                      <span className="w-2.5 h-2.5 rounded-full bg-green-400/50" />
+            <div className={`rounded-[1.3rem] border border-[#E8E0D8] bg-white/60 backdrop-blur-sm p-1.5 transition-all duration-500 ${howReveal.visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`} style={{ transitionDelay: "0ms" }}>
+              <div className="mx-auto w-full max-w-lg rounded-2xl bg-white overflow-hidden shadow-sm">
+                <div className="relative h-48 bg-[#FAF7F3] flex items-center justify-center p-6">
+                  <div className="w-full bg-white rounded-xl border border-[#E8E0D8] overflow-hidden shadow-sm">
+                    <div className="flex items-center gap-1.5 px-3 pt-3 pb-2 border-b border-[#E8E0D8]">
+                      <span className="w-2.5 h-2.5 rounded-full bg-red-400/40" />
+                      <span className="w-2.5 h-2.5 rounded-full bg-yellow-400/40" />
+                      <span className="w-2.5 h-2.5 rounded-full bg-green-400/40" />
                     </div>
                     <div className="px-4 py-3 font-mono text-xs space-y-1">
-                      <p className="text-white/30">{"<script"}</p>
-                      <p className="pl-3 text-green-400/80">{"defer"}</p>
-                      <p className="pl-3"><span className="text-blue-400/70">data-domain</span><span className="text-white/40">{"=\""}</span><span className="text-orange-300/80">yoursite.com</span><span className="text-white/40">{"\""}</span></p>
-                      <p className="pl-3"><span className="text-blue-400/70">src</span><span className="text-white/40">{"=\""}</span><span className="text-orange-300/80">tasu.ai/js</span><span className="text-white/40">{"\""}</span></p>
-                      <p className="text-white/30">{"</script>"}</p>
+                      <p className="text-charcoal/40">{"<script"}</p>
+                      <p className="pl-3 text-green-700/70">{"defer"}</p>
+                      <p className="pl-3"><span className="text-blue-700/60">data-domain</span><span className="text-charcoal/30">{"=\""}</span><span className="text-terracotta">yoursite.com</span><span className="text-charcoal/30">{"\""}</span></p>
+                      <p className="pl-3"><span className="text-blue-700/60">src</span><span className="text-charcoal/30">{"=\""}</span><span className="text-terracotta">tasu.ai/js</span><span className="text-charcoal/30">{"\""}</span></p>
+                      <p className="text-charcoal/40">{"</script>"}</p>
                     </div>
                   </div>
                 </div>
                 <div className="p-6">
-                  <h3 className="text-lg font-bold text-white mb-1.5">1. Drop your business</h3>
-                  <p className="text-sm text-white/50 leading-relaxed">Share your website so Tasu can understand your audience, value props, and market position.</p>
+                  <h3 className="text-lg font-bold text-charcoal mb-1.5">1. Drop your business</h3>
+                  <p className="text-sm text-warm-gray leading-relaxed">Share your website so Tasu can understand your audience, value props, and market position.</p>
                 </div>
               </div>
             </div>
 
             {/* Arrow 1 */}
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="text-white/30 mx-auto w-6 shrink-0 max-lg:rotate-90">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="text-warm-gray/40 mx-auto w-6 shrink-0 max-lg:rotate-90">
               <path fillRule="evenodd" d="M3 10a.75.75 0 0 1 .75-.75h10.638L10.23 5.29a.75.75 0 1 1 1.04-1.08l5.5 5.25a.75.75 0 0 1 0 1.08l-5.5 5.25a.75.75 0 1 1-1.04-1.08l4.158-3.96H3.75A.75.75 0 0 1 3 10Z" clipRule="evenodd" />
             </svg>
 
             {/* Card 2 */}
-            <div className={`rounded-[1.3rem] border border-white/5 bg-white/5 p-1.5 transition-all duration-500 ${howReveal.visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`} style={{ transitionDelay: "150ms" }}>
-              <div className="mx-auto w-full max-w-lg rounded-2xl bg-[#252220] overflow-hidden">
-                <div className="relative h-48 bg-[#1C1917] flex items-center justify-center p-6">
+            <div className={`rounded-[1.3rem] border border-[#E8E0D8] bg-white/60 backdrop-blur-sm p-1.5 transition-all duration-500 ${howReveal.visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`} style={{ transitionDelay: "150ms" }}>
+              <div className="mx-auto w-full max-w-lg rounded-2xl bg-white overflow-hidden shadow-sm">
+                <div className="relative h-48 bg-[#FAF7F3] flex items-center justify-center p-6">
                   <div className="grid grid-cols-2 gap-3 w-full max-w-[200px]">
                     {[
                       { name: "Stripe", color: "bg-[#635BFF]", icon: "S" },
@@ -257,35 +235,35 @@ export default function LandingPage() {
                       { name: "GitHub", color: "bg-[#24292E]", icon: "G" },
                       { name: "Analytics", color: "bg-[#4285F4]", icon: "A" },
                     ].map((int) => (
-                      <div key={int.name} className="bg-[#252220] rounded-xl p-3 flex flex-col items-center gap-1.5 border border-white/10">
+                      <div key={int.name} className="bg-white rounded-xl p-3 flex flex-col items-center gap-1.5 border border-[#E8E0D8] shadow-sm">
                         <div className={`w-8 h-8 rounded-lg ${int.color} flex items-center justify-center`}>
                           <span className="text-white text-xs font-bold">{int.icon}</span>
                         </div>
-                        <span className="text-[10px] text-white/50 font-medium">{int.name}</span>
+                        <span className="text-[10px] text-warm-gray font-medium">{int.name}</span>
                       </div>
                     ))}
                   </div>
                 </div>
                 <div className="p-6">
-                  <h3 className="text-lg font-bold text-white mb-1.5">2. Connect your data</h3>
-                  <p className="text-sm text-white/50 leading-relaxed">Link your revenue, traffic, and code activity so Tasu pinpoints exactly where growth is blocked.</p>
+                  <h3 className="text-lg font-bold text-charcoal mb-1.5">2. Connect your data</h3>
+                  <p className="text-sm text-warm-gray leading-relaxed">Link your revenue, traffic, and code activity so Tasu pinpoints exactly where growth is blocked.</p>
                 </div>
               </div>
             </div>
 
             {/* Arrow 2 */}
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="text-white/30 mx-auto w-6 shrink-0 max-lg:rotate-90">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="text-warm-gray/40 mx-auto w-6 shrink-0 max-lg:rotate-90">
               <path fillRule="evenodd" d="M3 10a.75.75 0 0 1 .75-.75h10.638L10.23 5.29a.75.75 0 1 1 1.04-1.08l5.5 5.25a.75.75 0 0 1 0 1.08l-5.5 5.25a.75.75 0 1 1-1.04-1.08l4.158-3.96H3.75A.75.75 0 0 1 3 10Z" clipRule="evenodd" />
             </svg>
 
             {/* Card 3 */}
-            <div className={`rounded-[1.3rem] border border-white/5 bg-white/5 p-1.5 transition-all duration-500 ${howReveal.visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`} style={{ transitionDelay: "300ms" }}>
-              <div className="mx-auto w-full max-w-lg rounded-2xl bg-[#252220] overflow-hidden">
-                <div className="relative h-48 bg-[#1C1917] flex items-center justify-center p-4">
-                  <div className="w-full bg-[#252220] rounded-xl border border-white/10 p-3">
+            <div className={`rounded-[1.3rem] border border-[#E8E0D8] bg-white/60 backdrop-blur-sm p-1.5 transition-all duration-500 ${howReveal.visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`} style={{ transitionDelay: "300ms" }}>
+              <div className="mx-auto w-full max-w-lg rounded-2xl bg-white overflow-hidden shadow-sm">
+                <div className="relative h-48 bg-[#FAF7F3] flex items-center justify-center p-4">
+                  <div className="w-full bg-white rounded-xl border border-[#E8E0D8] p-3 shadow-sm">
                     <div className="flex justify-between items-center mb-3 px-1">
-                      <span className="text-[10px] text-white/40 font-medium">Source</span>
-                      <span className="text-[10px] text-white/40 font-medium">Revenue</span>
+                      <span className="text-[10px] text-warm-gray font-medium">Source</span>
+                      <span className="text-[10px] text-warm-gray font-medium">Revenue</span>
                     </div>
                     {[
                       { source: "Direct", bar: 72, revenue: "$1.2k", focus: false },
@@ -293,75 +271,24 @@ export default function LandingPage() {
                       { source: "Twitter/X", bar: 30, revenue: "$498", focus: false },
                       { source: "Product Hunt", bar: 18, revenue: "$210", focus: false },
                     ].map((row) => (
-                      <div key={row.source} className={`flex items-center gap-2 py-1.5 px-1 rounded-lg ${row.focus ? "bg-terracotta/10" : ""}`}>
-                        <span className="text-[11px] text-white/60 w-24 shrink-0">{row.source}</span>
-                        <div className="flex-1 h-1.5 bg-white/5 rounded-full overflow-hidden">
-                          <div className={`h-full rounded-full ${row.focus ? "bg-terracotta" : "bg-white/20"}`} style={{ width: `${row.bar}%` }} />
+                      <div key={row.source} className={`flex items-center gap-2 py-1.5 px-1 rounded-lg ${row.focus ? "bg-terracotta/5" : ""}`}>
+                        <span className="text-[11px] text-charcoal/60 w-24 shrink-0">{row.source}</span>
+                        <div className="flex-1 h-1.5 bg-[#F0EAE2] rounded-full overflow-hidden">
+                          <div className={`h-full rounded-full ${row.focus ? "bg-terracotta" : "bg-charcoal/15"}`} style={{ width: `${row.bar}%` }} />
                         </div>
-                        <span className={`text-[11px] font-semibold shrink-0 w-10 text-right ${row.focus ? "text-terracotta" : "text-white/50"}`}>{row.revenue}</span>
+                        <span className={`text-[11px] font-semibold shrink-0 w-10 text-right ${row.focus ? "text-terracotta" : "text-charcoal/50"}`}>{row.revenue}</span>
                         {row.focus && <span className="text-[9px] bg-terracotta text-white px-1.5 py-0.5 rounded font-bold shrink-0">Focus</span>}
                       </div>
                     ))}
                   </div>
                 </div>
                 <div className="p-6">
-                  <h3 className="text-lg font-bold text-white mb-1.5">3. Grow your revenue</h3>
-                  <p className="text-sm text-white/50 leading-relaxed">Execute stage-based strategies that move the needle, then watch your revenue explode.</p>
+                  <h3 className="text-lg font-bold text-charcoal mb-1.5">3. Grow your revenue</h3>
+                  <p className="text-sm text-warm-gray leading-relaxed">Execute stage-based strategies that move the needle, then watch your revenue explode.</p>
                 </div>
               </div>
             </div>
 
-          </div>
-        </div>
-      </section>
-
-      {/* ── Live dashboard preview ── */}
-      <section className="py-24 relative" ref={dashReveal.ref}>
-        {/* Gradient band background */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#F5F0EA] via-[#EDE5DA] to-[#F5F0EA]" />
-        <div className={`max-w-5xl mx-auto px-5 relative transition-all duration-700 delay-100 ${dashReveal.visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
-
-          <p className="text-center text-xs font-semibold uppercase tracking-widest text-warm-gray/60 mb-3">What your dashboard looks like</p>
-          <h2 className="text-3xl sm:text-4xl font-bold text-charcoal text-center mb-12">Real data. Real insight. Every morning.</h2>
-
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
-            {[
-              { label: "VISITORS (30D)", source: "DataFast", value: visitorsCount.toLocaleString(), change: "+14% vs last month", positive: true },
-              { label: "REVENUE (30D)", source: "DataFast", value: `$${revenueCount.toLocaleString()}`, change: "+23% vs last month", positive: true },
-              { label: "COMMITS (30D)", source: "GitHub", value: `${commitsCount}`, change: "Last push: 2h ago", positive: false },
-            ].map((metric) => (
-              <div key={metric.label} className="bg-white/90 backdrop-blur-sm rounded-2xl border border-[#E8E0D8] p-5 shadow-sm hover:shadow-md transition-shadow">
-                <div className="flex items-center gap-2 mb-1">
-                  <span className="text-xs font-medium text-warm-gray uppercase tracking-wide">{metric.label}</span>
-                  <span className="text-[10px] bg-[#F0EAE2] text-warm-gray px-2 py-0.5 rounded-full">{metric.source}</span>
-                </div>
-                <p className="text-3xl font-bold text-charcoal">{metric.value}</p>
-                <p className={`text-xs mt-1 font-medium ${metric.positive ? "text-green-600" : "text-warm-gray/60"}`}>{metric.change}</p>
-              </div>
-            ))}
-          </div>
-
-          {/* AI insight card */}
-          <div className="bg-charcoal rounded-2xl p-6 text-cream relative overflow-hidden shadow-xl">
-            <div className="absolute inset-0 bg-gradient-to-br from-charcoal via-[#1a1210] to-charcoal opacity-90" />
-            <div className="absolute top-0 right-0 w-64 h-64 bg-terracotta/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
-            <div className="relative flex items-start gap-4">
-              <div className="shrink-0 mt-0.5"><TasuLogo size={36} /></div>
-              <div>
-                <p className="text-[11px] font-semibold uppercase tracking-widest text-cream/40 mb-2">Tasu · Daily report</p>
-                <p className="text-[15px] leading-relaxed text-cream/90">
-                  Your traffic is up 14% but conversion is stuck at{" "}
-                  <span className="text-terracotta font-semibold">2.8%</span>.
-                  You shipped 47 commits yet revenue growth is half your traffic growth.{" "}
-                  <span className="text-cream font-semibold">The gap is your landing page copy — it speaks to builders, not buyers.</span>{" "}
-                  Rewrite the hero today.
-                </p>
-                <div className="flex items-center gap-2 mt-3">
-                  <span className="text-[10px] font-medium bg-terracotta/20 text-terracotta px-2.5 py-1 rounded-full">conversion</span>
-                  <span className="text-[11px] text-cream/30">Today, 7:02 am</span>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </section>
@@ -376,23 +303,82 @@ export default function LandingPage() {
               {`You've watched other founders blow up while you're stuck tweaking your landing page again. Tasu ends the guessing game — shows why growth isn't happening, and how to fix it.`}
             </p>
           </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {[
-              { title: "10x your traffic quality", desc: "Tasu reads sources, spots leaks, and reroutes to high-converting channels.", color: "from-blue-500/10 to-blue-500/0" },
-              { title: "Double your conversions", desc: "Analyzes customer paths and pricing to unlock hidden revenue fast.", color: "from-amber-500/10 to-amber-500/0" },
-              { title: "Ship features that stick", desc: "Tracks your code deploys and predicts what drives retention and growth.", color: "from-purple-500/10 to-purple-500/0" },
-              { title: "Scale to $10k MRR", desc: "Matches your stage to proven strategies from @marclou, @tibo_maker, @robj3d3 and more.", color: "from-green-500/10 to-green-500/0" },
-              { title: "End $0 launches", desc: "Delivers stage-specific fixes so you act on real blockers, not generic noise.", color: "from-red-500/10 to-red-500/0" },
-              { title: "Reach milestones faster", desc: "Your AI co-founder evolves with your data for precision and clarity that compounds.", color: "from-terracotta/10 to-terracotta/0" },
-            ].map((card, i) => (
-              <div key={card.title} className={`bg-white/80 backdrop-blur-sm rounded-2xl border border-[#E8E0D8] p-7 hover:shadow-lg transition-all duration-300 group ${whyReveal.visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`} style={{ transitionDelay: `${i * 80}ms` }}>
-                <div className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${card.color} opacity-0 group-hover:opacity-100 transition-opacity`} />
-                <div className="relative">
-                  <h3 className="text-base font-semibold text-charcoal mb-2">{card.title}</h3>
-                  <p className="text-sm text-warm-gray leading-relaxed">{card.desc}</p>
+
+          {/* Bento grid */}
+          <div className="grid grid-cols-1 md:grid-cols-6 gap-4">
+            {/* Large card - Traffic */}
+            <div className={`md:col-span-4 relative bg-white/80 backdrop-blur-sm rounded-2xl border border-[#E8E0D8] p-7 overflow-hidden group hover:shadow-lg transition-all duration-300 ${whyReveal.visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`} style={{ transitionDelay: "0ms" }}>
+              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 to-cyan-400 rounded-t-2xl" />
+              <div className="flex items-start gap-4">
+                <div className="w-10 h-10 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center shrink-0">
+                  <svg className="w-5 h-5 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M3.75 3v11.25A2.25 2.25 0 006 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0118 16.5h-2.25m-7.5 0h7.5m-7.5 0l-1 3m8.5-3l1 3m0 0l.5 1.5m-.5-1.5h-9.5m0 0l-.5 1.5" /></svg>
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-charcoal mb-2">10x your traffic quality</h3>
+                  <p className="text-sm text-warm-gray leading-relaxed">Tasu reads sources, spots leaks, and reroutes your efforts to high-converting channels — no more wasted spend on dead-end visitors.</p>
                 </div>
               </div>
-            ))}
+            </div>
+
+            {/* Tall card - Scale */}
+            <div className={`md:col-span-2 md:row-span-2 relative bg-white/80 backdrop-blur-sm rounded-2xl border border-[#E8E0D8] p-7 overflow-hidden group hover:shadow-lg transition-all duration-300 flex flex-col ${whyReveal.visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`} style={{ transitionDelay: "80ms" }}>
+              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-green-500 to-emerald-400 rounded-t-2xl" />
+              <div className="w-10 h-10 rounded-xl bg-green-50 border border-green-100 flex items-center justify-center shrink-0 mb-4">
+                <svg className="w-5 h-5 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941" /></svg>
+              </div>
+              <h3 className="text-lg font-semibold text-charcoal mb-2">Scale to $10k MRR</h3>
+              <p className="text-sm text-warm-gray leading-relaxed flex-1">Matches your exact stage to proven strategies from @marclou, @tibo_maker, @levelsio and more. No generic playbook — real moves that worked at your revenue level.</p>
+              <div className="mt-4 flex items-center gap-2">
+                <div className="h-2 flex-1 bg-[#F0EAE2] rounded-full overflow-hidden"><div className="h-full w-3/4 bg-gradient-to-r from-green-500 to-emerald-400 rounded-full" /></div>
+                <span className="text-xs font-semibold text-green-600">$7.5k</span>
+              </div>
+            </div>
+
+            {/* Two medium cards */}
+            <div className={`md:col-span-2 relative bg-white/80 backdrop-blur-sm rounded-2xl border border-[#E8E0D8] p-7 overflow-hidden group hover:shadow-lg transition-all duration-300 ${whyReveal.visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`} style={{ transitionDelay: "160ms" }}>
+              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-amber-500 to-orange-400 rounded-t-2xl" />
+              <div className="w-10 h-10 rounded-xl bg-amber-50 border border-amber-100 flex items-center justify-center shrink-0 mb-3">
+                <svg className="w-5 h-5 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+              </div>
+              <h3 className="text-base font-semibold text-charcoal mb-1">Double your conversions</h3>
+              <p className="text-sm text-warm-gray leading-relaxed">Analyzes customer paths and pricing to unlock hidden revenue fast.</p>
+            </div>
+
+            <div className={`md:col-span-2 relative bg-white/80 backdrop-blur-sm rounded-2xl border border-[#E8E0D8] p-7 overflow-hidden group hover:shadow-lg transition-all duration-300 ${whyReveal.visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`} style={{ transitionDelay: "240ms" }}>
+              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-purple-500 to-violet-400 rounded-t-2xl" />
+              <div className="w-10 h-10 rounded-xl bg-purple-50 border border-purple-100 flex items-center justify-center shrink-0 mb-3">
+                <svg className="w-5 h-5 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5" /></svg>
+              </div>
+              <h3 className="text-base font-semibold text-charcoal mb-1">Ship features that stick</h3>
+              <p className="text-sm text-warm-gray leading-relaxed">Tracks your code deploys and predicts what drives retention and growth.</p>
+            </div>
+
+            {/* Bottom row */}
+            <div className={`md:col-span-3 relative bg-white/80 backdrop-blur-sm rounded-2xl border border-[#E8E0D8] p-7 overflow-hidden group hover:shadow-lg transition-all duration-300 ${whyReveal.visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`} style={{ transitionDelay: "320ms" }}>
+              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-red-500 to-rose-400 rounded-t-2xl" />
+              <div className="flex items-start gap-4">
+                <div className="w-10 h-10 rounded-xl bg-red-50 border border-red-100 flex items-center justify-center shrink-0">
+                  <svg className="w-5 h-5 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M15.59 14.37a6 6 0 01-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 006.16-12.12A14.98 14.98 0 009.631 8.41m5.96 5.96a14.926 14.926 0 01-5.841 2.58m-.119-8.54a6 6 0 00-7.381 5.84h4.8m2.581-5.84a14.927 14.927 0 00-2.58 5.84m2.699 2.7c-.103.021-.207.041-.311.06a15.09 15.09 0 01-2.448-2.448 14.9 14.9 0 01.06-.312m-2.24 2.39a4.493 4.493 0 00-1.757 4.306 4.493 4.493 0 004.306-1.758M16.5 9a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z" /></svg>
+                </div>
+                <div>
+                  <h3 className="text-base font-semibold text-charcoal mb-1">End $0 launches</h3>
+                  <p className="text-sm text-warm-gray leading-relaxed">Delivers stage-specific fixes so you act on real blockers, not generic noise.</p>
+                </div>
+              </div>
+            </div>
+
+            <div className={`md:col-span-3 relative bg-white/80 backdrop-blur-sm rounded-2xl border border-[#E8E0D8] p-7 overflow-hidden group hover:shadow-lg transition-all duration-300 ${whyReveal.visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`} style={{ transitionDelay: "400ms" }}>
+              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-terracotta to-[#E8943A] rounded-t-2xl" />
+              <div className="flex items-start gap-4">
+                <div className="w-10 h-10 rounded-xl bg-orange-50 border border-orange-100 flex items-center justify-center shrink-0">
+                  <svg className="w-5 h-5 text-terracotta" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" /></svg>
+                </div>
+                <div>
+                  <h3 className="text-base font-semibold text-charcoal mb-1">Reach milestones faster</h3>
+                  <p className="text-sm text-warm-gray leading-relaxed">Your AI co-founder evolves with your data for precision and clarity that compounds.</p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -432,14 +418,24 @@ export default function LandingPage() {
             </div>
           </div>
 
-          <p className="text-center text-sm text-warm-gray max-w-lg mx-auto leading-relaxed mt-8">
-            Tasu learns what actually worked for them at every growth stage and adapts it to you. Growth systems, decision models, and tested sequences — not generic advice.
-          </p>
+          <div className="max-w-2xl mx-auto mt-12">
+            <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-[#E8E0D8] p-6 shadow-sm">
+              <div className="flex items-start gap-4">
+                <div className="shrink-0 mt-0.5"><TasuLogo size={28} /></div>
+                <div>
+                  <p className="text-sm font-semibold text-charcoal mb-1">Built on real playbooks</p>
+                  <p className="text-sm text-warm-gray leading-relaxed">
+                    Tasu learns what actually worked for them at every growth stage and adapts it to <span className="text-charcoal font-medium">your</span> business. Growth systems, decision models, and tested sequences — not generic advice.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
       {/* ── Connected to your tools (logo cloud) ── */}
-      <section className="py-16 bg-[#F5F0EA]">
+      <section className="py-16">
         <div className="relative mx-auto max-w-3xl px-4">
           <h2 className="mb-6 text-center font-medium text-lg text-warm-gray tracking-tight md:text-2xl">
             Connected to your <span className="font-semibold text-charcoal">tools</span>
@@ -485,9 +481,8 @@ export default function LandingPage() {
       </section>
 
       {/* ── Pricing ── */}
-      <section className="py-28 px-5 relative" ref={pricingReveal.ref}>
-        <div className="absolute inset-0 bg-gradient-to-b from-[#EDE5DA] via-[#E8DFD4] to-[#F5F0EA]" />
-        <div className={`max-w-4xl mx-auto relative transition-all duration-700 ${pricingReveal.visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}>
+      <section className="py-28 px-5" ref={pricingReveal.ref}>
+        <div className={`max-w-4xl mx-auto transition-all duration-700 ${pricingReveal.visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}>
           <div className="text-center mb-4">
             <div className="inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm border border-[#E8E0D8] rounded-full px-3 py-1.5 mb-4 shadow-sm">
               <svg className="w-3.5 h-3.5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -543,7 +538,7 @@ export default function LandingPage() {
       </section>
 
       {/* ── FAQ ── */}
-      <section className="max-w-2xl mx-auto px-5 py-24 bg-[#F5F0EA]" ref={faqReveal.ref}>
+      <section className="max-w-2xl mx-auto px-5 py-24" ref={faqReveal.ref}>
         <div className={`transition-all duration-700 ${faqReveal.visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}>
           <div className="text-center mb-12">
             <p className="text-xs font-semibold uppercase tracking-widest text-warm-gray/50 mb-3">FAQ</p>
