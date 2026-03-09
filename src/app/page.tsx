@@ -204,59 +204,50 @@ export default function LandingPage() {
       </section>
 
       {/* ── How It Reads You ── */}
-      <section className="max-w-5xl mx-auto px-5 pb-24" ref={howReveal.ref}>
+      <section className="max-w-5xl mx-auto px-5 pb-28" ref={howReveal.ref}>
         <div className={`transition-all duration-700 ${howReveal.visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
           <p className="text-center text-xs font-semibold uppercase tracking-widest text-warm-gray/60 mb-3">How It Reads You</p>
-          <h2 className="text-3xl sm:text-4xl font-bold text-charcoal text-center mb-14">Connect. Diagnose. Act.</h2>
+          <h2 className="text-3xl sm:text-4xl font-bold text-charcoal text-center mb-16">Connect. Diagnose. Act.</h2>
 
-          <div className="grid sm:grid-cols-3 gap-8">
+          <div className="max-w-2xl mx-auto flex flex-col gap-0">
             {[
               {
                 step: "01",
-                title: "Connect your data",
-                desc: "Revenue, traffic, and code. Tasu reads from DataFast, GitHub, and more as integrations grow.",
-                icon: (
-                  <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m9.86-2.754a4.5 4.5 0 00-1.242-7.244l-4.5-4.5a4.5 4.5 0 00-6.364 6.364L5.25 9.879" />
-                  </svg>
-                ),
+                title: "Drop your business",
+                desc: "Share your website so we can understand your audience, value propositions, and market positioning.",
               },
               {
                 step: "02",
-                title: "Tasu diagnoses",
-                desc: "What's holding your growth back — positioning, conversion, distribution, or velocity.",
-                icon: (
-                  <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 3v11.25A2.25 2.25 0 006 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0118 16.5h-2.25m-7.5 0h7.5m-7.5 0l-1 3m8.5-3l1 3m0 0l.5 1.5m-.5-1.5h-9.5m0 0l-.5 1.5M9 11.25v1.5M12 9v3.75m3-6v6" />
-                  </svg>
-                ),
+                title: "Connect your data",
+                desc: "We connect your revenue, traffic, and activity data to identify the exact pinpoint where growth is blocked.",
               },
               {
                 step: "03",
-                title: "You act daily",
-                desc: "Stage-based strategies proven to work for founders at your level. One sharp action per day.",
-                icon: (
-                  <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
-                  </svg>
-                ),
+                title: "Grow your revenue",
+                desc: "Execute stage-based strategies that move the needle, then watch your revenue explode.",
               },
-            ].map((card, i) => (
-              <div key={card.step} className={`relative bg-white/80 backdrop-blur-sm rounded-2xl border border-[#E8E0D8] p-7 hover:shadow-lg transition-all duration-300 ${howReveal.visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`} style={{ transitionDelay: `${i * 120}ms` }}>
-                <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-terracotta/10 to-terracotta/5 flex items-center justify-center text-terracotta mb-5">
-                  {card.icon}
+            ].map((item, i) => (
+              <div
+                key={item.step}
+                className={`flex gap-8 transition-all duration-500 ${howReveal.visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
+                style={{ transitionDelay: `${i * 150}ms` }}
+              >
+                {/* Left: number + line */}
+                <div className="flex flex-col items-center shrink-0">
+                  <div className="w-12 h-12 rounded-2xl bg-white border border-[#E8E0D8] shadow-sm flex items-center justify-center shrink-0">
+                    <span className="text-sm font-bold text-terracotta">{item.step}</span>
+                  </div>
+                  {i < 2 && <div className="w-px flex-1 my-2 bg-gradient-to-b from-[#E8E0D8] to-transparent min-h-[40px]" />}
                 </div>
-                <span className="text-[10px] font-bold text-terracotta/60 tracking-widest">{card.step}</span>
-                <h3 className="text-base font-semibold text-charcoal mt-1 mb-2">{card.title}</h3>
-                <p className="text-sm text-warm-gray leading-relaxed">{card.desc}</p>
+
+                {/* Right: content */}
+                <div className={`pb-10 ${i === 2 ? "pb-0" : ""}`}>
+                  <h3 className="text-xl font-bold text-charcoal mb-2 leading-tight">{item.title}</h3>
+                  <p className="text-base text-warm-gray leading-relaxed">{item.desc}</p>
+                </div>
               </div>
             ))}
           </div>
-
-          <p className="text-center text-sm text-warm-gray/60 mt-10">
-            Adding more connections as Tasu evolves. Your opinion matters —{" "}
-            <Link href="/login" className="text-terracotta hover:underline font-medium">tell us what you need</Link>.
-          </p>
         </div>
       </section>
 
