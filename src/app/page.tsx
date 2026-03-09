@@ -205,99 +205,109 @@ export default function LandingPage() {
 
       {/* ── How It Reads You ── */}
       <section className="py-24 bg-[#1C1917]" ref={howReveal.ref}>
-        <div className={`max-w-5xl mx-auto px-5 transition-all duration-700 ${howReveal.visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
+        <div className={`max-w-7xl mx-auto px-4 transition-all duration-700 ${howReveal.visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
 
-          <p className="text-center text-xs font-semibold uppercase tracking-widest text-terracotta mb-3">How It Reads You</p>
-          <h2 className="text-3xl sm:text-4xl font-bold text-white text-center mb-14">Grow your revenue in 3 steps</h2>
+          <div className="mb-12 flex w-full flex-col text-center md:mb-20">
+            <p className="mb-3 text-sm font-medium uppercase tracking-wider text-terracotta">How It Reads You</p>
+            <h2 className="mx-auto text-3xl font-extrabold tracking-tight text-white md:text-5xl">Grow your revenue in 3 steps</h2>
+          </div>
 
           {/* Cards row */}
-          <div className="flex flex-col sm:flex-row items-stretch gap-0">
+          <div className="flex flex-col justify-center gap-6 max-lg:items-center lg:flex-row">
 
             {/* Card 1 */}
-            <div className={`flex-1 bg-[#252220] rounded-2xl overflow-hidden border border-white/10 transition-all duration-500 ${howReveal.visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`} style={{ transitionDelay: "0ms" }}>
-              <div className="h-52 bg-[#1C1917] flex items-center justify-center p-6">
-                <div className="w-full bg-[#252220] rounded-xl border border-white/10 overflow-hidden">
-                  <div className="flex items-center gap-1.5 px-3 pt-3 pb-2 border-b border-white/5">
-                    <span className="w-2.5 h-2.5 rounded-full bg-red-400/50" />
-                    <span className="w-2.5 h-2.5 rounded-full bg-yellow-400/50" />
-                    <span className="w-2.5 h-2.5 rounded-full bg-green-400/50" />
-                  </div>
-                  <div className="px-4 py-3 font-mono text-xs space-y-1">
-                    <p className="text-white/30">{"<script"}</p>
-                    <p className="pl-3 text-green-400/80">{"defer"}</p>
-                    <p className="pl-3"><span className="text-blue-400/70">data-domain</span><span className="text-white/40">{"=\""}</span><span className="text-orange-300/80">yoursite.com</span><span className="text-white/40">{"\""}</span></p>
-                    <p className="pl-3"><span className="text-blue-400/70">src</span><span className="text-white/40">{"=\""}</span><span className="text-orange-300/80">tasu.ai/js</span><span className="text-white/40">{"\""}</span></p>
-                    <p className="text-white/30">{"</script>"}</p>
+            <div className={`rounded-[1.3rem] border border-white/5 bg-white/5 p-1.5 transition-all duration-500 ${howReveal.visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`} style={{ transitionDelay: "0ms" }}>
+              <div className="mx-auto w-full max-w-lg rounded-2xl bg-[#252220] overflow-hidden">
+                <div className="relative h-48 bg-[#1C1917] flex items-center justify-center p-6">
+                  <div className="w-full bg-[#252220] rounded-xl border border-white/10 overflow-hidden">
+                    <div className="flex items-center gap-1.5 px-3 pt-3 pb-2 border-b border-white/5">
+                      <span className="w-2.5 h-2.5 rounded-full bg-red-400/50" />
+                      <span className="w-2.5 h-2.5 rounded-full bg-yellow-400/50" />
+                      <span className="w-2.5 h-2.5 rounded-full bg-green-400/50" />
+                    </div>
+                    <div className="px-4 py-3 font-mono text-xs space-y-1">
+                      <p className="text-white/30">{"<script"}</p>
+                      <p className="pl-3 text-green-400/80">{"defer"}</p>
+                      <p className="pl-3"><span className="text-blue-400/70">data-domain</span><span className="text-white/40">{"=\""}</span><span className="text-orange-300/80">yoursite.com</span><span className="text-white/40">{"\""}</span></p>
+                      <p className="pl-3"><span className="text-blue-400/70">src</span><span className="text-white/40">{"=\""}</span><span className="text-orange-300/80">tasu.ai/js</span><span className="text-white/40">{"\""}</span></p>
+                      <p className="text-white/30">{"</script>"}</p>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className="p-6">
-                <p className="text-[13px] font-bold text-white mb-1.5">1. Drop your business</p>
-                <p className="text-sm text-white/50 leading-relaxed">Share your website so Tasu can understand your audience, value props, and market position.</p>
+                <div className="p-6">
+                  <h3 className="text-lg font-bold text-white mb-1.5">1. Drop your business</h3>
+                  <p className="text-sm text-white/50 leading-relaxed">Share your website so Tasu can understand your audience, value props, and market position.</p>
+                </div>
               </div>
             </div>
 
             {/* Arrow 1 */}
-            <div className="hidden sm:flex items-center justify-center px-3 shrink-0 text-white/20 text-2xl">&#8594;</div>
-            <div className="flex sm:hidden items-center justify-center py-2 text-white/20 text-2xl">&#8595;</div>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="text-white/30 mx-auto w-6 shrink-0 max-lg:rotate-90">
+              <path fillRule="evenodd" d="M3 10a.75.75 0 0 1 .75-.75h10.638L10.23 5.29a.75.75 0 1 1 1.04-1.08l5.5 5.25a.75.75 0 0 1 0 1.08l-5.5 5.25a.75.75 0 1 1-1.04-1.08l4.158-3.96H3.75A.75.75 0 0 1 3 10Z" clipRule="evenodd" />
+            </svg>
 
             {/* Card 2 */}
-            <div className={`flex-1 bg-[#252220] rounded-2xl overflow-hidden border border-white/10 transition-all duration-500 ${howReveal.visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`} style={{ transitionDelay: "150ms" }}>
-              <div className="h-52 bg-[#1C1917] flex items-center justify-center p-6">
-                <div className="grid grid-cols-2 gap-3 w-full max-w-[200px]">
-                  {[
-                    { name: "Stripe", color: "bg-[#635BFF]", icon: "S" },
-                    { name: "Shopify", color: "bg-[#96BF48]", icon: "S" },
-                    { name: "GitHub", color: "bg-[#24292E]", icon: "G" },
-                    { name: "Analytics", color: "bg-[#E8943A]", icon: "A" },
-                  ].map((int) => (
-                    <div key={int.name} className="bg-[#252220] rounded-xl p-3 flex flex-col items-center gap-1.5 border border-white/10">
-                      <div className={`w-8 h-8 rounded-lg ${int.color} flex items-center justify-center`}>
-                        <span className="text-white text-xs font-bold">{int.icon}</span>
+            <div className={`rounded-[1.3rem] border border-white/5 bg-white/5 p-1.5 transition-all duration-500 ${howReveal.visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`} style={{ transitionDelay: "150ms" }}>
+              <div className="mx-auto w-full max-w-lg rounded-2xl bg-[#252220] overflow-hidden">
+                <div className="relative h-48 bg-[#1C1917] flex items-center justify-center p-6">
+                  <div className="grid grid-cols-2 gap-3 w-full max-w-[200px]">
+                    {[
+                      { name: "Stripe", color: "bg-[#635BFF]", icon: "S" },
+                      { name: "DataFast", color: "bg-[#E8943A]", icon: "D" },
+                      { name: "GitHub", color: "bg-[#24292E]", icon: "G" },
+                      { name: "Analytics", color: "bg-[#4285F4]", icon: "A" },
+                    ].map((int) => (
+                      <div key={int.name} className="bg-[#252220] rounded-xl p-3 flex flex-col items-center gap-1.5 border border-white/10">
+                        <div className={`w-8 h-8 rounded-lg ${int.color} flex items-center justify-center`}>
+                          <span className="text-white text-xs font-bold">{int.icon}</span>
+                        </div>
+                        <span className="text-[10px] text-white/50 font-medium">{int.name}</span>
                       </div>
-                      <span className="text-[10px] text-white/50 font-medium">{int.name}</span>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
-              </div>
-              <div className="p-6">
-                <p className="text-[13px] font-bold text-white mb-1.5">2. Connect your data</p>
-                <p className="text-sm text-white/50 leading-relaxed">Link your revenue, traffic, and code activity so Tasu pinpoints exactly where growth is blocked.</p>
+                <div className="p-6">
+                  <h3 className="text-lg font-bold text-white mb-1.5">2. Connect your data</h3>
+                  <p className="text-sm text-white/50 leading-relaxed">Link your revenue, traffic, and code activity so Tasu pinpoints exactly where growth is blocked.</p>
+                </div>
               </div>
             </div>
 
             {/* Arrow 2 */}
-            <div className="hidden sm:flex items-center justify-center px-3 shrink-0 text-white/20 text-2xl">&#8594;</div>
-            <div className="flex sm:hidden items-center justify-center py-2 text-white/20 text-2xl">&#8595;</div>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="text-white/30 mx-auto w-6 shrink-0 max-lg:rotate-90">
+              <path fillRule="evenodd" d="M3 10a.75.75 0 0 1 .75-.75h10.638L10.23 5.29a.75.75 0 1 1 1.04-1.08l5.5 5.25a.75.75 0 0 1 0 1.08l-5.5 5.25a.75.75 0 1 1-1.04-1.08l4.158-3.96H3.75A.75.75 0 0 1 3 10Z" clipRule="evenodd" />
+            </svg>
 
             {/* Card 3 */}
-            <div className={`flex-1 bg-[#252220] rounded-2xl overflow-hidden border border-white/10 transition-all duration-500 ${howReveal.visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`} style={{ transitionDelay: "300ms" }}>
-              <div className="h-52 bg-[#1C1917] flex items-center justify-center p-4">
-                <div className="w-full bg-[#252220] rounded-xl border border-white/10 p-3">
-                  <div className="flex justify-between items-center mb-3 px-1">
-                    <span className="text-[10px] text-white/40 font-medium">Source</span>
-                    <span className="text-[10px] text-white/40 font-medium">Revenue</span>
-                  </div>
-                  {[
-                    { source: "Direct", bar: 72, revenue: "$1.2k", focus: false },
-                    { source: "Google", bar: 48, revenue: "$798", focus: true },
-                    { source: "Twitter/X", bar: 30, revenue: "$498", focus: false },
-                    { source: "Product Hunt", bar: 18, revenue: "$210", focus: false },
-                  ].map((row) => (
-                    <div key={row.source} className={`flex items-center gap-2 py-1.5 px-1 rounded-lg ${row.focus ? "bg-terracotta/10" : ""}`}>
-                      <span className="text-[11px] text-white/60 w-24 shrink-0">{row.source}</span>
-                      <div className="flex-1 h-1.5 bg-white/5 rounded-full overflow-hidden">
-                        <div className={`h-full rounded-full ${row.focus ? "bg-terracotta" : "bg-white/20"}`} style={{ width: `${row.bar}%` }} />
-                      </div>
-                      <span className={`text-[11px] font-semibold shrink-0 w-10 text-right ${row.focus ? "text-terracotta" : "text-white/50"}`}>{row.revenue}</span>
-                      {row.focus && <span className="text-[9px] bg-terracotta text-white px-1.5 py-0.5 rounded font-bold shrink-0">Focus</span>}
+            <div className={`rounded-[1.3rem] border border-white/5 bg-white/5 p-1.5 transition-all duration-500 ${howReveal.visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`} style={{ transitionDelay: "300ms" }}>
+              <div className="mx-auto w-full max-w-lg rounded-2xl bg-[#252220] overflow-hidden">
+                <div className="relative h-48 bg-[#1C1917] flex items-center justify-center p-4">
+                  <div className="w-full bg-[#252220] rounded-xl border border-white/10 p-3">
+                    <div className="flex justify-between items-center mb-3 px-1">
+                      <span className="text-[10px] text-white/40 font-medium">Source</span>
+                      <span className="text-[10px] text-white/40 font-medium">Revenue</span>
                     </div>
-                  ))}
+                    {[
+                      { source: "Direct", bar: 72, revenue: "$1.2k", focus: false },
+                      { source: "Google", bar: 48, revenue: "$798", focus: true },
+                      { source: "Twitter/X", bar: 30, revenue: "$498", focus: false },
+                      { source: "Product Hunt", bar: 18, revenue: "$210", focus: false },
+                    ].map((row) => (
+                      <div key={row.source} className={`flex items-center gap-2 py-1.5 px-1 rounded-lg ${row.focus ? "bg-terracotta/10" : ""}`}>
+                        <span className="text-[11px] text-white/60 w-24 shrink-0">{row.source}</span>
+                        <div className="flex-1 h-1.5 bg-white/5 rounded-full overflow-hidden">
+                          <div className={`h-full rounded-full ${row.focus ? "bg-terracotta" : "bg-white/20"}`} style={{ width: `${row.bar}%` }} />
+                        </div>
+                        <span className={`text-[11px] font-semibold shrink-0 w-10 text-right ${row.focus ? "text-terracotta" : "text-white/50"}`}>{row.revenue}</span>
+                        {row.focus && <span className="text-[9px] bg-terracotta text-white px-1.5 py-0.5 rounded font-bold shrink-0">Focus</span>}
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              </div>
-              <div className="p-6">
-                <p className="text-[13px] font-bold text-white mb-1.5">3. Grow your revenue</p>
-                <p className="text-sm text-white/50 leading-relaxed">Execute stage-based strategies that move the needle, then watch your revenue explode.</p>
+                <div className="p-6">
+                  <h3 className="text-lg font-bold text-white mb-1.5">3. Grow your revenue</h3>
+                  <p className="text-sm text-white/50 leading-relaxed">Execute stage-based strategies that move the needle, then watch your revenue explode.</p>
+                </div>
               </div>
             </div>
 
@@ -405,7 +415,7 @@ export default function LandingPage() {
                     { name: "@robj3d3", desc: "Indie hacker, multi-exit" },
                     { name: "@romanbuildsaas", desc: "SaaS growth strategies" },
                     { name: "@levelsio", desc: "NomadList, PhotoAI" },
-                    { name: "@dankulkov", desc: "Makerbox, growth playbooks" },
+                    { name: "@thepatwalls", desc: "Starter Story, $1M+ ARR" },
                   ].map((founder) => (
                     <div key={`${rep}-${founder.name}`} className="flex items-center gap-3 bg-white rounded-xl border border-[#E8E0D8] px-5 py-3 shrink-0 shadow-sm hover:shadow-md transition-shadow">
                       <div className="w-8 h-8 rounded-full bg-gradient-to-br from-terracotta/20 to-terracotta/5 flex items-center justify-center text-xs font-bold text-terracotta">
@@ -428,27 +438,48 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ── Data sources ── */}
-      <section className="py-12 bg-[#F5F0EA]">
-        <div className="max-w-5xl mx-auto px-5">
-          <p className="text-center text-xs font-semibold uppercase tracking-widest text-warm-gray/50 mb-8">Connected to your tools</p>
-          <div className="flex flex-wrap items-center justify-center gap-10">
-            {[
-              { name: "DataFast", sub: "Traffic & Revenue", live: true },
-              { name: "GitHub", sub: "Shipping Activity", live: true },
-              { name: "Stripe", sub: "Coming soon", live: false },
-              { name: "PostHog", sub: "Coming soon", live: false },
-            ].map((src) => (
-              <div key={src.name} className="flex items-center gap-3 group">
-                <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-sm font-bold border ${src.live ? "bg-white border-[#E8E0D8] text-charcoal/60" : "bg-cream border-[#E8E0D8] text-warm-gray/30"}`}>
-                  {src.name.slice(0, 2).toUpperCase()}
-                </div>
-                <div>
-                  <p className={`text-sm font-semibold ${src.live ? "text-charcoal" : "text-warm-gray/50"}`}>{src.name}</p>
-                  <p className="text-xs text-warm-gray">{src.sub}</p>
-                </div>
-              </div>
-            ))}
+      {/* ── Connected to your tools (logo cloud) ── */}
+      <section className="py-16 bg-[#F5F0EA]">
+        <div className="relative mx-auto max-w-3xl px-4">
+          <h2 className="mb-6 text-center font-medium text-lg text-warm-gray tracking-tight md:text-2xl">
+            Connected to your <span className="font-semibold text-charcoal">tools</span>
+          </h2>
+          <div className="relative grid grid-cols-2 md:grid-cols-3 border-x border-[#E8E0D8]">
+            {/* Full-width top border */}
+            <div className="absolute left-1/2 -translate-x-1/2 -top-px w-screen border-t border-[#E8E0D8] pointer-events-none" />
+
+            {/* Row 1 */}
+            <div className="relative flex items-center justify-center bg-[#F0EAE2] px-4 py-8 md:p-8 border-r border-b border-[#E8E0D8]">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img alt="GitHub" className="pointer-events-none h-5 md:h-6 select-none brightness-0 opacity-50" src="https://svgl.app/library/github_wordmark_light.svg" />
+              <svg className="absolute -right-[12.5px] -bottom-[12.5px] z-10 w-6 h-6 text-[#D5CEC6]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1}><path d="M12 5v14m-7-7h14" /></svg>
+            </div>
+            <div className="flex items-center justify-center px-4 py-8 md:p-8 border-b border-[#E8E0D8] md:border-r">
+              <span className="text-base md:text-lg font-bold tracking-tight text-charcoal/50 select-none">DataFast</span>
+            </div>
+            <div className="relative flex items-center justify-center bg-[#F0EAE2] px-4 py-8 md:p-8 border-r border-b border-[#E8E0D8] md:border-r-0">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img alt="Claude" className="pointer-events-none h-5 md:h-6 select-none brightness-0 opacity-50" src="https://svgl.app/library/claude-ai-wordmark-icon_light.svg" />
+              <svg className="absolute -right-[12.5px] -bottom-[12.5px] z-10 hidden w-6 h-6 text-[#D5CEC6] md:block" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1}><path d="M12 5v14m-7-7h14" /></svg>
+              <svg className="absolute -left-[12.5px] -bottom-[12.5px] z-10 hidden w-6 h-6 text-[#D5CEC6] md:block" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1}><path d="M12 5v14m-7-7h14" /></svg>
+            </div>
+
+            {/* Row 2 */}
+            <div className="relative flex items-center justify-center px-4 py-8 md:p-8 border-r border-[#E8E0D8] md:border-b-0 border-b md:bg-transparent bg-[#F0EAE2]">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img alt="OpenAI" className="pointer-events-none h-5 md:h-6 select-none brightness-0 opacity-50" src="https://svgl.app/library/openai_wordmark_light.svg" />
+            </div>
+            <div className="relative flex items-center justify-center px-4 py-8 md:p-8 border-[#E8E0D8] md:border-r md:bg-[#F0EAE2] border-b md:border-b-0">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img alt="Stripe" className="pointer-events-none h-5 md:h-6 select-none brightness-0 opacity-50" src="https://svgl.app/library/stripe-wordmark-slate.svg" />
+            </div>
+            <div className="flex items-center justify-center bg-[#F0EAE2] md:bg-transparent px-4 py-8 md:p-8 border-r border-[#E8E0D8] md:border-r-0">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img alt="Vercel" className="pointer-events-none h-4 md:h-5 select-none brightness-0 opacity-50" src="https://svgl.app/library/vercel_wordmark.svg" />
+            </div>
+
+            {/* Full-width bottom border */}
+            <div className="absolute left-1/2 -translate-x-1/2 -bottom-px w-screen border-b border-[#E8E0D8] pointer-events-none" />
           </div>
         </div>
       </section>
