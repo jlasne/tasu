@@ -204,49 +204,103 @@ export default function LandingPage() {
       </section>
 
       {/* ── How It Reads You ── */}
-      <section className="max-w-5xl mx-auto px-5 pb-28" ref={howReveal.ref}>
-        <div className={`transition-all duration-700 ${howReveal.visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
-          <p className="text-center text-xs font-semibold uppercase tracking-widest text-warm-gray/60 mb-3">How It Reads You</p>
-          <h2 className="text-3xl sm:text-4xl font-bold text-charcoal text-center mb-16">Connect. Diagnose. Act.</h2>
+      <section className="py-24 bg-[#1C1917]" ref={howReveal.ref}>
+        <div className={`max-w-5xl mx-auto px-5 transition-all duration-700 ${howReveal.visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
 
-          <div className="max-w-2xl mx-auto flex flex-col gap-0">
-            {[
-              {
-                step: "01",
-                title: "Drop your business",
-                desc: "Share your website so we can understand your audience, value propositions, and market positioning.",
-              },
-              {
-                step: "02",
-                title: "Connect your data",
-                desc: "We connect your revenue, traffic, and activity data to identify the exact pinpoint where growth is blocked.",
-              },
-              {
-                step: "03",
-                title: "Grow your revenue",
-                desc: "Execute stage-based strategies that move the needle, then watch your revenue explode.",
-              },
-            ].map((item, i) => (
-              <div
-                key={item.step}
-                className={`flex gap-8 transition-all duration-500 ${howReveal.visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
-                style={{ transitionDelay: `${i * 150}ms` }}
-              >
-                {/* Left: number + line */}
-                <div className="flex flex-col items-center shrink-0">
-                  <div className="w-12 h-12 rounded-2xl bg-white border border-[#E8E0D8] shadow-sm flex items-center justify-center shrink-0">
-                    <span className="text-sm font-bold text-terracotta">{item.step}</span>
+          <p className="text-center text-xs font-semibold uppercase tracking-widest text-terracotta mb-3">How It Reads You</p>
+          <h2 className="text-3xl sm:text-4xl font-bold text-white text-center mb-14">Grow your revenue in 3 steps</h2>
+
+          {/* Cards row */}
+          <div className="flex flex-col sm:flex-row items-stretch gap-0">
+
+            {/* Card 1 */}
+            <div className={`flex-1 bg-[#252220] rounded-2xl overflow-hidden border border-white/10 transition-all duration-500 ${howReveal.visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`} style={{ transitionDelay: "0ms" }}>
+              <div className="h-52 bg-[#1C1917] flex items-center justify-center p-6">
+                <div className="w-full bg-[#252220] rounded-xl border border-white/10 overflow-hidden">
+                  <div className="flex items-center gap-1.5 px-3 pt-3 pb-2 border-b border-white/5">
+                    <span className="w-2.5 h-2.5 rounded-full bg-red-400/50" />
+                    <span className="w-2.5 h-2.5 rounded-full bg-yellow-400/50" />
+                    <span className="w-2.5 h-2.5 rounded-full bg-green-400/50" />
                   </div>
-                  {i < 2 && <div className="w-px flex-1 my-2 bg-gradient-to-b from-[#E8E0D8] to-transparent min-h-[40px]" />}
-                </div>
-
-                {/* Right: content */}
-                <div className={`pb-10 ${i === 2 ? "pb-0" : ""}`}>
-                  <h3 className="text-xl font-bold text-charcoal mb-2 leading-tight">{item.title}</h3>
-                  <p className="text-base text-warm-gray leading-relaxed">{item.desc}</p>
+                  <div className="px-4 py-3 font-mono text-xs space-y-1">
+                    <p className="text-white/30">{"<script"}</p>
+                    <p className="pl-3 text-green-400/80">{"defer"}</p>
+                    <p className="pl-3"><span className="text-blue-400/70">data-domain</span><span className="text-white/40">{"=\""}</span><span className="text-orange-300/80">yoursite.com</span><span className="text-white/40">{"\""}</span></p>
+                    <p className="pl-3"><span className="text-blue-400/70">src</span><span className="text-white/40">{"=\""}</span><span className="text-orange-300/80">tasu.ai/js</span><span className="text-white/40">{"\""}</span></p>
+                    <p className="text-white/30">{"</script>"}</p>
+                  </div>
                 </div>
               </div>
-            ))}
+              <div className="p-6">
+                <p className="text-[13px] font-bold text-white mb-1.5">1. Drop your business</p>
+                <p className="text-sm text-white/50 leading-relaxed">Share your website so Tasu can understand your audience, value props, and market position.</p>
+              </div>
+            </div>
+
+            {/* Arrow 1 */}
+            <div className="hidden sm:flex items-center justify-center px-3 shrink-0 text-white/20 text-2xl">&#8594;</div>
+            <div className="flex sm:hidden items-center justify-center py-2 text-white/20 text-2xl">&#8595;</div>
+
+            {/* Card 2 */}
+            <div className={`flex-1 bg-[#252220] rounded-2xl overflow-hidden border border-white/10 transition-all duration-500 ${howReveal.visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`} style={{ transitionDelay: "150ms" }}>
+              <div className="h-52 bg-[#1C1917] flex items-center justify-center p-6">
+                <div className="grid grid-cols-2 gap-3 w-full max-w-[200px]">
+                  {[
+                    { name: "Stripe", color: "bg-[#635BFF]", icon: "S" },
+                    { name: "Shopify", color: "bg-[#96BF48]", icon: "S" },
+                    { name: "GitHub", color: "bg-[#24292E]", icon: "G" },
+                    { name: "Analytics", color: "bg-[#E8943A]", icon: "A" },
+                  ].map((int) => (
+                    <div key={int.name} className="bg-[#252220] rounded-xl p-3 flex flex-col items-center gap-1.5 border border-white/10">
+                      <div className={`w-8 h-8 rounded-lg ${int.color} flex items-center justify-center`}>
+                        <span className="text-white text-xs font-bold">{int.icon}</span>
+                      </div>
+                      <span className="text-[10px] text-white/50 font-medium">{int.name}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div className="p-6">
+                <p className="text-[13px] font-bold text-white mb-1.5">2. Connect your data</p>
+                <p className="text-sm text-white/50 leading-relaxed">Link your revenue, traffic, and code activity so Tasu pinpoints exactly where growth is blocked.</p>
+              </div>
+            </div>
+
+            {/* Arrow 2 */}
+            <div className="hidden sm:flex items-center justify-center px-3 shrink-0 text-white/20 text-2xl">&#8594;</div>
+            <div className="flex sm:hidden items-center justify-center py-2 text-white/20 text-2xl">&#8595;</div>
+
+            {/* Card 3 */}
+            <div className={`flex-1 bg-[#252220] rounded-2xl overflow-hidden border border-white/10 transition-all duration-500 ${howReveal.visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`} style={{ transitionDelay: "300ms" }}>
+              <div className="h-52 bg-[#1C1917] flex items-center justify-center p-4">
+                <div className="w-full bg-[#252220] rounded-xl border border-white/10 p-3">
+                  <div className="flex justify-between items-center mb-3 px-1">
+                    <span className="text-[10px] text-white/40 font-medium">Source</span>
+                    <span className="text-[10px] text-white/40 font-medium">Revenue</span>
+                  </div>
+                  {[
+                    { source: "Direct", bar: 72, revenue: "$1.2k", focus: false },
+                    { source: "Google", bar: 48, revenue: "$798", focus: true },
+                    { source: "Twitter/X", bar: 30, revenue: "$498", focus: false },
+                    { source: "Product Hunt", bar: 18, revenue: "$210", focus: false },
+                  ].map((row) => (
+                    <div key={row.source} className={`flex items-center gap-2 py-1.5 px-1 rounded-lg ${row.focus ? "bg-terracotta/10" : ""}`}>
+                      <span className="text-[11px] text-white/60 w-24 shrink-0">{row.source}</span>
+                      <div className="flex-1 h-1.5 bg-white/5 rounded-full overflow-hidden">
+                        <div className={`h-full rounded-full ${row.focus ? "bg-terracotta" : "bg-white/20"}`} style={{ width: `${row.bar}%` }} />
+                      </div>
+                      <span className={`text-[11px] font-semibold shrink-0 w-10 text-right ${row.focus ? "text-terracotta" : "text-white/50"}`}>{row.revenue}</span>
+                      {row.focus && <span className="text-[9px] bg-terracotta text-white px-1.5 py-0.5 rounded font-bold shrink-0">Focus</span>}
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div className="p-6">
+                <p className="text-[13px] font-bold text-white mb-1.5">3. Grow your revenue</p>
+                <p className="text-sm text-white/50 leading-relaxed">Execute stage-based strategies that move the needle, then watch your revenue explode.</p>
+              </div>
+            </div>
+
           </div>
         </div>
       </section>
