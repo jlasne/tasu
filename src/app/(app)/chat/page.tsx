@@ -220,6 +220,8 @@ export default function ChatPage() {
     setInput(el.value);
   }
 
+  const [taskBarOpen, setTaskBarOpen] = useState(true);
+
   const greeting = userName ? `Hey, ${userName}.` : "Hey, founder.";
   const openTasks = tasks.filter((t) => !t.done);
   const doneTasks = tasks.filter((t) => t.done);
@@ -319,6 +321,19 @@ export default function ChatPage() {
         </div>
 
         <div className="px-4 sm:px-6 pb-5 sm:pb-6 pt-2 shrink-0">
+          {!taskBarOpen && (
+            <div className="max-w-2xl mx-auto mb-2 hidden md:flex justify-end">
+              <button
+                onClick={() => setTaskBarOpen(true)}
+                className="flex items-center gap-1.5 text-[11px] text-warm-gray/50 hover:text-terracotta transition-colors px-2 py-1 rounded-lg hover:bg-terracotta/5"
+              >
+                <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                Tasks{openTasks.length > 0 ? ` (${openTasks.length})` : ""}
+              </button>
+            </div>
+          )}
           <form onSubmit={handleSubmit} className="max-w-2xl mx-auto">
             <div className="bg-white dark:bg-dark-surface rounded-2xl border border-cream-dark/70 dark:border-dark-border shadow-sm overflow-hidden">
               <textarea
@@ -348,10 +363,22 @@ export default function ChatPage() {
       </div>
 
       {/* ── Right: Tasks (50%) ── */}
+      {taskBarOpen && (
       <div className="hidden md:flex w-1/2 flex-col border-l border-cream-dark dark:border-dark-border bg-white/50 dark:bg-dark-surface/30 h-screen">
-        <div className="px-5 py-4 border-b border-cream-dark dark:border-dark-border shrink-0">
-          <h2 className="text-sm font-semibold text-charcoal dark:text-dark-text">Tasks</h2>
-          <p className="text-[11px] text-warm-gray dark:text-dark-muted mt-0.5">Click &quot;Make task&quot; on any message, or create one below</p>
+        <div className="px-5 py-4 border-b border-cream-dark dark:border-dark-border shrink-0 flex items-start justify-between">
+          <div>
+            <h2 className="text-sm font-semibold text-charcoal dark:text-dark-text">Tasks</h2>
+            <p className="text-[11px] text-warm-gray dark:text-dark-muted mt-0.5">Click &quot;Make task&quot; on any message, or create one below</p>
+          </div>
+          <button
+            onClick={() => setTaskBarOpen(false)}
+            className="text-warm-gray/30 hover:text-warm-gray transition-colors mt-0.5 shrink-0"
+            title="Collapse tasks"
+          >
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+            </svg>
+          </button>
         </div>
 
         {/* New task input */}
@@ -440,6 +467,7 @@ export default function ChatPage() {
           )}
         </div>
       </div>
+      )}
     </div>
   );
 }
