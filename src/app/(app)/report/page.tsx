@@ -221,7 +221,7 @@ export default function ReportPage() {
   const doneTasks = tasks.filter((t) => t.done);
 
   return (
-    <div className="flex flex-1 h-screen overflow-hidden bg-cream dark:bg-dark-bg">
+    <div className="flex flex-1 overflow-hidden bg-cream dark:bg-dark-bg">
       {/* ── Main content ── */}
       <div className="flex-1 overflow-y-auto">
         <div className="max-w-2xl mx-auto py-8 px-4 sm:px-6 space-y-6">
@@ -290,7 +290,7 @@ export default function ReportPage() {
 
       {/* ── Right: Tasks sidebar ── */}
       {taskBarOpen && (
-        <div className="hidden md:flex w-80 flex-col border-l border-cream-dark dark:border-dark-border bg-white/50 dark:bg-dark-surface/30 h-screen shrink-0">
+        <div className="hidden md:flex w-80 flex-col border-l border-cream-dark dark:border-dark-border bg-white/50 dark:bg-dark-surface/30 shrink-0">
           <div className="px-5 py-4 border-b border-cream-dark dark:border-dark-border shrink-0 flex items-start justify-between">
             <div>
               <h2 className="text-sm font-semibold text-charcoal dark:text-dark-text">Tasks</h2>
